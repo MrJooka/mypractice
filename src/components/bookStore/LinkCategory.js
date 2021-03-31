@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { Layout, Table, Tag } from "antd";
 import TocSider from "./TocSider";
 import axios from "axios";
-import MyCard from "./MyCard";
+
+import CategoryBookList from "./components/CategoryBookList";
 
 const { Content } = Layout;
 
@@ -31,6 +32,7 @@ class LinkCategory extends Component {
     );
     console.log(value);
     console.log(categoryBookList);
+  
 
     const category_columns = [
       {
@@ -46,7 +48,9 @@ class LinkCategory extends Component {
           return (
             <>
               {booktags.map((hashtag) => (
-                <Tag key={hashtag}>{hashtag.toUpperCase()}</Tag>
+                <Tag key={hashtag} color="blue">
+                  {hashtag.toUpperCase()}
+                </Tag>
               ))}
             </>
           );
@@ -84,9 +88,12 @@ class LinkCategory extends Component {
           }}
         >
           <Content style={{ margin: "24px 16px 0" }}>
+            <CategoryBookList categorybooklist={categoryBookList} />
+            {/* <ul>{showCategoryBookList}</ul> */}
             <Table
               columns={category_columns}
               dataSource={category_data}
+              pagination={{ position: ["bottomLeft"] }}
             ></Table>
           </Content>
         </Layout>

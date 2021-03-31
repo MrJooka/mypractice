@@ -35,7 +35,30 @@ class AddSellBookModal extends Component {
   };
 
   handleCancel = (event) => {
-    this.setState({ isModalVisible: false });
+    this.setState({
+      isModalVisible: false,
+      title: "",
+      category: [],
+      hashtag: [],
+      author: "",
+      publisher: "",
+      thumbnail: null,
+      intro_book: "",
+      intro_author: "",
+      indexes: "",
+      price: 0,
+      promotion_name: "",
+      promotion_gap: "",
+      promotion_price: 0,
+      promotion_period_from: 0,
+      promotion_period_to: 0,
+      original_book_id: "",
+    });
+    this.resetCheckbox();
+  };
+
+  resetCheckbox = (value) => {
+    console.log("resetcheckbox");
   };
 
   categoryState = (value) => {
@@ -170,6 +193,7 @@ class AddSellBookModal extends Component {
               <Category
                 categoryState={this.categoryState}
                 hashtag={this.hashTagState}
+                resetcheckbox={this.resetCheckbox}
               />
             </label>
             <label style={{ display: "block", marginTop: "15px" }}>
