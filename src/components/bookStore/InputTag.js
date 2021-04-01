@@ -52,7 +52,7 @@ class InputTag extends Component {
         <div className="input-tag">
           <ul className="input-tag__tags">
             {tags.map((tag, i) => (
-              <li key={tag}>
+              <li name="hashtag" key={tag}>
                 {tag}
                 <button
                   type="button"
@@ -64,6 +64,7 @@ class InputTag extends Component {
                 </button>
               </li>
             ))}
+
             <li className="input-tag__tags__input">
               <input
                 type="text"

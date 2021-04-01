@@ -12,6 +12,7 @@ class BookStoreMain extends Component {
     super(props);
     this.state = {
       sell_book_list: [],
+      search: "",
     };
   }
 
@@ -21,6 +22,20 @@ class BookStoreMain extends Component {
       this.setState({ sell_book_list: res.data.sellbooklist });
     });
   }
+
+  searchIndex = (e) => {
+    let value = e.target.value;
+
+    this.setState({ search: value });
+  };
+
+  searchNow = () => {
+    const abc = this.state.sell_book_list;
+    const bbb = abc.filter((it) =>
+      it.book_info.category.includes(this.state.search)
+    );
+    console.log(bbb);
+  };
 
   render() {
     return (
@@ -33,11 +48,21 @@ class BookStoreMain extends Component {
           flexGrow: 1,
           flexShrink: 0,
           flexBasis: "auto",
-          justifyContent: "stretch",
+          // justifyContent: "stretch",
         }}
       >
+        <div>
+          <input
+            type="text"
+            placeholder="찾고 있는 책 이름을 입력하세요."
+            style={{ marginLeft: "300px" }}
+            onChange={this.searchIndex}
+          ></input>
+          <button onClick={this.searchNow}>검색</button>
+        </div>
         <AddSellBookModal />
         <TocSider />
+
         <ContentArea sell_book_list={this.state.sell_book_list} />
       </Layout>
     );

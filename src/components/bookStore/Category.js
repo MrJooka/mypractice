@@ -8,13 +8,14 @@ class Category extends Component {
   }
 
   getCheckboxValue = () => {
-    const query = 'input[name="category"]:checked';
-
-    const selectedEls = document.querySelectorAll(query);
+    const selectedEls = document.querySelectorAll(
+      'input[name="category"]:checked'
+    );
 
     var values = [].map.call(selectedEls, function (obj) {
       return obj.value;
     });
+
     console.log(values);
     this.props.categoryState(values);
   };
@@ -50,7 +51,6 @@ class Category extends Component {
               type="checkbox"
               name="category"
               value="elementaryschool"
-              defaultChecked={false}
               style={{ marginRight: "10px" }}
               onClick={this.getCheckboxValue}
             />
@@ -68,7 +68,6 @@ class Category extends Component {
             <input
               type="checkbox"
               name="category"
-              defaultChecked={false}
               value="middleschool"
               style={{ marginRight: "10px" }}
               onClick={this.getCheckboxValue}
@@ -87,7 +86,6 @@ class Category extends Component {
             <input
               type="checkbox"
               name="category"
-              defaultChecked={false}
               value="highschool"
               style={{ marginRight: "10px" }}
               onClick={this.getCheckboxValue}
@@ -106,7 +104,6 @@ class Category extends Component {
             <input
               type="checkbox"
               name="category"
-              defaultChecked={false}
               value="worker"
               style={{ marginRight: "10px" }}
               onClick={this.getCheckboxValue}
@@ -126,7 +123,6 @@ class Category extends Component {
             <input
               type="checkbox"
               name="category"
-              defaultChecked={false}
               value="english"
               style={{ marginRight: "10px" }}
               onClick={this.getCheckboxValue}
@@ -145,7 +141,6 @@ class Category extends Component {
             <input
               type="checkbox"
               name="category"
-              defaultChecked={false}
               value="chinese"
               style={{ marginRight: "10px" }}
               onClick={this.getCheckboxValue}
@@ -164,7 +159,6 @@ class Category extends Component {
             <input
               type="checkbox"
               name="category"
-              defaultChecked={false}
               value="japanese"
               style={{ marginRight: "10px" }}
               onClick={this.getCheckboxValue}
@@ -183,7 +177,6 @@ class Category extends Component {
             <input
               type="checkbox"
               name="category"
-              defaultChecked={false}
               value="coding"
               style={{ marginRight: "10px" }}
               onClick={this.getCheckboxValue}

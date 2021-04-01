@@ -54,11 +54,6 @@ class AddSellBookModal extends Component {
       promotion_period_to: 0,
       original_book_id: "",
     });
-    this.resetCheckbox();
-  };
-
-  resetCheckbox = (value) => {
-    console.log("resetcheckbox");
   };
 
   categoryState = (value) => {
@@ -76,7 +71,7 @@ class AddSellBookModal extends Component {
   handleOk = (event) => {
     this.setState({ isModalVisible: false });
 
-    const book_info1 = {
+    const book_info = {
       title: this.state.title,
       category: this.state.category,
       hashtag: this.state.hashtag,
@@ -99,22 +94,22 @@ class AddSellBookModal extends Component {
       original_book_id: "",
     };
 
-    const book_info = new FormData();
+    // const book_info = new FormData();
 
-    let book_info2 = JSON.stringify(book_info1);
-    book_info.append("book_info", book_info2);
-    book_info.append("book_cover", this.state.thumbnail);
-    console.log(book_info);
+    // let book_info2 = JSON.stringify(book_info1);
+    // book_info.append("book_info", book_info2);
+    // book_info.append("book_cover", this.state.thumbnail);
+    // console.log(book_info);
 
-    // FormData의 key 확인
-    for (let key of book_info.keys()) {
-      console.log(key);
-    }
+    // // FormData의 key 확인
+    // for (let key of book_info.keys()) {
+    //   console.log(key);
+    // }
 
-    // book_info의 value 확인
-    for (let value of book_info.values()) {
-      console.log(value);
-    }
+    // // book_info의 value 확인
+    // for (let value of book_info.values()) {
+    //   console.log(value);
+    // }
 
     axios.post("api/bookstore/create-sellbook", book_info).then((res) => {
       console.log(res.data);
@@ -136,6 +131,7 @@ class AddSellBookModal extends Component {
         promotion_period_to: 0,
         original_book_id: "",
       });
+      this.resetCheckbox();
     });
 
     event.preventDefault();
@@ -159,6 +155,20 @@ class AddSellBookModal extends Component {
     });
   }
 
+  resetCheckbox() {
+    const chkbox = document.querySelectorAll('input[name="category"]');
+
+    for (let i = 0; i < chkbox.length; ++i) {
+      chkbox[i].checked = false;
+    }
+
+    const hstags = document.querySelectorAll('li[name="hashtag"]');
+
+    for (let i = 0; i < hstags.length; ++i) {
+      hstags[i].value = false;
+    }
+  }
+
   render() {
     return (
       <>
@@ -172,6 +182,7 @@ class AddSellBookModal extends Component {
           onCancel={this.handleCancel}
           okText="새 책 만들기"
           cancelText="취소"
+          afterClose={this.resetCheckbox}
         >
           <form>
             <label style={{ display: "block", marginTop: "15px" }}>
@@ -193,7 +204,6 @@ class AddSellBookModal extends Component {
               <Category
                 categoryState={this.categoryState}
                 hashtag={this.hashTagState}
-                resetcheckbox={this.resetCheckbox}
               />
             </label>
             <label style={{ display: "block", marginTop: "15px" }}>
