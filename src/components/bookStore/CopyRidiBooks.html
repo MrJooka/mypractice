@@ -12,12 +12,12 @@
         margin: 0px;
         padding: 0px;
         box-sizing: border-box;
+        outline: 1px solid black;
       }
 
       html {
         color: black;
-        font-family: ridi-roboto, "Apple SD Gothic Neo", 돋움, Dotum,
-          "Helvetica Neue", arial, sans-serif;
+        font-family: ridi-roboto, "Apple SD Gothic Neo", 돋움, Dotum, "Helvetica Neue", arial, sans-serif;
         font-weight: 400;
         letter-spacing: -0.03em;
         -webkit-font-smoothing: antialiased;
@@ -69,10 +69,7 @@
         display: inline-block;
         text-align: start;
         appearance: auto;
-        background-color: -internal-light-dark(
-          rgb(255, 255, 255),
-          rgb(59, 59, 59)
-        );
+        background-color: -internal-light-dark(rgb(255, 255, 255), rgb(59, 59, 59));
         -webkit-rtl-ordering: logical;
         cursor: text;
         margin: 0em;
@@ -80,10 +77,7 @@
         padding: 1px 2px;
         border-width: 2px;
         border-style: inset;
-        border-color: -internal-light-dark(
-          rgb(118, 118, 118),
-          rgb(133, 133, 133)
-        );
+        border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
         border-image: initial;
       }
       input {
@@ -522,8 +516,7 @@
         overflow: hidden;
         border-radius: 6px;
         line-height: 0;
-        -webkit-transition: width 0.2s, height 0.2s, box-shadow 0.2s,
-          opacity 0.2s;
+        -webkit-transition: width 0.2s, height 0.2s, box-shadow 0.2s, opacity 0.2s;
         transition: width 0.2s, height 0.2s, box-shadow 0.2s, opacity 0.2s;
         opacity: 0;
       }
@@ -694,43 +687,12 @@
       <!-- GNB 영역 설정 -->
       <div class="GNBWrapper">
         <header class="header" style="max-width: 1000px; margin: 0 auto">
-          <nav
-            class="Navigation"
-            style="
-              box-sizing: border-box;
-              padding: 16px 16px 24px 20px;
-              display: flex;
-              flex-direction: column;
-            "
-          >
-            <div
-              class="LogoSearchboxArea"
-              style="display: flex; flex-direction: row"
-            >
-              <ul
-                class="LogoWrapper"
-                style="
-                  flex: none;
-                  order: 1;
-                  min-height: 30px;
-                  margin-right: 16px;
-                  margin-bottom: 0;
-                  display: flex;
-                "
-              >
-                <li
-                  class="LogoItem"
-                  style="
-                    display: flex;
-                    -webkit-box-align: center;
-                    align-items: center;
-                    line-height: 0;
-                  "
-                >
+          <nav class="Navigation" style="box-sizing: border-box; padding: 16px 16px 24px 20px; display: flex; flex-direction: column">
+            <div class="LogoSearchboxArea" style="display: flex; flex-direction: row">
+              <ul class="LogoWrapper" style="flex: none; order: 1; min-height: 30px; margin-right: 16px; margin-bottom: 0; display: flex">
+                <li class="LogoItem" style="display: flex; -webkit-box-align: center; align-items: center; line-height: 0">
                   <h1>
-                    <a class="CogBookLogo" aria-labe="홈으로" href=""
-                      ><img src="" alt="CogBook"
-                    /></a>
+                    <a class="CogBookLogo" aria-labe="홈으로" href=""><img src="" alt="CogBook" /></a>
                   </h1>
                 </li>
               </ul>
@@ -742,12 +704,7 @@
                 </li>
                 <li>
                   <a href="" aria-label="로그인하기">
-                    <button
-                      class="StyledButton"
-                      style="color: #1f8ce6; background-color: #fff"
-                    >
-                      로그인
-                    </button>
+                    <button class="StyledButton" style="color: #1f8ce6; background-color: #fff">로그인</button>
                   </a>
                 </li>
               </ul>
@@ -757,22 +714,12 @@
                     <!-- 검색입력창에 타이핑하면 아래 태그 생성됨 -->
                     <button class="ArrowButton">
                       <svg viewBox="0 0 48 48" class="StyledArrowLeft">
-                        <path
-                          d="M48 21H11.49L28.26 4.23 24 0 0 24l24 24 4.23-4.23L11.49 27H48v-6z"
-                        ></path>
+                        <path d="M48 21H11.49L28.26 4.23 24 0 0 24l24 24 4.23-4.23L11.49 27H48v-6z"></path>
                       </svg>
                     </button>
                     <label class="SearchBoxShape">
-                      <img
-                        alt="인스턴트 검색"
-                        src="./round_search_black_18dp.png"
-                        class="StyledLens"
-                      />
-                      <input
-                        placeholder="제목, 저자, 출판사 검색"
-                        value
-                        class="SearchBox"
-                      />
+                      <img alt="인스턴트 검색" src="./round_search_black_18dp.png" class="StyledLens" />
+                      <input placeholder="제목, 저자, 출판사 검색" value class="SearchBox" />
                       <button type="button" class="SearchResetButton">
                         <svg viewBox="0 0 14 14" class="svgStyledClear">
                           <path
@@ -829,11 +776,7 @@
               </a>
             </li>
             <li class="TabItemWrapper">
-              <a
-                href="/account/myridi"
-                aria-label="마이리디"
-                class="StyledAnchor"
-              >
+              <a href="/account/myridi" aria-label="마이리디" class="StyledAnchor">
                 <button class="TabButton">
                   <svg viewBox="0 0 24 24" class="svgStyle">
                     <path
@@ -856,9 +799,7 @@
               <li class="GenreListItem">
                 <a href="/category/list" aria-label="카테고리 목록">
                   <svg viewBox="0 0 24 24" class="GNBCategoryIcon">
-                    <path
-                      d="M2 7.001h20V5H2v2.001zm3 6h14v-2H5v2zm3.999 6h6v-2h-6v2z"
-                    ></path>
+                    <path d="M2 7.001h20V5H2v2.001zm3 6h14v-2H5v2zm3.999 6h6v-2h-6v2z"></path>
                   </svg>
                   <span class="a11y">카테고리</span>
                 </a>
@@ -896,10 +837,7 @@
         <!-- 광고 회전목마 -->
         <div class="CarouselWrapper">
           <div class="CarouselView-carouselHeight">
-            <ul
-              style="transform: translateX(0%) translateX(0px) translateX(0px)"
-              class="CarouselList"
-            >
+            <ul style="transform: translateX(0%) translateX(0px) translateX(0px)" class="CarouselList">
               <li class="CarouselItemContainer">
                 <a href="/" tabindex="-1" class="BannerImageLink">
                   <img
@@ -965,11 +903,7 @@
                 <a href="/" tabindex="-1" class="BannerImageLink"></a>
               </li>
               <li class="CarouselItemContainer-opacityZero ergyl4f6">
-                <a href="/" tabindex="-1" class="BannerImageLink"
-                  ><div class="css-ba5tgu-BannerBadge ergyl4f7">
-                    마감 임박
-                  </div></a
-                >
+                <a href="/" tabindex="-1" class="BannerImageLink"><div class="css-ba5tgu-BannerBadge ergyl4f7">마감 임박</div></a>
               </li>
               <li class="CarouselItemContainer-opacityZero ergyl4f6">
                 <a href="" tabindex="-1" class="BannerImageLink"></a>
@@ -1054,11 +988,7 @@
                 <a href="" tabindex="-1" class="BannerImageLink"></a>
               </li>
               <li class="CarouselItemContainer-opacityZero ergyl4f6">
-                <a href="" tabindex="-1" class="BannerImageLink"
-                  ><div class="css-ba5tgu-BannerBadge ergyl4f7">
-                    마감 임박
-                  </div></a
-                >
+                <a href="" tabindex="-1" class="BannerImageLink"><div class="css-ba5tgu-BannerBadge ergyl4f7">마감 임박</div></a>
               </li>
               <li class="CarouselItemContainer-opacityZero ergyl4f6">
                 <a href="" tabindex="-1" class="BannerImageLink"></a>
@@ -1091,34 +1021,20 @@
           </div>
           <div class="CarouselControllerWrapper ergyl4f1">
             <div class="ArrowWrapper">
-              <button
-                type="button"
-                class="Arrow-clearOutline-defaultOpacity-Arrow-arrowStyle"
-              >
+              <button type="button" class="Arrow-clearOutline-defaultOpacity-Arrow-arrowStyle">
                 <svg width="11" height="14" class="leftRotate-mergedStyle">
-                  <path
-                    d="M1.78 13.013L7.68 7 1.78.987 2.75 0l6.875 7-6.875 7z"
-                  ></path>
+                  <path d="M1.78 13.013L7.68 7 1.78.987 2.75 0l6.875 7-6.875 7z"></path>
                 </svg>
-                <span class="a11y" aria-label="이전 배너 보기"
-                  >이전 배너 보기</span
-                >
+                <span class="a11y" aria-label="이전 배너 보기">이전 배너 보기</span>
               </button>
             </div>
             <div class="CarouselController"></div>
             <div class="ArrowWrapper">
-              <button
-                type="button"
-                class="Arrow-clearOutline-defaultOpacity-Arrow-arrowStyle"
-              >
+              <button type="button" class="Arrow-clearOutline-defaultOpacity-Arrow-arrowStyle">
                 <svg width="11" height="14" class="RightmergedStyle">
-                  <path
-                    d="M1.78 13.013L7.68 7 1.78.987 2.75 0l6.875 7-6.875 7z"
-                  ></path>
+                  <path d="M1.78 13.013L7.68 7 1.78.987 2.75 0l6.875 7-6.875 7z"></path>
                 </svg>
-                <span class="a11y" aria-label="다음 배너 보기">
-                  다음 배너 보기
-                </span>
+                <span class="a11y" aria-label="다음 배너 보기"> 다음 배너 보기 </span>
               </button>
             </div>
           </div>

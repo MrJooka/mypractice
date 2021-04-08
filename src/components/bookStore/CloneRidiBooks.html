@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, Helvetica, sans-serif;
+        outline: 1px black solid;
+      }
+
+      button * {
+        position: relative;
+        top: 0px;
+        left: 0px;
+      }
+
+      ul,
+      ol {
+        list-style-type: none;
+        margin: 0px;
+        padding: 0px;
+      }
+
+      li {
+        line-height: initial;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      button,
+      input,
+      p,
+      span {
+        letter-spacing: -0.03em;
+      }
+      a {
+        color: inherit;
+        letter-spacing: inherit;
+        font-family: inherit;
+        cursor: pointer;
+      }
+      a:link,
+      a:visited {
+        text-decoration: none;
+      }
+
+      .ButtonWrapper li + li {
+        margin-left: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <header style="background: #1f8ce6; max-width: 100%">
+      <div class="gnbContainer" style="max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column">
+        <div class="navigation" style="padding: 16px 16px 24px 20px">
+          <div class="LogoSearchArea" style="display: flex; flex-direction: row">
+            <ul class="LogoWrapper" style="min-height: 30px; display: flex; flex: none; margin-bottom: 0; margin-right: 20px">
+              <li class="LogoItem" style="display: flex; align-items: center; line-height: 0">
+                <a class="LogoItemLink" href=""><img style="width: 119px; height: 36px" src="./logo_white.png" alt="CogBook" /> </a>
+              </li>
+            </ul>
+            <form class="SearchWrapper" style="max-width: 340px; flex: 1">
+              <!-- label태그를 사용하면 태그사이에 있는 Text를 클릭해도 form 입력창으로 이동됨 -->
+              <label class="SearchBoxWrapper" style="display: flex; align-items: center; border-radius: 3px; background-color: white">
+                <img
+                  src="./round_search_black_18dp.png"
+                  alt="검색"
+                  style="width: 24px; height: 24px; margin: 0 4px 0 6px; opacity: 0.7; flex: none"
+                />
+                <input
+                  class="SearchBox"
+                  type="search"
+                  placeholder="제목, 저자, 출판사 검색"
+                  style="flex: 1; height: 36px; background: none; appearance: none; box-shadow: none; border: none; font-size: 16px; outline: none"
+                />
+              </label>
+            </form>
+            <ul class="ButtonWrapper" style="flex: 1; margin-left: auto; display: flex; justify-content: flex-end; align-items: center">
+              <li><button style="height: 30px; color: white; background: #1f8ce6; padding: 0 16px; border: 1px solid #99d1ff">캐쉬충전</button></li>
+              <li>
+                <button style="height: 30px; color: #1f8ce6; background: white; padding: 0 16px; border: 1px solid #99d1ff">로그인</button>
+              </li>
+              <!-- <li><button style="height: 30px; color: white; background: #1f8ce6; padding: 0 16px; border: 1px solid #99d1ff">캐쉬충전</button></li>이건 로그인시 내서재로 변경 -->
+            </ul>
+          </div>
+        </div>
+
+        <ul class="SubMainGNB" style="display: flex; padding: 0 20px">
+          <li class="SubMainGNB-Item-Wrapper" style="margin-right: 50px; display: flex; flex-direction: column; height: 37px; padding-bottom: 0px">
+            <a
+              href=""
+              class="StyledAnchor"
+              style="
+                height: 100%;
+                margin: 0 auto;
+                display: flex;
+                justify-content: center;
+                position: relative;
+
+                padding: 0 5px 2px 4px;
+              "
+            >
+              <img src="./home_white_24dp (1).svg" alt="홈" style="margin-right: 10px; width: 22px; height: 22px" />
+              <span class="labelStyle" style="height: 16px; margin-left: 5px; text-align: center; font-size: 16px; color: white; font-weight: bold"
+                >홈</span
+              >
+            </a>
+            <div class="SubMainGNB_Selected" style="display: block; background: rgb(153, 209, 255); height: 5px; width: 100%; top: 1px"></div>
+          </li>
+          <li class="SubMainGNB-Item-Wrapper" style="margin-right: 50px; display: flex; flex-direction: column; height: 37px; padding-bottom: 4px">
+            <a
+              href=""
+              class="StyledAnchor"
+              style="
+                height: 100%;
+                margin: 0 auto;
+                display: flex;
+                justify-content: center;
+                position: relative;
+
+                padding: 0 5px 2px 4px;
+              "
+            >
+              <img src="./notifications_white_24dp.svg" alt="홈" style="margin-right: 10px; width: 22px; height: 22px" />
+              <span class="labelStyle" style="height: 16px; margin-left: 5px; text-align: center; font-size: 16px; color: white; font-weight: bold"
+                >알림</span
+              >
+            </a>
+            <div class="SubMainGNB_Selected" style="display: block; background: transparent; height: 5px; width: 100%; top: 1px"></div>
+          </li>
+          <li class="SubMainGNB-Item-Wrapper" style="margin-right: 50px; display: flex; flex-direction: column; height: 37px; padding-bottom: 4px">
+            <a
+              href=""
+              class="StyledAnchor"
+              style="
+                height: 100%;
+                margin: 0 auto;
+                display: flex;
+                justify-content: center;
+                position: relative;
+
+                padding: 0 5px 2px 4px;
+              "
+            >
+              <img src="./shopping_cart_white_24dp.svg" alt="홈" style="margin-right: 10px; width: 22px; height: 22px" />
+              <span class="labelStyle" style="height: 16px; margin-left: 5px; text-align: center; font-size: 16px; color: white; font-weight: bold"
+                >카트</span
+              >
+            </a>
+            <div class="SubMainGNB_Selected" style="display: block; background: transparent; height: 5px; width: 100%; top: 1px"></div>
+          </li>
+          <li class="SubMainGNB-Item-Wrapper" style="margin-right: 50px; display: flex; flex-direction: column; height: 37px; padding-bottom: 4px">
+            <a
+              href=""
+              class="StyledAnchor"
+              style="
+                height: 100%;
+                margin: 0 auto;
+                display: flex;
+                justify-content: center;
+                position: relative;
+
+                padding: 0 5px 2px 4px;
+              "
+            >
+              <img src="./person_outline_white_24dp.svg" alt="홈" style="margin-right: 10px; width: 22px; height: 22px" />
+              <span class="labelStyle" style="height: 16px; margin-left: 5px; text-align: center; font-size: 16px; color: white; font-weight: bold"
+                >마이리디</span
+              >
+            </a>
+            <div class="SubMainGNB_Selected" style="display: block; background: transparent; height: 5px; width: 100%; top: 1px"></div>
+          </li>
+        </ul>
+      </div>
+    </header>
+    <div>카테고리버튼 | 일반 | 로맨스 | 판타지 | 만화 | BL</div>
+    <main>Main</main>
+    <footer>footer</footer>
+  </body>
+</html>

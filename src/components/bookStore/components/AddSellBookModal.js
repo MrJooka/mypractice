@@ -13,7 +13,6 @@ class AddSellBookModal extends Component {
       hashtag: [],
       author: "",
       publisher: "",
-      thumbnail: null,
       intro_book: "",
       intro_author: "",
       indexes: "",
@@ -24,6 +23,13 @@ class AddSellBookModal extends Component {
       promotion_period_from: 0,
       promotion_period_to: 0,
       original_book_id: "",
+
+      thumbnail: null,
+      book_cover_url_original: "",
+      book_cover_url_small: "",
+      book_cover_url_medium: "",
+      book_cover_url_large: "",
+      prev_book_cover_url_original: null,
 
       sell_book_list: [],
     };
@@ -34,15 +40,20 @@ class AddSellBookModal extends Component {
     this.setState({ isModalVisible: true });
   };
 
+  // 이미지 업로드 후, ok버튼을 안누르고 모달창을 종료할 경우
+  // 예를들어 뒤로가기||취소버튼||x버튼 등을 누르면
+  // 서버에서 이미지를 삭제할수 있도록 저장된 이미지 url를 서버에 다시 보내줘야한다.
+  // 아직 그 작업 안됨
+
   handleCancel = (event) => {
     this.setState({
       isModalVisible: false,
+
       title: "",
       category: [],
       hashtag: [],
       author: "",
       publisher: "",
-      thumbnail: null,
       intro_book: "",
       intro_author: "",
       indexes: "",
@@ -53,6 +64,13 @@ class AddSellBookModal extends Component {
       promotion_period_from: 0,
       promotion_period_to: 0,
       original_book_id: "",
+
+      thumbnail: null,
+      book_cover_url_original: "",
+      book_cover_url_small: "",
+      book_cover_url_medium: "",
+      book_cover_url_large: "",
+      prev_book_cover_url_original: null,
     });
   };
 
@@ -77,12 +95,17 @@ class AddSellBookModal extends Component {
       hashtag: this.state.hashtag,
       author: this.state.author,
       publisher: this.state.publisher,
-      thumbnail: this.state.img_url,
       intro_book: this.state.intro_book,
       intro_author: this.state.intro_author,
       indexes: this.state.indexes,
       price: +this.state.price,
-
+      bookcover: {
+        url_original: this.state.book_cover_url_original,
+        url_small: this.state.book_cover_url_small,
+        url_medium: this.state.book_cover_url_medium,
+        url_large: this.state.book_cover_url_large,
+      },
+      prev_book_cover_url: this.state.prev_book_cover_url_original,
       promotion: {
         name: this.state.promotion_name,
         gap: String(this.state.gap),
@@ -95,49 +118,33 @@ class AddSellBookModal extends Component {
       original_book_id: "",
     };
 
-    // const book_info = new FormData();
-
-    // let book_info2 = JSON.stringify(book_info1);
-    // book_info.append("book_info", book_info2);
-    // book_info.append("book_cover", this.state.thumbnail);
-    // console.log(book_info);
-
-    // // FormData의 key 확인
-    // for (let key of book_info.keys()) {
-    //   console.log(key);
-    // }
-
-    // // book_info의 value 확인
-    // for (let value of book_info.values()) {
-    //   console.log(value);
-    // }
-
-    axios
-      .post("api/bookstore/create-sellbook", { book_info: book_info })
-      .then((res) => {
-        console.log(res.data);
-        this.setState({
-          title: "",
-          category: [],
-          hashtag: [],
-          author: "",
-          publisher: "",
-          thumbnail: null,
-          intro_book: "",
-          intro_author: "",
-          indexes: "",
-          price: 0,
-          promotion_name: "",
-          promotion_gap: "",
-          promotion_price: 0,
-          promotion_period_from: 0,
-          promotion_period_to: 0,
-          original_book_id: "",
-          img_url: "",
-          prev_thumbnail: "",
-        });
-        this.resetCheckbox();
+    axios.post("api/bookstore/create-sellbook", { book_info: book_info }).then((res) => {
+      console.log(res.data);
+      this.setState({
+        title: "",
+        category: [],
+        hashtag: [],
+        author: "",
+        publisher: "",
+        intro_book: "",
+        intro_author: "",
+        indexes: "",
+        price: 0,
+        promotion_name: "",
+        promotion_gap: "",
+        promotion_price: 0,
+        promotion_period_from: 0,
+        promotion_period_to: 0,
+        original_book_id: "",
+        thumbnail: null,
+        book_cover_url_original: "",
+        book_cover_url_small: "",
+        book_cover_url_medium: "",
+        book_cover_url_large: "",
+        prev_book_cover_url_original: null,
       });
+      this.resetCheckbox();
+    });
 
     event.preventDefault();
   };
@@ -160,15 +167,18 @@ class AddSellBookModal extends Component {
   uploadImgHandler = () => {
     const formData = new FormData();
     formData.append("file", this.state.thumbnail);
-    formData.append("prev_thumbnail", this.state.prev_thumbnail);
+    formData.append("prev_book_cover", this.state.prev_book_cover_url_original);
 
     axios.post("api/bookstore/upload-thumbnail", formData).then((res) => {
-      console.log(res);
       this.setState({
-        img_url: res.data.url,
-        prev_thumbnail: res.data.url,
+        book_cover_url_original: res.data.url_original,
+        book_cover_url_small: res.data.url_small,
+        book_cover_url_medium: res.data.url_medium,
+        book_cover_url_large: res.data.url_large,
+        prev_book_cover_url_original: res.data.url_original,
         thumbnail: null,
       });
+      console.log(this.state.book_cover_url_small);
     });
   };
   resetCheckbox() {
@@ -188,11 +198,7 @@ class AddSellBookModal extends Component {
   render() {
     return (
       <div style={{ fontSize: "12px" }}>
-        <Button
-          style={{ marginLeft: "220px" }}
-          type="primary"
-          onClick={this.showModal}
-        >
+        <Button style={{ marginLeft: "220px" }} type="primary" onClick={this.showModal}>
           새 책 추가
         </Button>
         <Modal
@@ -220,10 +226,7 @@ class AddSellBookModal extends Component {
           </label>
           <label style={{ display: "block", marginTop: "15px" }}>
             카테고리
-            <Category
-              categoryState={this.categoryState}
-              hashtag={this.hashTagState}
-            />
+            <Category categoryState={this.categoryState} hashtag={this.hashTagState} />
           </label>
           <label style={{ display: "block", marginTop: "15px" }}>
             저자
@@ -267,14 +270,9 @@ class AddSellBookModal extends Component {
             />
           </label>
           <button onClick={this.uploadImgHandler}>업로드이미지</button>
-          {this.state.img_url && (
+          {this.state.book_cover_url_small && (
             <>
-              <img
-                src={`${this.state.img_url}`}
-                alt="thumbnail"
-                width="150px"
-                style={{ marginTop: "10px" }}
-              />
+              <img src={`${this.state.book_cover_url_small}`} alt="img" width="150px" style={{ marginTop: "10px" }} />
             </>
           )}
           <label style={{ display: "block", marginTop: "15px" }}>
