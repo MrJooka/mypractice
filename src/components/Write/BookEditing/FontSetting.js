@@ -1,21 +1,6 @@
 import React, { Component } from "react";
-import {
-  Affix,
-  Collapse,
-  Form,
-  Checkbox,
-  Select,
-  Input,
-  InputNumber,
-} from "antd";
-import {
-  BoldOutlined,
-  ItalicOutlined,
-  UnderlineOutlined,
-  AlignCenterOutlined,
-  AlignLeftOutlined,
-  AlignRightOutlined,
-} from "@ant-design/icons";
+import { Affix, Collapse, Form, Checkbox, Select, Input, InputNumber } from "antd";
+import { BoldOutlined, ItalicOutlined, UnderlineOutlined, AlignCenterOutlined, AlignLeftOutlined, AlignRightOutlined } from "@ant-design/icons";
 import Button from "../../styledComponents/defaultButton";
 import axios from "axios";
 
@@ -69,18 +54,16 @@ class FontSetting extends Component {
     if (this.state.face_selected_index === 1) {
       //여기다가 if 문을 작성해야함 row 일때랑 selections일때
       if (this.state.row_selected_optionName === "row") {
-        const update_font_style = prev_font_style.face1.map(
-          (style, font_index) => {
-            if (this.state.row_selected_index === font_index + 1) {
-              style.font = this.state.fontType;
-              style.bold = fontBold;
-              style.size = this.state.fontSize;
-              style.italic = fontItalic;
-              style.underline = fontUnderLine;
-              style.color = this.state.fontColor;
-            }
+        const update_font_style = prev_font_style.face1.map((style, font_index) => {
+          if (this.state.row_selected_index === font_index + 1) {
+            style.font = this.state.fontType;
+            style.bold = fontBold;
+            style.size = this.state.fontSize;
+            style.italic = fontItalic;
+            style.underline = fontUnderLine;
+            style.color = this.state.fontColor;
           }
-        );
+        });
       } else if (this.state.row_selected_optionName === "selection") {
         const update_font_style = prev_font_style.selection[0];
         update_font_style.font = this.state.fontType;
@@ -90,18 +73,27 @@ class FontSetting extends Component {
         update_font_style.underline = fontUnderLine;
         update_font_style.color = this.state.fontColor;
       }
-    } else {
-      const update_font_style = prev_font_style.face2.map(
-        (style, font_index) => {
-          if (this.state.row_selected_index === font_index + 1) {
-            style.font = this.state.fontType;
-            style.bold = fontBold;
-            style.size = this.state.fontSize;
-            style.italic = fontItalic;
-            style.color = this.state.fontColor;
-          }
+    } else if (this.state.face_selected_index === 1) {
+      const update_font_style = prev_font_style.face2.map((style, font_index) => {
+        if (this.state.row_selected_index === font_index + 1) {
+          style.font = this.state.fontType;
+          style.bold = fontBold;
+          style.size = this.state.fontSize;
+          style.italic = fontItalic;
+          style.color = this.state.fontColor;
         }
-      );
+      });
+    } else {
+      const update_font_style = prev_font_style.face1.map((style, font_index) => {
+        if (this.state.row_selected_index === font_index + 1) {
+          style.font = this.state.fontType;
+          style.bold = fontBold;
+          style.size = this.state.fontSize;
+          style.italic = fontItalic;
+          style.underline = fontUnderLine;
+          style.color = this.state.fontColor;
+        }
+      });
     }
     console.log("final : ", prev_font_style);
 
@@ -197,14 +189,9 @@ class FontSetting extends Component {
     this.setState({
       row_selected: e.target.value,
       row_selected_index: e.target.selectedIndex,
-      row_selected_optionName:
-        e.target.selectedOptions[0].attributes[0].nodeValue,
+      row_selected_optionName: e.target.selectedOptions[0].attributes[0].nodeValue,
     });
-    this.getInitialValues(
-      this.props.cardSetting_selected,
-      e.target.selectedIndex,
-      e.target.selectedOptions[0].attributes[0].nodeValue
-    );
+    this.getInitialValues(this.props.cardSetting_selected, e.target.selectedIndex, e.target.selectedOptions[0].attributes[0].nodeValue);
   };
 
   getInitialValues = (id, index, optionName) => {
@@ -221,32 +208,42 @@ class FontSetting extends Component {
     this.state.card_type.map((value) => {
       if (value._id === id) {
         console.log(value);
-        if (this.state.face_selected_index === 1) {
-          if (optionName === "row") {
-            align.push(value.font.face1[index - 1].align);
-            bold.push(value.font.face1[index - 1].bold);
-            font.push(value.font.face1[index - 1].font);
-            italic.push(value.font.face1[index - 1].italic);
-            size.push(value.font.face1[index - 1].size);
-            underline.push(value.font.face1[index - 1].underline);
-            color.push(value.font.face1[index - 1].color);
-          } else if (optionName === "selection") {
-            align.push(value.font.selection[0].align);
-            bold.push(value.font.selection[0].bold);
-            font.push(value.font.selection[0].font);
-            italic.push(value.font.selection[0].italic);
-            size.push(value.font.selection[0].size);
-            underline.push(value.font.selection[0].underline);
-            color.push(value.font.selection[0].color);
-          }
+        if (value.type === "read" || value.type === "share" || value.type === "none") {
+          align.push(value.font.face1[index - 1].align);
+          bold.push(value.font.face1[index - 1].bold);
+          font.push(value.font.face1[index - 1].font);
+          italic.push(value.font.face1[index - 1].italic);
+          size.push(value.font.face1[index - 1].size);
+          underline.push(value.font.face1[index - 1].underline);
+          color.push(value.font.face1[index - 1].color);
         } else {
-          align.push(value.font.face2[index - 1].align);
-          bold.push(value.font.face2[index - 1].bold);
-          font.push(value.font.face2[index - 1].font);
-          italic.push(value.font.face2[index - 1].italic);
-          size.push(value.font.face2[index - 1].size);
-          underline.push(value.font.face2[index - 1].underline);
-          color.push(value.font.face2[index - 1].color);
+          if (this.state.face_selected_index === 1) {
+            if (optionName === "row") {
+              align.push(value.font.face1[index - 1].align);
+              bold.push(value.font.face1[index - 1].bold);
+              font.push(value.font.face1[index - 1].font);
+              italic.push(value.font.face1[index - 1].italic);
+              size.push(value.font.face1[index - 1].size);
+              underline.push(value.font.face1[index - 1].underline);
+              color.push(value.font.face1[index - 1].color);
+            } else if (optionName === "selection") {
+              align.push(value.font.selection[0].align);
+              bold.push(value.font.selection[0].bold);
+              font.push(value.font.selection[0].font);
+              italic.push(value.font.selection[0].italic);
+              size.push(value.font.selection[0].size);
+              underline.push(value.font.selection[0].underline);
+              color.push(value.font.selection[0].color);
+            }
+          } else {
+            align.push(value.font.face2[index - 1].align);
+            bold.push(value.font.face2[index - 1].bold);
+            font.push(value.font.face2[index - 1].font);
+            italic.push(value.font.face2[index - 1].italic);
+            size.push(value.font.face2[index - 1].size);
+            underline.push(value.font.face2[index - 1].underline);
+            color.push(value.font.face2[index - 1].color);
+          }
         }
 
         this.setState({
@@ -321,7 +318,7 @@ class FontSetting extends Component {
       });
       var cardFaceListOption = this.props.cardType.map((card_type) => {
         if (card_type._id === this.props.cardSetting_selected) {
-          if (card_type.type === "read") {
+          if (card_type.type === "read" || "share" || "none") {
             return;
           } else if (card_type.type === "flip-normal") {
             return (
@@ -352,6 +349,18 @@ class FontSetting extends Component {
             return row_options;
           } else if (this.state.face_selected_index === 2) {
             const row_options = card_type.row_style.face2.map((row, index) => {
+              console.log(row, index);
+              return (
+                <>
+                  <option name="row" value={row._id}>
+                    {index + 1}행
+                  </option>
+                </>
+              );
+            });
+            return row_options;
+          } else if (card_type.type === "read" || "share" || "none") {
+            const row_options = card_type.row_style.face1.map((row, index) => {
               console.log(row, index);
               return (
                 <>
@@ -399,14 +408,10 @@ class FontSetting extends Component {
                 <div className="select_page_size_div">
                   <div>카드</div>
                   <div>
-                    <select
-                      defaultValue="카드선택"
-                      size="small"
-                      onChange={this.onCardChangeHandler}
-                      value={this.props.cardSetting_selected}
-                      style={{ width: 195 }}
-                    >
-                      {/* <option key="default1" value="카드선택">카드선택</option> */}
+                    <select defaultValue="카드선택" size="small" onChange={this.onCardChangeHandler} value={this.state.card_selected} style={{ width: 195 }}>
+                      <option key="default1" value="카드선택">
+                        카드선택
+                      </option>
                       {cardTypeListOption}
                     </select>
                   </div>
@@ -414,12 +419,7 @@ class FontSetting extends Component {
                 <div className="select_page_size_div">
                   <div>면</div>
                   <div>
-                    <select
-                      defaultValue="면선택"
-                      size="small"
-                      onChange={this.onFaceChangeHandler}
-                      style={{ width: 195 }}
-                    >
+                    <select defaultValue="면선택" size="small" onChange={this.onFaceChangeHandler} style={{ width: 195 }}>
                       <option key="default2" value="면선택">
                         면선택
                       </option>
@@ -430,12 +430,7 @@ class FontSetting extends Component {
                 <div className="select_page_size_div">
                   <div>행</div>
                   <div>
-                    <select
-                      defaultValue="행선택"
-                      onChange={this.onRowChangeHandler}
-                      size="small"
-                      style={{ width: 195 }}
-                    >
+                    <select defaultValue="행선택" onChange={this.onRowChangeHandler} size="small" style={{ width: 195 }}>
                       <option key="default3" value="행선택">
                         행선택
                       </option>
@@ -452,64 +447,37 @@ class FontSetting extends Component {
                 <div className="select_page_size_div">
                   <div>폰트</div>
                   <div>
-                    <Input
-                      type="text"
-                      size="small"
-                      onChange={this.onChangeFontType}
-                      value={this.state.fontType}
-                      style={{ width: 125 }}
-                    />
+                    <Input type="text" size="small" onChange={this.onChangeFontType} value={this.state.fontType} style={{ width: 125 }} />
                   </div>
                 </div>
                 <div className="select_page_size_div">
                   <div>색</div>
                   <div>
-                    <Input
-                      type="color"
-                      size="small"
-                      onChange={this.onChangeFontColor}
-                      value={this.state.fontColor}
-                      style={{ width: 125 }}
-                    />
+                    <Input type="color" size="small" onChange={this.onChangeFontColor} value={this.state.fontColor} style={{ width: 125 }} />
                   </div>
                 </div>
                 <div className="select_page_size_div">
                   <div>크기</div>
                   <div>
-                    <InputNumber
-                      size="small"
-                      onChange={this.onChangeFontSize}
-                      value={this.state.fontSize}
-                      style={{ width: 100, fontSize: 10 }}
-                      type="number"
-                    />
+                    <InputNumber size="small" onChange={this.onChangeFontSize} value={this.state.fontSize} style={{ width: 100, fontSize: 10 }} type="number" />
                   </div>
                 </div>
                 <div className="select_page_size_div">
                   <div>볼드</div>
                   <div>
-                    <Checkbox
-                      onChange={this.onChangeFontBold}
-                      checked={this.state.fontBold}
-                    />
+                    <Checkbox onChange={this.onChangeFontBold} checked={this.state.fontBold} />
                   </div>
                 </div>
                 <div className="select_page_size_div">
                   <div>이탈릭</div>
                   <div>
-                    <Checkbox
-                      onChange={this.onChangeFontItalic}
-                      checked={this.state.fontItalic}
-                    />
+                    <Checkbox onChange={this.onChangeFontItalic} checked={this.state.fontItalic} />
                   </div>
                 </div>
                 <div className="select_page_size_div">
                   <div>밑줄</div>
                   <div>
-                    <Checkbox
-                      onChange={this.onChangeFontUnderLine}
-                      checked={this.state.fontUnderLine}
-                    />
+                    <Checkbox onChange={this.onChangeFontUnderLine} checked={this.state.fontUnderLine} />
                   </div>
                 </div>
               </div>
@@ -519,12 +487,7 @@ class FontSetting extends Component {
 
         <Affix offsetBottom={0}>
           <div className="save_page_setting">
-            <Button
-              type="primary"
-              onClick={this.onFinish}
-              shape="round"
-              size="small"
-            >
+            <Button type="primary" onClick={this.onFinish} shape="round" size="small">
               적용
             </Button>
             <Button type="primary" shape="round" size="small">
