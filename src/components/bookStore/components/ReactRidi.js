@@ -1,9 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { Global, css } from "@emotion/react";
-import AddSellBookModalForRidi from "./AddSellBookModalForRidi";
 import React, { Component } from "react";
 import axios from "axios";
-import TocSider from "../TocSider";
+import { Link } from "react-router-dom";
+import RidiGnbArea from "./RidiGnbArea";
+import { GlobalStyle } from "./GlobalStyle";
 
 class ListGoodForHomeStudy extends Component {
   constructor(props) {
@@ -15,8 +16,8 @@ class ListGoodForHomeStudy extends Component {
       <React.Fragment>
         {this.props.serverlist.map((item) => (
           <li className="BookWrapper" key={item._id} css={bookWrapper}>
-            <a
-              href="/"
+            <Link
+              to="/detail_book"
               className="StyledAnchor"
               css={css`
                 display: inline-block;
@@ -37,15 +38,15 @@ class ListGoodForHomeStudy extends Component {
                   </div>
                 </div>
               </div>
-            </a>
+            </Link>
             <div className="BookInfoContainer" css={bookInfoContainer}>
-              <a href="/">
+              <Link to="/">
                 <div className="BookTitleBelowThumbanil" css={bookTitleBelowThumbanil}>
                   {item.book_info.title}
                 </div>
-              </a>
+              </Link>
               <span className="BookAuthorBelowThumbnail" css={bookAuthorBelowThumbnail}>
-                <a href="/">{item.book_info.author}</a>
+                <Link to="/">{item.book_info.author}</Link>
               </span>
               <span>
                 <div role="img" className="RatingWrapper" css={ratingWrapper}>
@@ -56,16 +57,7 @@ class ListGoodForHomeStudy extends Component {
                     <img src="image/grade_black_24dp.svg" alt="" css={starImage} />
                     <img src="image/grade_black_24dp.svg" alt="" css={starImage} />
                   </div>
-                  <span
-                    css={css`
-                      height: 10px;
-                      font-size: 11px;
-                      line-height: 1.09;
-                      color: #61ac00;
-                    `}
-                  >
-                    9
-                  </span>
+                  <span css={ratingNumber}>9</span>
                 </div>
               </span>
             </div>
@@ -86,8 +78,8 @@ class ListGoodForStudy extends Component {
       <React.Fragment>
         {this.props.serverlist.map((item) => (
           <li className="BookWrapper" key={item._id} css={bookWrapper}>
-            <a
-              href="/"
+            <Link
+              to="/"
               className="StyledAnchor"
               css={css`
                 display: inline-block;
@@ -108,15 +100,15 @@ class ListGoodForStudy extends Component {
                   </div>
                 </div>
               </div>
-            </a>
+            </Link>
             <div className="BookInfoContainer" css={bookInfoContainer}>
-              <a href="/">
+              <Link to="/">
                 <div className="BookTitleBelowThumbanil" css={bookTitleBelowThumbanil}>
                   {item.book_info.title}
                 </div>
-              </a>
+              </Link>
               <span className="BookAuthorBelowThumbnail" css={bookAuthorBelowThumbnail}>
-                <a href="/">{item.book_info.author}</a>
+                <Link to="/">{item.book_info.author}</Link>
               </span>
             </div>
           </li>
@@ -146,9 +138,9 @@ class ListBestSellerBook extends Component {
               box-sizing: content-box;
             `}
           >
-            <a
+            <Link
               type="big"
-              href="/"
+              to="/"
               className="ThumbnailAnchor-big"
               css={css`
                 flex: none;
@@ -177,7 +169,7 @@ class ListBestSellerBook extends Component {
                   </div>
                 </div>
               </div>
-            </a>
+            </Link>
             <div
               className="BookMetaBox"
               css={css`
@@ -209,7 +201,7 @@ class ListBestSellerBook extends Component {
                   flex-direction: column;
                 `}
               >
-                <a href="/">
+                <Link to="/">
                   <div
                     className="BookTitle-BookMetaBase"
                     css={css`
@@ -229,7 +221,7 @@ class ListBestSellerBook extends Component {
                   >
                     {item.book_info.title}
                   </div>
-                </a>
+                </Link>
                 <span
                   className="AuthorWrapper"
                   css={css`
@@ -246,7 +238,7 @@ class ListBestSellerBook extends Component {
                     word-break: keep-all;
                   `}
                 >
-                  <a href="/">{item.book_info.publisher}</a>
+                  <Link to="/">{item.book_info.publisher}</Link>
                 </span>
                 <span>
                   <div role="img" className="RatingWrapper" css={ratingWrapper}>
@@ -257,16 +249,7 @@ class ListBestSellerBook extends Component {
                       <img src="image/grade_black_24dp.svg" alt="" css={starImage} />
                       <img src="image/grade_black_24dp.svg" alt="" css={starImage} />
                     </div>
-                    <span
-                      css={css`
-                        height: 10px;
-                        font-size: 11px;
-                        line-height: 1.09;
-                        color: #999999;
-                      `}
-                    >
-                      9
-                    </span>
+                    <span css={ratingNumber}>9</span>
                   </div>
                 </span>
               </div>
@@ -288,8 +271,8 @@ class ListCogBookRecommendBook extends Component {
       <React.Fragment>
         {this.props.serverlist.map((item) => (
           <li className="BookWrapper" key={item._id} css={bookWrapper}>
-            <a
-              href="/"
+            <Link
+              to="/"
               className="StyledAnchor"
               css={css`
                 display: inline-block;
@@ -310,20 +293,8 @@ class ListCogBookRecommendBook extends Component {
                   </div>
                 </div>
               </div>
-            </a>
-            <p
-              className="RecommendationText"
-              css={css`
-                padding-left: 0;
-                position: relative;
-                margin-top: 10px;
-                line-height: 18px;
-                text-align: start;
-                font-weight: bold;
-                font-size: 13px;
-                width: 140px;
-              `}
-            >
+            </Link>
+            <p className="RecommendationText" css={recommendationText}>
               {item.book_info.title}
             </p>
           </li>
@@ -355,9 +326,9 @@ class ListPopularBook extends Component {
               box-sizing: content-box;
             `}
           >
-            <a
+            <Link
               type="small"
-              href="/"
+              to="/"
               className="ThumbnailAnchor-small"
               css={css`
                 flex: none;
@@ -376,7 +347,7 @@ class ListPopularBook extends Component {
                   `}
                 />
               </div>
-            </a>
+            </Link>
             <div
               className="BookMetaBox"
               css={css`
@@ -408,7 +379,7 @@ class ListPopularBook extends Component {
                   flex-direction: column;
                 `}
               >
-                <a href="/">
+                <Link to="/">
                   <div
                     className="BookTitle-BookMetaBase"
                     css={css`
@@ -428,7 +399,7 @@ class ListPopularBook extends Component {
                   >
                     {item.book_info.title}
                   </div>
-                </a>
+                </Link>
                 <span
                   className="AuthorWrapper"
                   css={css`
@@ -445,7 +416,7 @@ class ListPopularBook extends Component {
                     word-break: keep-all;
                   `}
                 >
-                  <a href="/">{item.book_info.publisher}</a>
+                  <Link to="/">{item.book_info.publisher}</Link>
                 </span>
               </div>
             </div>
@@ -456,50 +427,73 @@ class ListPopularBook extends Component {
   }
 }
 
+class ListRecommendedBookContent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  move = (e) => {
+    console.log("clicked");
+    console.log(this.props.book_id);
+    sessionStorage.setItem("book_id", this.props.book_id);
+  };
+
+  render() {
+    return (
+      <React.Fragment>
+        <li className="BookWrapper" css={bookWrapper}>
+          <Link
+            to="/detail-book"
+            className="StyledAnchor"
+            onClick={this.move}
+            css={css`
+              display: inline-block;
+            `}
+          >
+            <div className="StyledThumbnailWrapper" css={styledThumbnailWrapper}>
+              <div className="ThumbnailWrapper" css={thumbnailWrapper}>
+                <img className="StyledThumbnailImage" src={this.props.url_small} sizes="(max-wideth: 999px) 100px, 140px" alt={this.props.title} css={styledThumbnailImage} />
+                <div className="DiscountWrapper" css={discountWrapper}>
+                  <div className="DiscountSticker" css={discountSticker}>
+                    <span className="DiscountNumber" css={discountNumber}>
+                      10
+                    </span>
+                    <span className="DiscountPercentage" css={discountPercentage}>
+                      %
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Link>
+          <div className="BookInfoContainer" css={bookInfoContainer}>
+            <Link to="/">
+              <div className="BookTitleBelowThumbanil" css={bookTitleBelowThumbanil} style={{ color: "white" }}>
+                {this.props.title}
+              </div>
+            </Link>
+            <span className="BookAuthorBelowThumbnail" css={bookAuthorBelowThumbnail} style={{ color: "white" }}>
+              <Link to="/">{this.props.author}</Link>
+            </span>
+          </div>
+        </li>
+      </React.Fragment>
+    );
+  }
+}
+
 class ListRecommendedBook extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
+
   render() {
     return (
       <React.Fragment>
         {this.props.serverlist.map((item) => (
-          <li className="BookWrapper" key={item._id} css={bookWrapper}>
-            <a
-              href="/"
-              className="StyledAnchor"
-              css={css`
-                display: inline-block;
-              `}
-            >
-              <div className="StyledThumbnailWrapper" css={styledThumbnailWrapper}>
-                <div className="ThumbnailWrapper" css={thumbnailWrapper}>
-                  <img className="StyledThumbnailImage" src={item.book_info.bookcover.url_small} sizes="(max-wideth: 999px) 100px, 140px" alt={item.book_info.title} css={styledThumbnailImage} />
-                  <div className="DiscountWrapper" css={discountWrapper}>
-                    <div className="DiscountSticker" css={discountSticker}>
-                      <span className="DiscountNumber" css={discountNumber}>
-                        10
-                      </span>
-                      <span className="DiscountPercentage" css={discountPercentage}>
-                        %
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </a>
-            <div className="BookInfoContainer" css={bookInfoContainer}>
-              <a href="/">
-                <div className="BookTitleBelowThumbanil" css={bookTitleBelowThumbanil} style={{ color: "white" }}>
-                  {item.book_info.title}
-                </div>
-              </a>
-              <span className="BookAuthorBelowThumbnail" css={bookAuthorBelowThumbnail} style={{ color: "white" }}>
-                <a href="/">{item.book_info.author}</a>
-              </span>
-            </div>
-          </li>
+          <ListRecommendedBookContent key={item._id} book_id={item._id} title={item.book_info.title} author={item.book_info.author} url_small={item.book_info.bookcover.url_small} />
         ))}
       </React.Fragment>
     );
@@ -512,13 +506,8 @@ class ReactRidi extends Component {
     this.state = {
       sell_book_list: [],
       search: "",
-      isCategoryVisible: false,
     };
   }
-
-  showCategory = () => {
-    this.setState({ isCategoryVisible: !this.state.isCategoryVisible });
-  };
 
   componentDidMount() {
     axios.get("/api/bookstore/get-sellbooklist").then((res) => {
@@ -545,652 +534,11 @@ class ReactRidi extends Component {
 
     return (
       <>
-        <TocSider visible={this.state.isCategoryVisible} />
-        <Global
-          styles={css`
-            * {
-              margin: 0;
-              padding: 0;
-              box-sizing: border-box;
-              font-family: Arial, Helvetica, sans-serif;
-              /* outline: 1px black solid; */
-            }
-
-            button {
-              cursor: pointer;
-              user-select: none;
-              color: inherit;
-              letter-spacing: inherit;
-              font-family: inherit;
-              appearance: none;
-              background: none;
-              box-shadow: none;
-              border: 0px;
-              margin: 0px;
-              padding: 0px;
-            }
-
-            button * {
-              position: relative;
-              top: 0px;
-              left: 0px;
-            }
-
-            ul,
-            ol {
-              list-style-type: none;
-              margin: 0px;
-              padding: 0px;
-            }
-
-            li {
-              line-height: initial;
-            }
-            h1,
-            h2,
-            h3,
-            h4,
-            button,
-            input,
-            p,
-            span {
-              letter-spacing: -0.03em;
-            }
-            a {
-              color: inherit;
-              letter-spacing: inherit;
-              font-family: inherit;
-              cursor: pointer;
-            }
-            a:link,
-            a:visited {
-              text-decoration: none;
-            }
-
-            .ButtonWrapper li + li {
-              margin-left: 6px;
-            }
-
-            .ThumbnailWrapper::after {
-              display: block;
-              box-sizing: border-box;
-              position: absolute;
-              top: 0;
-              left: 0;
-              width: 100%;
-              height: 100%;
-              background: linear-gradient(to right, rgba(0, 0, 0, 0.2) 0, rgba(0, 0, 0, 0) 5%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0.2) 100%);
-              border: solid 1px rgba(0, 0, 0, 0.1);
-              content: "";
-            }
-
-            .BookCarouselList > li + li {
-              margin-left: 22px;
-            }
-          `}
-        />
-        <div
-          className="GNBWrapper"
-          css={css`
-            border-bottom: 1px solid #e6e8eb;
-          `}
-        >
-          <header
-            css={css`
-              background: #1f8ce6;
-              max-width: 100%;
-            `}
-          >
-            <div
-              className="gnbContainer"
-              css={css`
-                max-width: 1000px;
-                margin: 0 auto;
-                display: flex;
-                flex-direction: column;
-              `}
-            >
-              <div
-                className="navigation"
-                css={css`
-                  padding: 16px 16px 24px 20px;
-                `}
-              >
-                <div
-                  className="LogoSearchArea"
-                  css={css`
-                    display: flex;
-                    flex-direction: row;
-                  `}
-                >
-                  <ul
-                    className="LogoWrapper"
-                    css={css`
-                      min-height: 30px;
-                      display: flex;
-                      flex: none;
-                      margin-bottom: 0;
-                      margin-right: 20px;
-                    `}
-                  >
-                    <li
-                      className="LogoItem"
-                      css={css`
-                        display: flex;
-                        align-items: center;
-                        line-height: 0;
-                      `}
-                    >
-                      <a className="LogoItemLink" href="/">
-                        <img
-                          css={css`
-                            width: 119px;
-                            height: 36px;
-                          `}
-                          src="logo_white.png"
-                          alt="CogBook"
-                        />{" "}
-                      </a>
-                    </li>
-                  </ul>
-                  <form
-                    className="SearchWrapper"
-                    css={css`
-                      max-width: 340px;
-                      flex: 1;
-                    `}
-                  >
-                    <label
-                      className="SearchBoxWrapper"
-                      css={css`
-                        display: flex;
-                        align-items: center;
-                        border-radius: 3px;
-                        background-color: white;
-                      `}
-                    >
-                      <img
-                        src="round_search_black_18dp.png"
-                        alt="검색"
-                        css={css`
-                          width: 24px;
-                          height: 24px;
-                          margin: 0 4px 0 6px;
-                          opacity: 0.7;
-                          flex: none;
-                        `}
-                      />
-                      <input
-                        className="SearchBox"
-                        type="search"
-                        placeholder="제목, 저자, 출판사 검색"
-                        css={css`
-                          flex: 1;
-                          height: 36px;
-                          background: none;
-                          appearance: none;
-                          box-shadow: none;
-                          border: none;
-                          font-size: 16px;
-                          outline: none;
-                        `}
-                      />
-                    </label>
-                  </form>
-                  <ul
-                    className="ButtonWrapper"
-                    css={css`
-                      flex: 1;
-                      margin-left: auto;
-                      display: flex;
-                      justify-content: flex-end;
-                      align-items: center;
-                    `}
-                  >
-                    <li>
-                      {/* <button
-                      css={css`
-                        height: 30px;
-                        color: white;
-                        background: #1f8ce6;
-                        padding: 0 16px;
-                        border: 1px solid #99d1ff;
-                      `}
-                    >
-                      회원가입
-                    </button> */}
-                      <AddSellBookModalForRidi />
-                    </li>
-                    <li>
-                      <button
-                        css={css`
-                          height: 30px;
-                          color: #1f8ce6;
-                          background: white;
-                          padding: 0 16px;
-                          border: 1px solid #99d1ff;
-                        `}
-                      >
-                        로그인
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              <ul
-                className="SubMainGNB"
-                css={css`
-                  display: flex;
-                  padding: 0 20px;
-                `}
-              >
-                <li
-                  className="SubMainGNB-Item-Wrapper"
-                  css={css`
-                    margin-right: 50px;
-                    display: flex;
-                    flex-direction: column;
-                    height: 37px;
-                    padding-bottom: 0px;
-                  `}
-                >
-                  <a
-                    href="/"
-                    className="StyledAnchor"
-                    css={css`
-                      height: 100%;
-                      margin: 0 auto;
-                      display: flex;
-                      justify-content: center;
-                      position: relative;
-                      padding: 0 5px 2px 4px;
-                    `}
-                  >
-                    <img
-                      src="home_white_24dp (1).svg"
-                      alt="홈"
-                      css={css`
-                        margin-right: 10px;
-                        width: 22px;
-                        height: 22px;
-                      `}
-                    />
-                    <span
-                      className="labelStyle"
-                      css={css`
-                        height: 16px;
-                        margin-left: 5px;
-                        text-align: center;
-                        font-size: 16px;
-                        color: white;
-                        font-weight: bold;
-                      `}
-                    >
-                      홈
-                    </span>
-                  </a>
-                  <div
-                    className="SubMainGNB_Selected"
-                    css={css`
-                      display: block;
-                      background: rgb(153, 209, 255);
-                      height: 5px;
-                      width: 100%;
-                      top: 1px;
-                    `}
-                  ></div>
-                </li>
-                <li
-                  className="SubMainGNB-Item-Wrapper"
-                  css={css`
-                    margin-right: 50px;
-                    display: flex;
-                    flex-direction: column;
-                    height: 37px;
-                    padding-bottom: 4px;
-                  `}
-                >
-                  <a
-                    href="/"
-                    className="StyledAnchor"
-                    css={css`
-                      height: 100%;
-                      margin: 0 auto;
-                      display: flex;
-                      justify-content: center;
-                      position: relative;
-                      padding: 0 5px 2px 4px;
-                    `}
-                  >
-                    <img
-                      src="notifications_white_24dp.svg"
-                      alt="홈"
-                      css={css`
-                        margin-right: 10px;
-                        width: 22px;
-                        height: 22px;
-                      `}
-                    />
-                    <span
-                      className="labelStyle"
-                      css={css`
-                        height: 16px;
-                        margin-left: 5px;
-                        text-align: center;
-                        font-size: 16px;
-                        color: white;
-                        font-weight: bold;
-                      `}
-                    >
-                      알림
-                    </span>
-                  </a>
-                  <div
-                    className="SubMainGNB_Selected"
-                    css={css`
-                      display: block;
-                      background: transparent;
-                      height: 5px;
-                      width: 100%;
-                      top: 1px;
-                    `}
-                  ></div>
-                </li>
-                <li
-                  className="SubMainGNB-Item-Wrapper"
-                  css={css`
-                    margin-right: 50px;
-                    display: flex;
-                    flex-direction: column;
-                    height: 37px;
-                    padding-bottom: 4px;
-                  `}
-                >
-                  <a
-                    href="/"
-                    className="StyledAnchor"
-                    css={css`
-                      height: 100%;
-                      margin: 0 auto;
-                      display: flex;
-                      justify-content: center;
-                      position: relative;
-                      padding: 0 5px 2px 4px;
-                    `}
-                  >
-                    <img
-                      src="shopping_cart_white_24dp.svg"
-                      alt="홈"
-                      css={css`
-                        margin-right: 10px;
-                        width: 22px;
-                        height: 22px;
-                      `}
-                    />
-                    <span
-                      className="labelStyle"
-                      css={css`
-                        height: 16px;
-                        margin-left: 5px;
-                        text-align: center;
-                        font-size: 16px;
-                        color: white;
-                        font-weight: bold;
-                      `}
-                    >
-                      카트
-                    </span>
-                  </a>
-                  <div
-                    className="SubMainGNB_Selected"
-                    css={css`
-                      display: block;
-                      background: transparent;
-                      height: 5px;
-                      width: 100%;
-                      top: 1px;
-                    `}
-                  ></div>
-                </li>
-                <li
-                  className="SubMainGNB-Item-Wrapper"
-                  css={css`
-                    margin-right: 50px;
-                    display: flex;
-                    flex-direction: column;
-                    height: 37px;
-                    padding-bottom: 4px;
-                  `}
-                >
-                  <a
-                    href="/"
-                    className="StyledAnchor"
-                    css={css`
-                      height: 100%;
-                      margin: 0 auto;
-                      display: flex;
-                      justify-content: center;
-                      position: relative;
-                      padding: 0 5px 2px 4px;
-                    `}
-                  >
-                    <img
-                      src="person_outline_white_24dp.svg"
-                      alt="홈"
-                      css={css`
-                        margin-right: 10px;
-                        width: 22px;
-                        height: 22px;
-                      `}
-                    />
-                    <span
-                      className="labelStyle"
-                      css={css`
-                        height: 16px;
-                        margin-left: 5px;
-                        text-align: center;
-                        font-size: 16px;
-                        color: white;
-                        font-weight: bold;
-                      `}
-                    >
-                      마이콕북
-                    </span>
-                  </a>
-                  <div
-                    className="SubMainGNB_Selected"
-                    css={css`
-                      display: block;
-                      background: transparent;
-                      height: 5px;
-                      width: 100%;
-                      top: 1px;
-                    `}
-                  ></div>
-                </li>
-              </ul>
-            </div>
-          </header>
-          <div
-            className="Categorytop"
-            css={css`
-              max-width: 1000px;
-              margin: 0 auto;
-            `}
-          >
-            <ul
-              className="CategoryTopWrapper"
-              css={css`
-                display: flex;
-                flex-direction: row;
-                height: 48px;
-                align-items: center;
-              `}
-            >
-              <li
-                className="CategoryTopItemWrapper"
-                css={css`
-                  height: 100%;
-                  color: #404740;
-                  cursor: pinter;
-                `}
-              >
-                <span
-                  css={css`
-                    display: flex;
-                    padding: 0 20px;
-                    align-items: center;
-                    font-weight: bolder;
-                    line-height: 48px;
-                    height: 100%;
-                    width: 100%;
-                    cursor: pointer;
-                  `}
-                  onClick={this.showCategory}
-                >
-                  <img
-                    src="category_black_24dp.svg"
-                    alt="카테고리"
-                    css={css`
-                      width: 22px;
-                      height: 22px;
-                      opacity: 0.7;
-                    `}
-                  />
-                </span>
-              </li>
-              <li
-                className="CategoryTopItemWrapper"
-                css={css`
-                  height: 100%;
-                  margin-right: 10px;
-                  text-align: center;
-                  color: #404740;
-                  cursor: pointer;
-                `}
-              >
-                <a
-                  href="/"
-                  css={css`
-                    display: inline-block;
-                    padding: 0 22px;
-                    font-size: 16px;
-                    font-weight: bolder;
-                    line-height: 48px;
-                    height: 100%;
-                    width: 100%;
-                  `}
-                >
-                  <span>일반</span>
-                </a>
-              </li>
-              <li
-                className="CategoryTopItemWrapper"
-                css={css`
-                  height: 100%;
-                  margin-right: 10px;
-                  text-align: center;
-                  color: #404740;
-                  cursor: pinter;
-                `}
-              >
-                <a
-                  href="/"
-                  css={css`
-                    display: inline-block;
-                    padding: 0 22px;
-                    font-size: 16px;
-                    font-weight: bolder;
-                    line-height: 48px;
-                    height: 100%;
-                    width: 100%;
-                  `}
-                >
-                  <span>로맨스</span>
-                </a>
-              </li>
-              <li
-                className="CategoryTopItemWrapper"
-                css={css`
-                  height: 100%;
-                  margin-right: 10px;
-                  text-align: center;
-                  color: #404740;
-                  cursor: pinter;
-                `}
-              >
-                <a
-                  href="/"
-                  css={css`
-                    display: inline-block;
-                    padding: 0 22px;
-                    font-size: 16px;
-                    font-weight: bolder;
-                    line-height: 48px;
-                    height: 100%;
-                    width: 100%;
-                  `}
-                >
-                  <span>판타지</span>
-                </a>
-              </li>
-              <li
-                className="CategoryTopItemWrapper"
-                css={css`
-                  height: 100%;
-                  margin-right: 10px;
-                  text-align: center;
-                  color: #404740;
-                  cursor: pinter;
-                `}
-              >
-                <a
-                  href="/"
-                  css={css`
-                    display: inline-block;
-                    padding: 0 22px;
-                    font-size: 16px;
-                    font-weight: bolder;
-                    line-height: 48px;
-                    height: 100%;
-                    width: 100%;
-                  `}
-                >
-                  <span>만화</span>
-                </a>
-              </li>
-              <li
-                className="CategoryTopItemWrapper"
-                css={css`
-                  height: 100%;
-                  margin-right: 10px;
-                  text-align: center;
-                  color: #404740;
-                  cursor: pinter;
-                `}
-              >
-                <a
-                  href="/"
-                  css={css`
-                    display: inline-block;
-                    padding: 0 22px;
-                    font-size: 16px;
-                    font-weight: bolder;
-                    line-height: 48px;
-                    height: 100%;
-                    width: 100%;
-                  `}
-                >
-                  <span>BL</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
+        <GlobalStyle />
+        <RidiGnbArea />
         <div
           css={css`
-            margin-bottom: 20px;
+            margin-top: 20px;
           `}
         ></div>
         <main
@@ -1241,8 +589,8 @@ class ReactRidi extends Component {
                     margin: 0 5px;
                   `}
                 >
-                  <a
-                    href="/"
+                  <Link
+                    to="/"
                     tabindex="-1"
                     className="BannerImageLink"
                     css={css`
@@ -1263,7 +611,7 @@ class ReactRidi extends Component {
                         object-position: 0 0;
                       `}
                     />
-                  </a>
+                  </Link>
                 </li>
                 <li
                   className="CarouselItemContainer-Center"
@@ -1278,8 +626,8 @@ class ReactRidi extends Component {
                     margin: 0 5px;
                   `}
                 >
-                  <a
-                    href="/"
+                  <Link
+                    to="/"
                     tabindex="0"
                     className="BannerImageLink"
                     css={css`
@@ -1300,7 +648,7 @@ class ReactRidi extends Component {
                         object-position: 0 0;
                       `}
                     />
-                  </a>
+                  </Link>
                 </li>
                 <li
                   className="CarouselItemContainer"
@@ -1315,8 +663,8 @@ class ReactRidi extends Component {
                     margin: 0 5px;
                   `}
                 >
-                  <a
-                    href="/"
+                  <Link
+                    to="/"
                     tabindex="-1"
                     className="BannerImageLink"
                     css={css`
@@ -1337,7 +685,7 @@ class ReactRidi extends Component {
                         object-position: 0 0;
                       `}
                     />
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -1556,9 +904,9 @@ class ReactRidi extends Component {
                   display: inline-block;
                 `}
               >
-                <a
+                <Link
                   className="MenuItemAnchor"
-                  href="/"
+                  to="/"
                   css={css`
                     display: flex;
                     flex-direction: column;
@@ -1611,7 +959,7 @@ class ReactRidi extends Component {
                   >
                     신간
                   </span>
-                </a>
+                </Link>
               </li>
               <li
                 className="MenuItem"
@@ -1621,9 +969,9 @@ class ReactRidi extends Component {
                   display: inline-block;
                 `}
               >
-                <a
+                <Link
                   className="MenuItemAnchor"
-                  href="/"
+                  to="/"
                   css={css`
                     display: flex;
                     flex-direction: column;
@@ -1677,7 +1025,7 @@ class ReactRidi extends Component {
                   >
                     이벤트
                   </span>
-                </a>
+                </Link>
               </li>
               <li
                 className="MenuItem"
@@ -1687,9 +1035,9 @@ class ReactRidi extends Component {
                   display: inline-block;
                 `}
               >
-                <a
+                <Link
                   className="MenuItemAnchor"
-                  href="/"
+                  to="/"
                   css={css`
                     display: flex;
                     flex-direction: column;
@@ -1743,7 +1091,7 @@ class ReactRidi extends Component {
                   >
                     베스트셀러
                   </span>
-                </a>
+                </Link>
               </li>
               <li
                 className="MenuItem"
@@ -1753,9 +1101,9 @@ class ReactRidi extends Component {
                   display: inline-block;
                 `}
               >
-                <a
+                <Link
                   className="MenuItemAnchor"
-                  href="/"
+                  to="/"
                   css={css`
                     display: flex;
                     flex-direction: column;
@@ -1809,7 +1157,7 @@ class ReactRidi extends Component {
                   >
                     대여관
                   </span>
-                </a>
+                </Link>
               </li>
               <li
                 className="MenuItem"
@@ -1819,9 +1167,9 @@ class ReactRidi extends Component {
                   display: inline-block;
                 `}
               >
-                <a
+                <Link
                   className="MenuItemAnchor"
-                  href="/"
+                  to="/"
                   css={css`
                     display: flex;
                     flex-direction: column;
@@ -1875,7 +1223,7 @@ class ReactRidi extends Component {
                   >
                     인기세트
                   </span>
-                </a>
+                </Link>
               </li>
               <li
                 className="MenuItem"
@@ -1885,9 +1233,9 @@ class ReactRidi extends Component {
                   display: inline-block;
                 `}
               >
-                <a
+                <Link
                   className="MenuItemAnchor"
-                  href="/"
+                  to="/"
                   css={css`
                     display: flex;
                     flex-direction: column;
@@ -1941,7 +1289,7 @@ class ReactRidi extends Component {
                   >
                     신간 캘린더
                   </span>
-                </a>
+                </Link>
               </li>
               <li
                 className="MenuItem"
@@ -1951,9 +1299,9 @@ class ReactRidi extends Component {
                   display: inline-block;
                 `}
               >
-                <a
+                <Link
                   className="MenuItemAnchor"
-                  href="/"
+                  to="/"
                   css={css`
                     display: flex;
                     flex-direction: column;
@@ -2007,7 +1355,7 @@ class ReactRidi extends Component {
                   >
                     혜택
                   </span>
-                </a>
+                </Link>
               </li>
               <li
                 className="MenuItem"
@@ -2017,9 +1365,9 @@ class ReactRidi extends Component {
                   display: inline-block;
                 `}
               >
-                <a
+                <Link
                   className="MenuItemAnchor"
-                  href="/"
+                  to="/"
                   css={css`
                     display: flex;
                     flex-direction: column;
@@ -2073,7 +1421,7 @@ class ReactRidi extends Component {
                   >
                     위클리 쿠폰
                   </span>
-                </a>
+                </Link>
               </li>
               <li
                 className="MenuItem"
@@ -2083,9 +1431,9 @@ class ReactRidi extends Component {
                   display: inline-block;
                 `}
               >
-                <a
+                <Link
                   className="MenuItemAnchor"
-                  href="/"
+                  to="/"
                   css={css`
                     display: flex;
                     flex-direction: column;
@@ -2139,7 +1487,7 @@ class ReactRidi extends Component {
                   >
                     콕북 스터디
                   </span>
-                </a>
+                </Link>
               </li>
             </ul>
           </section>
@@ -2367,8 +1715,8 @@ class ReactRidi extends Component {
                 word-break: keep-all;
               `}
             >
-              <a
-                href="/"
+              <Link
+                to="/"
                 className="LingWrapper"
                 css={css`
                   display: flex;
@@ -2387,7 +1735,7 @@ class ReactRidi extends Component {
                     margin-left: 8px;
                   `}
                 />
-              </a>
+              </Link>
             </h2>
             <div
               className="BooklistControllerContainer"
@@ -2652,4 +2000,22 @@ const starContainer = css`
 const starImage = css`
   width: 10px;
   height: 10px;
+`;
+
+const ratingNumber = css`
+  height: 10px;
+  font-size: 11px;
+  line-height: 1.09;
+  color: #61ac00;
+`;
+
+const recommendationText = css`
+  padding-left: 0;
+  position: relative;
+  margin-top: 10px;
+  line-height: 18px;
+  text-align: start;
+  font-weight: bold;
+  font-size: 13px;
+  width: 140px;
 `;
