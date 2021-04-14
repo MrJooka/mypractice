@@ -9,7 +9,7 @@ export const GlobalStyle = () => (
         padding: 0;
         box-sizing: border-box;
         font-family: Arial, Helvetica, sans-serif;
-        outline: 1px black solid;
+        /* outline: 1px black solid; */
       }
 
       button {
