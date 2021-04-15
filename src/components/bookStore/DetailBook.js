@@ -10,6 +10,84 @@ import styled from "@emotion/styled";
 import { Rate } from "antd";
 import { Link } from "react-router-dom";
 
+const bookDetailPage = css`
+  display: flex;
+  width: 1015px;
+  margin: 0 auto;
+`;
+
+const bookDetailArea = css`
+  flex: 802.5;
+`;
+
+const bookDetailWrapper = css`
+  margin-left: 26px;
+  padding-right: 35px;
+`;
+
+const mainInfoWrapper = css`
+  display: flex;
+  padding-top: 30px;
+`;
+
+const bookcoverWrapper = css`
+  flex: 220;
+`;
+
+const bookcoverBox = css`
+  display: flex;
+  justify-content: start;
+`;
+
+const bookcoverDiv = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const previewButton = css`
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+  border-radius: 4px;
+  font-weight: 700;
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  line-height: 1em;
+  vertical-align: baseline;
+  transition: background 0.2s, color 0.2s;
+  background: #fff;
+  border: 1px solid #1f8ce6;
+  box-shadow: 0 1px 1px 0 rgb(31 140 230 / 30%);
+  font-size: 13px;
+  margin-top: 9px;
+  width: 130px;
+  padding: 12px 0;
+  color: #1f8ce6;
+`;
+
+const mainInfoData = css`
+  margin: 20px 0;
+`;
+
+const CategoryItems = styled.li`
+  display: inline;
+  margin-right: 10px;
+  font-size: 12px;
+  color: #333;
+  &::after {
+    content: ",";
+  }
+  &::before {
+    content: "  ";
+  }
+  &:last-child:after {
+    content: "";
+  }
+`;
+
 class DetailBook extends Component {
   constructor(props) {
     super(props);
@@ -87,6 +165,8 @@ class DetailBook extends Component {
   }
 
   render() {
+    console.log("DetailBook 컴포 랜더링됨");
+    // debugger;
     return (
       <div>
         <GlobalStyle />
@@ -95,7 +175,12 @@ class DetailBook extends Component {
         <div className="BookDetailPage" css={bookDetailPage}>
           <div className="BookDetailArea" css={bookDetailArea}>
             <div className="BookDetailWrapper" css={bookDetailWrapper}>
-              <div className="MainInfoArea">
+              <div
+                className="MainInfoArea"
+                css={css`
+                  padding-bottom: 40px;
+                `}
+              >
                 <div className="MainInfoWrapper" css={mainInfoWrapper}>
                   <div className="BookcoverWrapper" css={bookcoverWrapper}>
                     <div classNmae="BookcoverBox" css={bookcoverBox}>
@@ -442,7 +527,7 @@ class DetailBook extends Component {
                           `}
                         >
                           <Link
-                            to=""
+                            to="/order"
                             css={css`
                               letter-spacing: -0.03em;
                               -webkit-font-smoothing: antialiased;
@@ -747,15 +832,220 @@ class DetailBook extends Component {
                 </div>
               </div>
 
-              <div className="IntroBookArea" style={{}}>
-                책 소개 : {this.state.intro_book}
-                <br /> 펼쳐보기
+              <div
+                className="IntroBookArea"
+                css={css`
+                  padding-bottom: 70px;
+                `}
+              >
+                <div
+                  className="IntroBookTitle"
+                  css={css`
+                    margin-bottom: 15px;
+                    padding: 10px 0 8px 0;
+                    border-bottom: 2px solid #7d8e9e;
+                    font-size: 20px;
+                    color: #59667a;
+                    font-weight: 700;
+                    letter-spacing: -0.03em;
+                  `}
+                >
+                  책소개
+                </div>
+                <div className="IntroBookContent">
+                  <p
+                    className="IntroBookParagraph"
+                    css={css`
+                      line-height: 1.8em;
+                      font-size: 13px;
+                      color: #333;
+                      word-break: keep-all;
+                      word-wrap: break-word;
+                      text-align: justify;
+                    `}
+                  >
+                    {this.state.intro_book}
+                  </p>
+                </div>
+                <button
+                  className="ExpandView"
+                  css={css`
+                    display: block;
+                    float: right;
+                    background: 0 0;
+                    font-size: 13px;
+                    color: #4076b5;
+                    border: none;
+                  `}
+                >
+                  펼쳐보기
+                  <span
+                    css={css`
+                      margin-left: 5px;
+                    `}
+                  >
+                    <img
+                      src="image/arrow_circle_down_black_24dp.svg"
+                      alt=""
+                      css={css`
+                        width: 16px;
+                        top: 3px;
+                      `}
+                    />
+                  </span>
+                </button>
               </div>
 
-              <div style={{}}>저자소개 : {this.state.intro_author}</div>
+              <div
+                className="BookDetailBox IntroAuthorArea"
+                css={css`
+                  padding-bottom: 70px;
+                `}
+              >
+                <div
+                  className="BookDetailTitle IntroAuhorTitle"
+                  css={css`
+                    margin-bottom: 15px;
+                    padding: 10px 0 8px 0;
+                    border-bottom: 2px solid #7d8e9e;
+                    font-size: 20px;
+                    color: #59667a;
+                    font-weight: 700;
+                    letter-spacing: -0.03em;
+                  `}
+                >
+                  저자 소개
+                </div>
+                <div className="BookDetailContent IntroAuthorContent">
+                  <p
+                    className="BookDetailParagraph IntroAuthorParagraph"
+                    css={css`
+                      line-height: 1.8em;
+                      font-size: 13px;
+                      color: #333;
+                      word-break: keep-all;
+                      word-wrap: break-word;
+                      text-align: justify;
+                    `}
+                  >
+                    {this.state.intro_author}
+                  </p>
+                </div>
+                <button
+                  className="ExpandView"
+                  css={css`
+                    display: block;
+                    float: right;
+                    background: 0 0;
+                    font-size: 13px;
+                    color: #4076b5;
+                    border: none;
+                  `}
+                >
+                  펼쳐보기
+                  <span
+                    css={css`
+                      margin-left: 5px;
+                    `}
+                  >
+                    <img
+                      src="image/arrow_circle_down_black_24dp.svg"
+                      alt=""
+                      css={css`
+                        width: 16px;
+                        top: 3px;
+                      `}
+                    />
+                  </span>
+                </button>
+              </div>
 
-              <div>목차 : {this.state.indexes}</div>
-              <div>리뷰</div>
+              <div
+                className="BookDetailBox BookTOC-Area"
+                css={css`
+                  padding-bottom: 70px;
+                `}
+              >
+                <div
+                  className="BookDetailTitle BookTOC-Title"
+                  css={css`
+                    margin-bottom: 15px;
+                    padding: 10px 0 8px 0;
+                    border-bottom: 2px solid #7d8e9e;
+                    font-size: 20px;
+                    color: #59667a;
+                    font-weight: 700;
+                    letter-spacing: -0.03em;
+                  `}
+                >
+                  목차
+                </div>
+                <div className="BookDetailContent BookTOC-Content">
+                  <p
+                    className="BookDetailParagraph BookTOC-Paragraph"
+                    css={css`
+                      line-height: 1.8em;
+                      font-size: 13px;
+                      color: #333;
+                      word-break: keep-all;
+                      word-wrap: break-word;
+                      text-align: justify;
+                    `}
+                  >
+                    {this.state.indexes}
+                  </p>
+                </div>
+                <button
+                  className="ExpandView"
+                  css={css`
+                    display: block;
+                    float: right;
+                    background: 0 0;
+                    font-size: 13px;
+                    color: #4076b5;
+                    border: none;
+                  `}
+                >
+                  펼쳐보기
+                  <span
+                    css={css`
+                      margin-left: 5px;
+                    `}
+                  >
+                    <img
+                      src="image/arrow_circle_down_black_24dp.svg"
+                      alt=""
+                      css={css`
+                        width: 16px;
+                        top: 3px;
+                      `}
+                    />
+                  </span>
+                </button>
+              </div>
+
+              <div
+                className="BookDetailBox BookReviewArea"
+                css={css`
+                  padding-bottom: 70px;
+                `}
+              >
+                <div
+                  className="BookDetailTitle BookReviewTitle"
+                  css={css`
+                    margin-bottom: 15px;
+                    padding: 10px 0 8px 0;
+                    border-bottom: 2px solid #7d8e9e;
+                    font-size: 20px;
+                    color: #59667a;
+                    font-weight: 700;
+                    letter-spacing: -0.03em;
+                  `}
+                >
+                  리뷰
+                </div>
+                <div>리뷰내용</div>
+              </div>
             </div>
           </div>
           {/* 광고 AsideRight */}
@@ -764,7 +1054,6 @@ class DetailBook extends Component {
             className="AsideRightAd"
             css={css`
               border-left: 1px solid #e6e8eb;
-
               flex: 215;
             `}
           >
@@ -777,81 +1066,3 @@ class DetailBook extends Component {
 }
 
 export default DetailBook;
-
-const bookDetailPage = css`
-  display: flex;
-  width: 1015px;
-  margin: 0 auto;
-`;
-
-const bookDetailArea = css`
-  flex: 802.5;
-`;
-
-const bookDetailWrapper = css`
-  margin-left: 30px;
-  padding-right: 35px;
-`;
-
-const mainInfoWrapper = css`
-  display: flex;
-  padding-top: 30px;
-`;
-
-const bookcoverWrapper = css`
-  flex: 220;
-`;
-
-const bookcoverBox = css`
-  display: flex;
-  justify-content: start;
-`;
-
-const bookcoverDiv = css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const previewButton = css`
-  margin: 0;
-  padding: 0;
-  -webkit-tap-highlight-color: transparent;
-  box-sizing: border-box;
-  border-radius: 4px;
-  font-weight: 700;
-  display: inline-block;
-  text-align: center;
-  cursor: pointer;
-  line-height: 1em;
-  vertical-align: baseline;
-  transition: background 0.2s, color 0.2s;
-  background: #fff;
-  border: 1px solid #1f8ce6;
-  box-shadow: 0 1px 1px 0 rgb(31 140 230 / 30%);
-  font-size: 13px;
-  margin-top: 9px;
-  width: 130px;
-  padding: 12px 0;
-  color: #1f8ce6;
-`;
-
-const mainInfoData = css`
-  margin: 20px 0;
-`;
-
-const CategoryItems = styled.li`
-  display: inline;
-  margin-right: 10px;
-  font-size: 12px;
-  color: #333;
-  &::after {
-    content: ",";
-  }
-  &::before {
-    content: "  ";
-  }
-  &:last-child:after {
-    content: "";
-  }
-`;

@@ -5,6 +5,8 @@ import { Modal } from "antd";
 import axios from "axios";
 import Category from "../Category";
 
+// textarea태그로 변경해야함
+
 class AddSellBookModalForRidi extends Component {
   constructor(props) {
     super(props);
@@ -280,8 +282,9 @@ class AddSellBookModalForRidi extends Component {
           )}
           <label style={{ display: "block", marginTop: "15px" }}>
             책 소개
-            <input
-              type="text"
+            <textarea
+              cols="60"
+              rows="1"
               name="intro_book"
               value={this.state.intro_book}
               onChange={this.handleInputChange}

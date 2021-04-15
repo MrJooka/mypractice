@@ -17,6 +17,7 @@ import FinishStudy from "./components/studyResult/FinishStudy";
 import BookEditing from "./components/Write/BookEditing/BookEditing";
 import BookNaming from "./components/Write/BookEditing/BookNaming";
 import DetailBook from "./components/bookStore/DetailBook";
+import OrderPage from "./components/bookStore/OrderPage";
 import LinkCategory from "./components/bookStore/LinkCategory";
 
 class App extends Component {
@@ -46,6 +47,7 @@ class App extends Component {
             <Route exact path="/myinfo" component={MyInfoMain} />
             <Route exact path="/write" render={() => <WritingMain updatedLoginState={this.updatedLoginState} />} />
             <Route exact path="/store" component={BookStoreMain} />
+            <Route exact path="/order" component={OrderPage} />
             <Route exact path="/detail-book" component={DetailBook} />
             <Route exact path="/link-category" component={LinkCategory} />
             <Route exact path="/mentoring" component={MentoringMain} />

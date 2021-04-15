@@ -124,6 +124,7 @@ class ListBestSellerBook extends Component {
     this.state = {};
   }
   render() {
+    console.log("ListBestSellerBook 컴포 랜더링됨");
     return (
       <React.Fragment>
         {this.props.serverlist.map((item, i) => (
@@ -267,6 +268,7 @@ class ListCogBookRecommendBook extends Component {
     this.state = {};
   }
   render() {
+    console.log("ListcogBookRecommendBook 컴포 랜더링됨");
     return (
       <React.Fragment>
         {this.props.serverlist.map((item) => (
@@ -311,6 +313,7 @@ class ListPopularBook extends Component {
   }
 
   render() {
+    console.log("ListPopularBook 컴포 랜더링됨");
     return (
       <React.Fragment>
         {this.props.serverlist.map((item, i) => (
@@ -440,6 +443,7 @@ class ListRecommendedBookContent extends Component {
   };
 
   render() {
+    console.log("ListRecommendBookcontent 컴포 랜더링됨");
     return (
       <React.Fragment>
         <li className="BookWrapper" css={bookWrapper}>
@@ -490,6 +494,7 @@ class ListRecommendedBook extends Component {
   }
 
   render() {
+    console.log("ListRecommendedBook 컴포 랜더링됨");
     return (
       <React.Fragment>
         {this.props.serverlist.map((item) => (
@@ -507,12 +512,28 @@ class ReactRidi extends Component {
       sell_book_list: [],
       search: "",
     };
+    console.log("ReactRidi constructor 생명주기 매서드 실행됨");
   }
+
+  // componentDidMount에 서버에서 받은 데이터를 this.state로 넣는 이유는 해당 데이터를 자식 컴포넌트의 props전달해야하기 위해서다.
+  // 리액트에서는 처음 render메서드 실행후 된 컴포넌트 render()메서드 안에서 사용되는 state값이나 props값이 변경되었을 때 다시 render()메서드를 실행하여 화면을 그리는데
+  // 서버에서 데이터를 받는 시점은 render()메서드가 실행된 시점보다 늦을 가능성이 아주 크다.
+  // (컴퓨터내부에서 달리기하는게 빠를까? 부산에서 서울까지 왕복하는게 빠를까? 당연히 컴퓨터 내부에서 동작하는 게 빠르고 클라이언트와 서버간 통신이 더 느릴 수박에 없다.)
+  // (자바스크립트는 순차적으로 동작하지만 한개의 메서드가 끝날때까지 기다렸다 다음 메서드를 실행하지 않고 같이 진행한다)
+  // 그래서 render()메서드 안에서 서버에서 받은 데이터를 변수로 전달받을 경우, 변수가 undfined가 되어 오류를 일으킬 가능성이 크다.
+
+  // render()매서드가 실행된 시점보다 늦게 전송받은 서버 데이터를 다시 render()매서드에 안 어딘가에 전달하는 방법은 this.state값을 변경하여 전달하는 방법밖에 없다.
+  // 모든 component가 리액트 DOM에 마운트 (랜더링)된후인
+  // componentDidMount에 실행하여 this.setState로 this.state값을 변경한다면 변경된 state값에 따라 render()매서드가 재실행될 것이다.
+  // state값 변경으로 rendering이 재실행한다고 componentDidMount도 재실행되지는 않는다. 왜냐하면 한번 설계된 DOM구조는 변경되지 않기 때문이다. (단지 state, props값만 변경되는 것일뿐)
+
+  // 리액트홈페이지에서는 이 과정을 시계 표시 프로그래밍으로 설명하는데 랜더 -> 컴포넌트디드마운트 (함수 1초마다 반복실행{시작 셋스테이트:현재시간})->랜더링(재랜더링되었다고 디드마운트가 다시 실행되진 않는다.)->1초후 함수반복으로 인해 스테이트값변경 ->랜더링->1초..->랜더링 .... 무한반복
 
   componentDidMount() {
     axios.get("/api/bookstore/get-sellbooklist").then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       this.setState({ sell_book_list: res.data.sellbooklist });
+      console.log("ReactRidi componentDidMount 생명주기 매서드 실행됨");
     });
   }
 
@@ -531,6 +552,7 @@ class ReactRidi extends Component {
   render() {
     let nowHours = new Date().getHours();
     let nowMinutes = new Date().getMinutes();
+    console.log("ReactRidi render 생명주기 매서드 실행됨");
 
     return (
       <>
