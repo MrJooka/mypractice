@@ -30,7 +30,6 @@ class OrderPage extends Component {
       promotion_period_to: 0,
       original_book_id: "",
     };
-    this.changeMode = this.changeMode.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
@@ -56,22 +55,6 @@ class OrderPage extends Component {
         original_book_id: somebook._id,
       });
     });
-  }
-
-  categoryState = (value) => {
-    this.setState({
-      category: value,
-    });
-  };
-
-  hashTagState = (value) => {
-    this.setState({
-      hashtag: value,
-    });
-  };
-
-  changeMode() {
-    this.setState({ inModification: !this.state.inModification });
   }
 
   handleInputChange(event) {

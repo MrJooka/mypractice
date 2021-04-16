@@ -4,10 +4,12 @@ import React, { Component } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import RidiGnbArea from "./RidiGnbArea";
+import FavoriteCategory from "./FavoriteCategory";
 import { GlobalStyle } from "./GlobalStyle";
 
 class ListGoodForHomeStudy extends Component {
   constructor(props) {
+    console.log("ListGoodForHomeStudy constructor() 매서드 실행됨");
     super(props);
     this.state = {};
   }
@@ -70,6 +72,7 @@ class ListGoodForHomeStudy extends Component {
 
 class ListGoodForStudy extends Component {
   constructor(props) {
+    console.log("ListGoodForStudy constructor() 매서드 실행됨");
     super(props);
     this.state = {};
   }
@@ -120,11 +123,12 @@ class ListGoodForStudy extends Component {
 
 class ListBestSellerBook extends Component {
   constructor(props) {
+    console.log("ListBestSellerBook constructor() 매서드 실행됨");
     super(props);
     this.state = {};
   }
   render() {
-    console.log("ListBestSellerBook 컴포 랜더링됨");
+    console.log("ListBestSellerBook render() 매서드 실행됨");
     return (
       <React.Fragment>
         {this.props.serverlist.map((item, i) => (
@@ -264,11 +268,12 @@ class ListBestSellerBook extends Component {
 
 class ListCogBookRecommendBook extends Component {
   constructor(props) {
+    console.log("ListGoBookRecommedBook constructor() 매서드 실행됨");
     super(props);
     this.state = {};
   }
   render() {
-    console.log("ListcogBookRecommendBook 컴포 랜더링됨");
+    console.log("ListcogBookRecommendBook render() 매서드 실행됨");
     return (
       <React.Fragment>
         {this.props.serverlist.map((item) => (
@@ -308,12 +313,13 @@ class ListCogBookRecommendBook extends Component {
 
 class ListPopularBook extends Component {
   constructor(props) {
+    console.log("ListPopularBook constructor() 매서드 실행됨");
     super(props);
     this.state = {};
   }
 
   render() {
-    console.log("ListPopularBook 컴포 랜더링됨");
+    console.log("ListPopularBook render() 매서드 실행됨");
     return (
       <React.Fragment>
         {this.props.serverlist.map((item, i) => (
@@ -432,6 +438,7 @@ class ListPopularBook extends Component {
 
 class ListRecommendedBookContent extends Component {
   constructor(props) {
+    console.log("ListGoodRecommendedBookContent constructor() 매서드 실행됨");
     super(props);
     this.state = {};
   }
@@ -443,7 +450,7 @@ class ListRecommendedBookContent extends Component {
   };
 
   render() {
-    console.log("ListRecommendBookcontent 컴포 랜더링됨");
+    console.log("ListRecommendBookcontent render() 매서드 실행됨");
     return (
       <React.Fragment>
         <li className="BookWrapper" css={bookWrapper}>
@@ -489,12 +496,13 @@ class ListRecommendedBookContent extends Component {
 
 class ListRecommendedBook extends Component {
   constructor(props) {
+    console.log("ListRecommendedBook constructor() 매서드 실행됨");
     super(props);
     this.state = {};
   }
 
   render() {
-    console.log("ListRecommendedBook 컴포 랜더링됨");
+    console.log("ListRecommendedBook render() 매서드 실행됨");
     return (
       <React.Fragment>
         {this.props.serverlist.map((item) => (
@@ -507,12 +515,12 @@ class ListRecommendedBook extends Component {
 
 class ReactRidi extends Component {
   constructor(props) {
+    console.log("ReactRidi constructor() 매서드 실행됨");
     super(props);
     this.state = {
       sell_book_list: [],
       search: "",
     };
-    console.log("ReactRidi constructor 생명주기 매서드 실행됨");
   }
 
   // componentDidMount에 서버에서 받은 데이터를 this.state로 넣는 이유는 해당 데이터를 자식 컴포넌트의 props전달해야하기 위해서다.
@@ -530,10 +538,10 @@ class ReactRidi extends Component {
   // 리액트홈페이지에서는 이 과정을 시계 표시 프로그래밍으로 설명하는데 랜더 -> 컴포넌트디드마운트 (함수 1초마다 반복실행{시작 셋스테이트:현재시간})->랜더링(재랜더링되었다고 디드마운트가 다시 실행되진 않는다.)->1초후 함수반복으로 인해 스테이트값변경 ->랜더링->1초..->랜더링 .... 무한반복
 
   componentDidMount() {
+    console.log("ReactRidi componentDidMount 매서드 실행됨");
     axios.get("/api/bookstore/get-sellbooklist").then((res) => {
-      // console.log(res.data);
+      console.log(res.data);
       this.setState({ sell_book_list: res.data.sellbooklist });
-      console.log("ReactRidi componentDidMount 생명주기 매서드 실행됨");
     });
   }
 
@@ -552,12 +560,13 @@ class ReactRidi extends Component {
   render() {
     let nowHours = new Date().getHours();
     let nowMinutes = new Date().getMinutes();
-    console.log("ReactRidi render 생명주기 매서드 실행됨");
+    console.log("ReactRidi render  매서드 실행됨");
 
     return (
       <>
         <GlobalStyle />
         <RidiGnbArea />
+        <FavoriteCategory />
         <div
           css={css`
             margin-top: 20px;
