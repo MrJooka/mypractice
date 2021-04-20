@@ -33,51 +33,34 @@ class DetailBook extends Component {
       promotion_period_from: 0,
       promotion_period_to: 0,
       original_book_id: "",
+
+      book_id: "",
     };
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   componentDidMount() {
     axios.post("api/bookstore/get-book-info", { sellbook_id: sessionStorage.getItem("book_id") }).then((res) => {
-      console.log(res.data.sellbook.book_info.author);
-      // this.setState({
-      //   title: somebook.book_info.title,
-      //   category: somebook.book_info.category,
-      //   hashtag: somebook.book_info.hashtag,
-      //   author: somebook.book_info.author,
-      //   publisher: somebook.book_info.publisher,
-      //   bookcover_medium: somebook.book_info.bookcover.url_large,
-      //   intro_book: somebook.book_info.intro_book,
-      //   intro_author: somebook.book_info.intro_author,
-      //   indexes: somebook.book_info.indexes,
-      //   price: somebook.book_info.price,
-      //   // promotion_name: "",
-      //   // promotion_gap: "",
-      //   // promotion_price: 0,
-      //   // promotion_period_from: 0,
-      //   // promotion_period_to: 0,
-      //   original_book_id: somebook._id,
-    });
-
-    axios.post("api/bookstore/register-book-comment", { sellbook_id: sessionStorage.getItem("book_id"), content: "text" }).then((res) => {
       console.log(res.data);
-      // this.setState({
-      //   title: somebook.book_info.title,
-      //   category: somebook.book_info.category,
-      //   hashtag: somebook.book_info.hashtag,
-      //   author: somebook.book_info.author,
-      //   publisher: somebook.book_info.publisher,
-      //   bookcover_medium: somebook.book_info.bookcover.url_large,
-      //   intro_book: somebook.book_info.intro_book,
-      //   intro_author: somebook.book_info.intro_author,
-      //   indexes: somebook.book_info.indexes,
-      //   price: somebook.book_info.price,
-      //   // promotion_name: "",
-      //   // promotion_gap: "",
-      //   // promotion_price: 0,
-      //   // promotion_period_from: 0,
-      //   // promotion_period_to: 0,
-      //   original_book_id: somebook._id,
+      this.setState({
+        title: res.data.sellbook.book_info.title,
+        category: res.data.sellbook.book_info.category,
+        hashtag: res.data.sellbook.book_info.hashtag,
+        author: res.data.sellbook.book_info.author,
+        publisher: res.data.sellbook.book_info.publisher,
+        bookcover_medium: res.data.sellbook.book_info.bookcover.url_large,
+        intro_book: res.data.sellbook.book_info.intro_book,
+        intro_author: res.data.sellbook.book_info.intro_author,
+        indexes: res.data.sellbook.book_info.indexes,
+        price: res.data.sellbook.book_info.price,
+        // promotion_name: "",
+        // promotion_gap: "",
+        // promotion_price: 0,
+        // promotion_period_from: 0,
+        // promotion_period_to: 0,
+        original_book_id: res.data.sellbook._id,
+        book_id: res.data.sellbook._id,
+      });
     });
   }
 
@@ -108,7 +91,7 @@ class DetailBook extends Component {
   }
 
   render() {
-    console.log("DetailBook 컴포 랜더링됨");
+    console.log("DetailBook render() 메서드 실행됨");
     // debugger;
     return (
       <React.Fragment>
@@ -968,7 +951,7 @@ class DetailBook extends Component {
                 </button>
               </div>
 
-              <StarRating />
+              <StarRating book_id={this.state.book_id} />
             </div>
           </div>
           {/* 광고 AsideRight */}

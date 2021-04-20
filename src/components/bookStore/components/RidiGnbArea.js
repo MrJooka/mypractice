@@ -1,27 +1,18 @@
 /** @jsxImportSource @emotion/react */
 import { css, Global } from "@emotion/react";
 import React, { Component } from "react";
-import TocSider from "../TocSider";
 import { Link } from "react-router-dom";
 import AddSellBookModalForRidi from "./AddSellBookModalForRidi";
 
 class RidiGnbArea extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isCategoryVisible: false,
-    };
-    this.showCategory = this.showCategory.bind(this);
+    this.state = {};
   }
-
-  showCategory = () => {
-    this.setState({ isCategoryVisible: !this.state.isCategoryVisible });
-  };
 
   render() {
     return (
       <React.Fragment>
-        <TocSider visible={this.state.isCategoryVisible} />
         <div className="GNBWrapper">
           <header css={header}>
             <div className="GNBContainer" css={gnbContainer}>

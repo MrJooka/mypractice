@@ -133,6 +133,7 @@ class ListBestSellerBook extends Component {
       <React.Fragment>
         {this.props.serverlist.map((item, i) => (
           <li
+            key={item._id}
             type="big"
             className="RangkingBookItem"
             css={css`
