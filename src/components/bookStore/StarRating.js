@@ -32,20 +32,20 @@ class StarRating extends Component {
     event.preventDefault();
     const nowTime = new Date();
     // const register_comment = {
-    //   user_id: "Jooka",
-    //   book_id: sessionStorage.getItem("book_id"),
-    //   root_id: "1123",
-    //   parent_id: "",
-    //   level: 1,
-    //   isDeleted: "no",
-    //   time_created: nowTime,
-    //   rating: this.state.rating,
-    //   content: this.state.content,
+    //  user_id = "Jooka";
+    //  sellbook_id = sessionStorage.getItem("book_id");
+    //  root_id = "";
+    //  parent_id = "";
+    //  level = 1;
+    //  isDeleted = "no";
+    //  time_created = nowTime;
+    //  rating = this.state.rating;
+    //  content = this.state.content;
     // };
 
     const user_id = "Jooka";
     const sellbook_id = sessionStorage.getItem("book_id");
-    const root_id = "1123";
+    const root_id = "";
     const parent_id = "";
     const level = 1;
     const isDeleted = "no";
@@ -213,22 +213,18 @@ class ReviewList2 extends Component {
 
   sendCommentToServer = (event) => {
     // event.preventDefault();
-    const nowTime = new Date();
-    console.log(event.target.info.root_id);
+    // const nowTime = new Date();
+    console.log(typeof event.target.getAttribute("level"));
+    console.log(event.target.getAttribute("id"));
+    console.log(event.target.getAttribute("book_id"));
+    console.log(event.target.attributes.level);
+    console.log(event.target.attributes["id"]);
+    console.log(event.target.attributes["book_id"]);
+    // 이벤트.타켓은 자바스크립트에서 제공하는 것만 사용가능. 태그 안에 프로퍼티 넣어봤자 이벤트 타겟으로 못불러옴.
+    // 콤포넌트 만들어서 props로 전달해야할 것 같음.
+    // const register_comment = {
 
-    const register_comment = {
-      _id: "",
-      user_id: "Jooka",
-      book_id: sessionStorage.getItem("book_id"),
-      root_id: this.state.root_id,
-      parent_id: this.state.parent_id,
-      level: 0,
-      isDeleted: "no",
-      time_created: String(nowTime),
-      rating: null,
-      content: this.state.content,
-    };
-    console.log(register_comment);
+    // };
 
     // axios.post("api/bookstore/register-book-comment", { sellbook_id: sessionStorage.getItem("book_id"), content: { register_comment } }).then((res) => {
     //   console.log(res.data);
@@ -305,16 +301,7 @@ class ReviewList2 extends Component {
                 <div>
                   <label>
                     <textarea type="textarea" rows={1} cols={40} onChange={this.changeReply} placeholder="이곳에 댓글을 남겨주세요."></textarea>
-                    <button
-                      info={{
-                        id: child._id,
-                        book_id: child.book_id,
-                        root_id: child.root_id,
-                        level: child.level,
-                        isDeleted: child.isDeleted,
-                      }}
-                      onClick={this.sendCommentToServer.bind(this)}
-                    >
+                    <button id={child._id} book_id={child.book_id} root_id={child.root_id} level={child.level} isDeleted={child.isDeleted} onClick={this.sendCommentToServer.bind(this)}>
                       댓글올리기
                     </button>
                   </label>
