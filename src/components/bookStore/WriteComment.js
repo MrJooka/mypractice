@@ -61,7 +61,7 @@ class WriteComment extends Component {
               display: block;
             `}
             value={this.state.content}
-            onChange={this.changeReply.bind(this)}
+            onChange={this.changeReply}
           />
 
           <button

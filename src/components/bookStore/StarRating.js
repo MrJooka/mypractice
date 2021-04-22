@@ -9,18 +9,8 @@ class StarRating extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      _id: "",
-      user_id: "",
-      book_id: "",
-      root_id: "",
-      parent_id: "",
-      level: 0,
-      isDeleted: "no",
-      time_created: null,
       rating: 0,
       content: "",
-
-      book_comment: [],
     };
   }
 
@@ -34,6 +24,17 @@ class StarRating extends Component {
   sendCommentToServer = (event) => {
     event.preventDefault();
     const nowTime = new Date();
+
+    const user_id = "Jooka";
+    const sellbook_id = sessionStorage.getItem("book_id");
+    const root_id = null;
+    const parent_id = null;
+    const level = 1;
+    const isDeleted = "no";
+    const time_created = nowTime;
+    const rating = this.state.rating;
+    const content = this.state.content;
+
     // const register_comment = {
     //   user_id: "Jooka",
     //   sellbook_id: sessionStorage.getItem("book_id"),
@@ -45,16 +46,6 @@ class StarRating extends Component {
     //   rating: this.state.rating,
     //   content: this.state.content,
     // };
-
-    const user_id = "Jooka";
-    const sellbook_id = sessionStorage.getItem("book_id");
-    const root_id = null;
-    const parent_id = null;
-    const level = 1;
-    const isDeleted = "no";
-    const time_created = nowTime;
-    const rating = this.state.rating;
-    const content = this.state.content;
 
     // 서버에 파일 보낼 때 { register_comment }으로 보내면 { register_comment { .... }}형식으로 전송됨, 두번째로 보내는게 맞음.
     // POST /api/bookstore/get-book-info 200 73.048 ms - 12259
@@ -77,7 +68,6 @@ class StarRating extends Component {
     axios
       .post("api/bookstore/register-book-comment", { user_id, sellbook_id, root_id, parent_id, level, isDeleted, time_created, rating, content })
       .then((res) => {
-        console.log("첫번째 댓글 보내고 받은 파일", res.data.book_comment);
         this.props.updateStateBookComment(res.data.book_comment);
       });
   };
@@ -90,7 +80,6 @@ class StarRating extends Component {
   };
 
   render() {
-    // console.log(this.props.book_comment);
     return (
       <div
         className="BookDetailBox BookReviewArea"
@@ -199,7 +188,7 @@ class StarRating extends Component {
                       padding: 8px 18px;
                       opacity: 0.5;
                     `}
-                    onClick={this.sendCommentToServer.bind(this)}
+                    onClick={this.sendCommentToServer}
                   >
                     리뷰 남기기
                   </button>
@@ -222,13 +211,13 @@ class ReviewList2 extends Component {
     super(props);
     this.state = {
       content: "",
-      book_comment: [],
       child_commmet_show_id: "",
       child_comment_visible: false,
     };
   }
 
   sendCommentToServer = (event) => {
+    event.preventDefault();
     const nowTime = new Date();
 
     const user_id = "Jooka";
@@ -238,23 +227,16 @@ class ReviewList2 extends Component {
     const level = 1 + Number(event.target.dataset.level);
     const isDeleted = "no";
     const time_created = nowTime;
-    const rating = 0;
+    const rating = null;
     const content = this.state.content;
 
     axios
       .post("api/bookstore/register-book-comment", { user_id, sellbook_id, root_id, parent_id, level, isDeleted, time_created, rating, content })
       .then((res) => {
-        console.log("두번째 댓글 보내고 받은 파일", res.data);
-        this.updateBookComment(res.data.book_comment);
-        console.log(this.state.book_comment, "ReviewList2 서버에서 res받아서 스테이트에 등록잘됐는지 확인용");
+        this.props.updateStateBookComment(res.data.book_comment);
       });
   };
 
-  updateBookComment(data) {
-    this.setState({ book_comment: data }, () => {
-      console.log(this.state.book_comment);
-    });
-  }
   changeReply = (e) => {
     e.preventDefault();
     this.setState({
@@ -333,7 +315,7 @@ class ReviewList2 extends Component {
                       data-root_id={child.root_id}
                       data-level={child.level}
                       data-isdeleted={child.isDeleted}
-                      onClick={this.sendCommentToServer.bind(this)}
+                      onClick={this.sendCommentToServer}
                     >
                       댓글올리기
                     </button>
