@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import { Rate } from "antd";
 import ShowButton from "./ShowButton";
 import axios from "axios";
+import WriteComment from "./WriteComment";
 
 class StarRating extends Component {
   constructor(props) {
@@ -19,8 +20,11 @@ class StarRating extends Component {
       time_created: null,
       rating: 0,
       content: "",
+
+      book_comment: [],
     };
   }
+
   handleChange = (value) => {
     console.log(value);
     this.setState({ rating: value });
@@ -32,32 +36,48 @@ class StarRating extends Component {
     event.preventDefault();
     const nowTime = new Date();
     // const register_comment = {
-    //  user_id = "Jooka";
-    //  sellbook_id = sessionStorage.getItem("book_id");
-    //  root_id = "";
-    //  parent_id = "";
-    //  level = 1;
-    //  isDeleted = "no";
-    //  time_created = nowTime;
-    //  rating = this.state.rating;
-    //  content = this.state.content;
+    //   user_id: "Jooka",
+    //   sellbook_id: sessionStorage.getItem("book_id"),
+    //   root_id: "",
+    //   parent_id: "",
+    //   level: 1,
+    //   isDeleted: "no",
+    //   time_created: nowTime,
+    //   rating: this.state.rating,
+    //   content: this.state.content,
     // };
 
     const user_id = "Jooka";
     const sellbook_id = sessionStorage.getItem("book_id");
-    const root_id = "";
-    const parent_id = "";
+    const root_id = null;
+    const parent_id = null;
     const level = 1;
     const isDeleted = "no";
     const time_created = nowTime;
     const rating = this.state.rating;
     const content = this.state.content;
 
-    // console.log(register_comment);
-
-    // axios.post("api/bookstore/register-book-comment", {register_comment : register_comment}).then((res) => {
+    // 서버에 파일 보낼 때 { register_comment }으로 보내면 { register_comment { .... }}형식으로 전송됨, 두번째로 보내는게 맞음.
+    // POST /api/bookstore/get-book-info 200 73.048 ms - 12259
+    //     req.isAuthenticated true
+    //     북코멘트를 등록합니다.
+    //     {
+    //       register_comment: {
+    //         user_id: 'Jooka',
+    //         sellbook_id: '60739e56ad7ba776d9cd73d2',
+    //         root_id: '',
+    //         parent_id: '',
+    //         level: 1,
+    //         isDeleted: 'no',
+    //         time_created: '2021-04-20T23:47:58.979Z',
+    //         rating: 4,
+    //         content: 'dfadfdfe'
+    //       }
+    //     }
+    // axios.post("api/bookstore/register-book-comment", { register_comment }).then((res) => {
     axios.post("api/bookstore/register-book-comment", { user_id, sellbook_id, root_id, parent_id, level, isDeleted, time_created, rating, content }).then((res) => {
-      console.log(res.data);
+      console.log("첫번째 댓글 보내고 받은 파일", res.data.book_comment);
+      this.props.updateStateBookComment(res.data.book_comment);
     });
   };
 
@@ -69,6 +89,7 @@ class StarRating extends Component {
   };
 
   render() {
+    // console.log(this.props.book_comment);
     return (
       <div
         className="BookDetailBox BookReviewArea"
@@ -162,6 +183,7 @@ class StarRating extends Component {
                     css={css`
                       display: block;
                     `}
+                    value={this.state.content}
                     onChange={this.changeReveiw.bind(this)}
                   />
                   {/* 글자 10자이상되면 버튼 파랑색으로 변경됨 */}
@@ -176,7 +198,7 @@ class StarRating extends Component {
                       padding: 8px 18px;
                       opacity: 0.5;
                     `}
-                    onClick={this.sendCommentToServer}
+                    onClick={this.sendCommentToServer.bind(this)}
                   >
                     리뷰 남기기
                   </button>
@@ -186,7 +208,7 @@ class StarRating extends Component {
           </div>
         </div>
 
-        <ReviewList2 />
+        <ReviewList2 book_comment={this.props.book_comment} updateStateBookComment={(value) => this.props.updateStateBookComment(value)} />
       </div>
     );
   }
@@ -198,39 +220,36 @@ class ReviewList2 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      _id: "",
-      user_id: "",
-      book_id: "",
-      root_id: "",
-      parent_id: "",
-      level: 0,
-      isDeleted: "no",
-      time_created: null,
-      rating: 0,
       content: "",
+      book_comment: [],
     };
   }
 
   sendCommentToServer = (event) => {
-    // event.preventDefault();
-    // const nowTime = new Date();
-    console.log(typeof event.target.getAttribute("level"));
-    console.log(event.target.getAttribute("id"));
-    console.log(event.target.getAttribute("book_id"));
-    console.log(event.target.attributes.level);
-    console.log(event.target.attributes["id"]);
-    console.log(event.target.attributes["book_id"]);
-    // 이벤트.타켓은 자바스크립트에서 제공하는 것만 사용가능. 태그 안에 프로퍼티 넣어봤자 이벤트 타겟으로 못불러옴.
-    // 콤포넌트 만들어서 props로 전달해야할 것 같음.
-    // const register_comment = {
+    const nowTime = new Date();
 
-    // };
+    const user_id = "Jooka";
+    const sellbook_id = sessionStorage.getItem("book_id");
+    const root_id = event.target.dataset.root_id;
+    const parent_id = event.target.dataset.id;
+    const level = 1 + Number(event.target.dataset.level);
+    const isDeleted = "no";
+    const time_created = nowTime;
+    const rating = 0;
+    const content = this.state.content;
 
-    // axios.post("api/bookstore/register-book-comment", { sellbook_id: sessionStorage.getItem("book_id"), content: { register_comment } }).then((res) => {
-    //   console.log(res.data);
-    // });
+    axios.post("api/bookstore/register-book-comment", { user_id, sellbook_id, root_id, parent_id, level, isDeleted, time_created, rating, content }).then((res) => {
+      console.log("두번째 댓글 보내고 받은 파일", res.data);
+      this.updateBookComment(res.data.book_comment);
+      console.log(this.state.book_comment, "ReviewList2 서버에서 res받아서 스테이트에 등록잘됐는지 확인용");
+    });
   };
 
+  updateBookComment(data) {
+    this.setState({ book_comment: data }, () => {
+      console.log(this.state.book_comment);
+    });
+  }
   changeReply = (e) => {
     e.preventDefault();
     this.setState({
@@ -239,6 +258,7 @@ class ReviewList2 extends Component {
   };
 
   render() {
+    let comments = this.props.book_comment;
     const level1 = comments.map((comment) => {
       if (comment.children.length > 0) {
         // 임시 칠드런을 만들어 놓고
@@ -266,7 +286,7 @@ class ReviewList2 extends Component {
 
       const levelArray = comment.children;
 
-      const comments = levelArray.map((child) => {
+      let comments = levelArray.map((child) => {
         return (
           <div key={child._id} style={{ background: "#f8fbfe", borderTop: "1px solid #e8edf3" }}>
             <div style={{ marginLeft: `${(child.level - 2) * 10}px`, padding: "6px" }}>
@@ -301,7 +321,15 @@ class ReviewList2 extends Component {
                 <div>
                   <label>
                     <textarea type="textarea" rows={1} cols={40} onChange={this.changeReply} placeholder="이곳에 댓글을 남겨주세요."></textarea>
-                    <button id={child._id} book_id={child.book_id} root_id={child.root_id} level={child.level} isDeleted={child.isDeleted} onClick={this.sendCommentToServer.bind(this)}>
+                    {/* data- 형식으로 attribute(속성)을 저장하면 event발생시 해당 target에서 dataset.속성이름으로 속성값을 불러 올 수 있다. */}
+                    <button
+                      data-id={child._id}
+                      data-book_id={child.book_id}
+                      data-root_id={child.root_id}
+                      data-level={child.level}
+                      data-isdeleted={child.isDeleted}
+                      onClick={this.sendCommentToServer.bind(this)}
+                    >
                       댓글올리기
                     </button>
                   </label>
@@ -370,6 +398,13 @@ class ReviewList2 extends Component {
                   {comment.content}
                 </div>
                 <ShowButton comments={comments} />
+                <WriteComment
+                  id={comment._id}
+                  book_id={comment.book_id}
+                  level={comment.level}
+                  isDeleted={comment.isDeleted}
+                  updateStateBookComment={(value) => this.props.updateStateBookComment(value)}
+                />
               </div>
             </div>
           </li>
@@ -392,270 +427,9 @@ class ReviewList2 extends Component {
         >
           리뷰 내용
         </div>
+
         <ul className="ReviewListArea">{level1}</ul>
       </>
     );
   }
 }
-
-const comments = [
-  {
-    _id: "123",
-    user_id: "jukka",
-    book_id: "abcdefghijklmn",
-    root_id: null,
-    parent_id: null,
-    level: 1,
-    isDeleted: "no",
-    time_created: "Wed Apr 20 2021 14:37:58 GMT+0900 (대한민국 표준시)",
-    rating: 1,
-    content: "재밌네요",
-    children: [
-      {
-        _id: "124",
-        user_id: "aaa",
-        book_id: "abcdefghijklmn",
-        root_id: "123",
-        parent_id: "123",
-        level: 2,
-        isDeleted: "no",
-        time_created: "Wed Apr 14 2021 14:38:58 GMT+0900 (대한민국 표준시)",
-        rating: null,
-        content: "그짓말",
-      },
-      {
-        _id: "125",
-        user_id: "jukka",
-        book_id: "abcdefghijklmn",
-        root_id: "123",
-        parent_id: "123",
-        level: 2,
-        isDeleted: "no",
-        time_created: "Wed Apr 14 2021 14:39:58 GMT+0900 (대한민국 표준시)",
-        rating: null,
-        content: "동감입니다.",
-      },
-      {
-        _id: "128",
-        user_id: "jukka",
-        book_id: "abcdefghijklmn",
-        root_id: "123",
-        parent_id: "124",
-        level: 3,
-        isDeleted: "no",
-        time_created: "Wed Apr 14 2021 14:40:58 GMT+0900 (대한민국 표준시)",
-        rating: null,
-        content: "그짓말 아닌데",
-      },
-      {
-        _id: "130",
-        user_id: "sangil",
-        book_id: "abcdefghijklmn",
-        root_id: "123",
-        parent_id: "123",
-        level: 2,
-        isDeleted: "no",
-        time_created: "Wed Apr 14 2021 14:41:58 GMT+0900 (대한민국 표준시)",
-        rating: null,
-        content: "참신합니다요",
-      },
-      {
-        _id: "134",
-        user_id: "eon",
-        book_id: "abcdefghijklmn",
-        root_id: "123",
-        parent_id: "128",
-        level: 4,
-        isDeleted: "no",
-        time_created: "Wed Apr 14 2021 14:42:58 GMT+0900 (대한민국 표준시)",
-        rating: null,
-        content: "주작 냄새가...",
-      },
-      {
-        _id: "135",
-        user_id: "eon",
-        book_id: "abcdefghijklmn",
-        root_id: "123",
-        parent_id: "125",
-        level: 3,
-        isDeleted: "no",
-        time_created: "Wed Apr 14 2021 14:43:58 GMT+0900 (대한민국 표준시)",
-        rating: null,
-        content: "취향이 독특하시네요",
-      },
-    ],
-  },
-  {
-    _id: "12323",
-    user_id: "kizwond",
-    book_id: "abcdefghijklmn",
-    root_id: null,
-    parent_id: null,
-    level: 1,
-    isDeleted: "no",
-    time_created: "Wed Apr 16 2021 14:37:58 GMT+0900 (대한민국 표준시)",
-    rating: 5,
-    content:
-      "선생님, 문학은 필연적으로 정치적일 수밖에 없습니다... 오히려 비정치적인 소설을 찾는다 하시면 찾기 정말 힘듭니다. 순문학이 아닌 SF, 판타지, 심지어 수필 에세이같은 글에서도 정치성이 엿보이는 것이 오히려 흔합니다. 실제 에피소드를 조금 더 픽션화하시는 노력이라고 하셨는데, 주인공이 남들과 다른 능력을 지니고 그걸 해결해나가는 설정부터가 충분히 픽션적이지 않으신가요?? 이이상의 픽션을 요구하시는 거라면 다른 장르를 찾아보셔야 하지 않을까 저는 생각합니다. ",
-    children: [
-      {
-        _id: "12324",
-        user_id: "aaa",
-        book_id: "abcdefghijklmn",
-        root_id: "12323",
-        parent_id: "12323",
-        level: 2,
-        isDeleted: "no",
-        time_created: "Wed Apr 14 2021 14:38:58 GMT+0900 (대한민국 표준시)",
-        rating: null,
-        content: "그짓말",
-      },
-      {
-        _id: "12325",
-        user_id: "jukka",
-        book_id: "abcdefghijklmn",
-        root_id: "12323",
-        parent_id: "12323",
-        level: 2,
-        isDeleted: "no",
-        time_created: "Wed Apr 14 2021 14:39:58 GMT+0900 (대한민국 표준시)",
-        rating: null,
-        content: "동감입니다.",
-      },
-      {
-        _id: "12328",
-        user_id: "jukka",
-        book_id: "abcdefghijklmn",
-        root_id: "12323",
-        parent_id: "12324",
-        level: 3,
-        isDeleted: "no",
-        time_created: "Wed Apr 14 2021 14:40:58 GMT+0900 (대한민국 표준시)",
-        rating: null,
-        content: "그짓말 아닌데",
-      },
-      {
-        _id: "12330",
-        user_id: "sangil",
-        book_id: "abcdefghijklmn",
-        root_id: "12323",
-        parent_id: "12323",
-        level: 2,
-        isDeleted: "no",
-        time_created: "Wed Apr 14 2021 14:41:58 GMT+0900 (대한민국 표준시)",
-        rating: null,
-        content: "참신합니다요",
-      },
-      {
-        _id: "12334",
-        user_id: "eon",
-        book_id: "abcdefghijklmn",
-        root_id: "12323",
-        parent_id: "12328",
-        level: 4,
-        isDeleted: "no",
-        time_created: "Wed Apr 14 2021 14:42:58 GMT+0900 (대한민국 표준시)",
-        rating: null,
-        content: "주작 냄새가...",
-      },
-      {
-        _id: "12335",
-        user_id: "eon",
-        book_id: "abcdefghijklmn",
-        root_id: "12323",
-        parent_id: "12325",
-        level: 3,
-        isDeleted: "no",
-        time_created: "Wed Apr 14 2021 14:43:58 GMT+0900 (대한민국 표준시)",
-        rating: null,
-        content: "취향이 독특하시네요",
-      },
-    ],
-  },
-  {
-    _id: "1123",
-    user_id: "cogbook",
-    book_id: "abcdefghijklmn",
-    root_id: null,
-    parent_id: null,
-    level: 1,
-    isDeleted: "no",
-    time_created: "Wed Apr 16 2021 14:37:58 GMT+0900 (대한민국 표준시)",
-    rating: 5,
-    content: "ㅎㅎㅎㅎㅎㅎㅎ",
-    children: [
-      {
-        _id: "1124",
-        user_id: "aaa",
-        book_id: "abcdefghijklmn",
-        root_id: "1123",
-        parent_id: "1123",
-        level: 2,
-        isDeleted: "no",
-        time_created: "Wed Apr 14 2021 14:38:58 GMT+0900 (대한민국 표준시)",
-        rating: null,
-        content: "그짓말",
-      },
-      {
-        _id: "1125",
-        user_id: "jukka",
-        book_id: "abcdefghijklmn",
-        root_id: "1123",
-        parent_id: "1123",
-        level: 2,
-        isDeleted: "no",
-        time_created: "Wed Apr 14 2021 14:39:58 GMT+0900 (대한민국 표준시)",
-        rating: null,
-        content: "동감입니다.",
-      },
-      {
-        _id: "1128",
-        user_id: "jukka",
-        book_id: "abcdefghijklmn",
-        root_id: "1123",
-        parent_id: "1124",
-        level: 3,
-        isDeleted: "no",
-        time_created: "Wed Apr 14 2021 14:40:58 GMT+0900 (대한민국 표준시)",
-        rating: null,
-        content: "그짓말 아닌데",
-      },
-      {
-        _id: "1130",
-        user_id: "sangil",
-        book_id: "abcdefghijklmn",
-        root_id: "1123",
-        parent_id: "1123",
-        level: 2,
-        isDeleted: "no",
-        time_created: "Wed Apr 14 2021 14:41:58 GMT+0900 (대한민국 표준시)",
-        rating: null,
-        content: "참신합니다요",
-      },
-      {
-        _id: "1134",
-        user_id: "eon",
-        book_id: "abcdefghijklmn",
-        root_id: "1123",
-        parent_id: "1128",
-        level: 4,
-        isDeleted: "no",
-        time_created: "Wed Apr 14 2021 14:42:58 GMT+0900 (대한민국 표준시)",
-        rating: null,
-        content: "주작 냄새가...",
-      },
-      {
-        _id: "1135",
-        user_id: "eon",
-        book_id: "abcdefghijklmn",
-        root_id: "1123",
-        parent_id: "1125",
-        level: 3,
-        isDeleted: "no",
-        time_created: "Wed Apr 14 2021 14:43:58 GMT+0900 (대한민국 표준시)",
-        rating: null,
-        content: "취향이 독특하시네요",
-      },
-    ],
-  },
-];
