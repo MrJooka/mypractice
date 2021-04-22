@@ -2,7 +2,6 @@
 import { css, Global } from "@emotion/react";
 import React, { Component } from "react";
 import { Rate } from "antd";
-import ShowButton from "./ShowButton";
 import axios from "axios";
 import WriteComment from "./WriteComment";
 
@@ -75,10 +74,12 @@ class StarRating extends Component {
     //       }
     //     }
     // axios.post("api/bookstore/register-book-comment", { register_comment }).then((res) => {
-    axios.post("api/bookstore/register-book-comment", { user_id, sellbook_id, root_id, parent_id, level, isDeleted, time_created, rating, content }).then((res) => {
-      console.log("첫번째 댓글 보내고 받은 파일", res.data.book_comment);
-      this.props.updateStateBookComment(res.data.book_comment);
-    });
+    axios
+      .post("api/bookstore/register-book-comment", { user_id, sellbook_id, root_id, parent_id, level, isDeleted, time_created, rating, content })
+      .then((res) => {
+        console.log("첫번째 댓글 보내고 받은 파일", res.data.book_comment);
+        this.props.updateStateBookComment(res.data.book_comment);
+      });
   };
 
   changeReveiw = (e) => {
@@ -222,6 +223,8 @@ class ReviewList2 extends Component {
     this.state = {
       content: "",
       book_comment: [],
+      child_commmet_show_id: "",
+      child_comment_visible: false,
     };
   }
 
@@ -238,11 +241,13 @@ class ReviewList2 extends Component {
     const rating = 0;
     const content = this.state.content;
 
-    axios.post("api/bookstore/register-book-comment", { user_id, sellbook_id, root_id, parent_id, level, isDeleted, time_created, rating, content }).then((res) => {
-      console.log("두번째 댓글 보내고 받은 파일", res.data);
-      this.updateBookComment(res.data.book_comment);
-      console.log(this.state.book_comment, "ReviewList2 서버에서 res받아서 스테이트에 등록잘됐는지 확인용");
-    });
+    axios
+      .post("api/bookstore/register-book-comment", { user_id, sellbook_id, root_id, parent_id, level, isDeleted, time_created, rating, content })
+      .then((res) => {
+        console.log("두번째 댓글 보내고 받은 파일", res.data);
+        this.updateBookComment(res.data.book_comment);
+        console.log(this.state.book_comment, "ReviewList2 서버에서 res받아서 스테이트에 등록잘됐는지 확인용");
+      });
   };
 
   updateBookComment(data) {
@@ -397,13 +402,48 @@ class ReviewList2 extends Component {
                 >
                   {comment.content}
                 </div>
-                <ShowButton comments={comments} />
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "end" }}>
+                  <button
+                    style={{ display: "block" }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      this.setState((state) => {
+                        return {
+                          child_comment_visible: !state.child_comment_visible,
+                        };
+                      });
+                      this.setState((state) => {
+                        return {
+                          child_commmet_show_id: state.child_comment_visible ? comment._id : "",
+                        };
+                      });
+                    }}
+                  >
+                    댓글보기
+                  </button>
+                </div>
+                {comment._id === this.state.child_commmet_show_id && (
+                  <div style={{ display: "block", borderTop: "1px solid #c4d1de" }}>{comments}</div>
+                )}
+                {/* <div style={{ display: comment._id === this.state.child_commmet_show_id ? "block" : "none", borderTop: "1px solid #c4d1de" }}>{comments}</div> */}
                 <WriteComment
                   id={comment._id}
                   book_id={comment.book_id}
                   level={comment.level}
                   isDeleted={comment.isDeleted}
-                  updateStateBookComment={(value) => this.props.updateStateBookComment(value)}
+                  updateStateBookComment={(value) => {
+                    this.props.updateStateBookComment(value);
+                    this.setState((state) => {
+                      return {
+                        child_comment_visible: true,
+                      };
+                    });
+                    this.setState((state) => {
+                      return {
+                        child_commmet_show_id: state.child_comment_visible ? comment._id : "",
+                      };
+                    });
+                  }}
                 />
               </div>
             </div>

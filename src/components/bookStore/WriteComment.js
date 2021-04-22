@@ -28,12 +28,13 @@ class WriteComment extends Component {
     const rating = 0;
     const content = this.state.content;
 
-    axios.post("api/bookstore/register-book-comment", { user_id, sellbook_id, root_id, parent_id, level, isDeleted, time_created, rating, content }).then((res) => {
-      console.log(res.data.book_comment);
-      this.props.updateStateBookComment(res.data.book_comment);
-      this.changeVisivility();
-      this.setState({ content: "" });
-    });
+    axios
+      .post("api/bookstore/register-book-comment", { user_id, sellbook_id, root_id, parent_id, level, isDeleted, time_created, rating, content })
+      .then((res) => {
+        this.props.updateStateBookComment(res.data.book_comment);
+        this.changeVisivility();
+        this.setState({ content: "" });
+      });
   };
 
   changeReply = (e) => {
