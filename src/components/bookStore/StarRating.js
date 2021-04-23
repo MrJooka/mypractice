@@ -65,11 +65,9 @@ class StarRating extends Component {
     //       }
     //     }
     // axios.post("api/bookstore/register-book-comment", { register_comment }).then((res) => {
-    axios
-      .post("api/bookstore/register-book-comment", { user_id, sellbook_id, root_id, parent_id, level, isDeleted, time_created, rating, content })
-      .then((res) => {
-        this.props.updateStateBookComment(res.data.book_comment);
-      });
+    axios.post("api/bookstore/register-book-comment", { user_id, sellbook_id, root_id, parent_id, level, isDeleted, time_created, rating, content }).then((res) => {
+      this.props.updateStateBookComment(res.data.book_comment);
+    });
   };
 
   changeReveiw = (e) => {
@@ -81,32 +79,11 @@ class StarRating extends Component {
 
   render() {
     return (
-      <div
-        className="BookDetailBox BookReviewArea"
-        css={css`
-          padding-bottom: 70px;
-        `}
-      >
-        <div
-          className="BookDetailTitle BookReviewTitle"
-          css={css`
-            margin-bottom: 15px;
-            padding: 10px 0 8px 0;
-            border-bottom: 2px solid #7d8e9e;
-            font-size: 20px;
-            color: #59667a;
-            font-weight: 700;
-            letter-spacing: -0.03em;
-          `}
-        >
+      <div className="BookDetailBox BookReviewArea" css={bookDetailBox}>
+        <div className="BookDetailTitle BookReviewTitle" css={bookDetailTitle}>
           리뷰
         </div>
-        <div
-          css={css`
-            display: flex;
-            padding-bottom: 30px;
-          `}
-        >
+        <div style={{ display: "flex", paddingBottom: "30px" }}>
           <Global
             styles={css`
               .bigStar svg {
@@ -128,14 +105,7 @@ class StarRating extends Component {
               } */
             `}
           />
-          <div
-            css={css`
-              display: flex;
-              flex-direction: column;
-              flex: 0.2;
-              align-items: center;
-            `}
-          >
+          <div style={{ display: "flex", flexDirection: "column", flex: "0.2", alignItems: "center" }}>
             <div>구매자 별점</div>
             <div>점수</div>
             <div>
@@ -151,43 +121,17 @@ class StarRating extends Component {
             <hr width="80%" />
             <div>176명이 평가함</div>
           </div>
-          <div
-            css={css`
-              flex: 0.8;
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-            `}
-          >
+          <div style={{ display: "flex", flexDirection: "column", flex: "0.8", alignItems: "center" }}>
             <div>
               <Rate className="bigStar" onChange={this.handleChange} />
             </div>
             <div>
-              {/* 폼태그에는 eventDefault를 무조건 걸어줘야한다. 폼 자체적으로 event거시기 거시기가 있어서이다. */}
               <form>
                 <label>
-                  <textarea
-                    rows="4"
-                    cols="50"
-                    type="textarea"
-                    css={css`
-                      display: block;
-                    `}
-                    value={this.state.content}
-                    onChange={this.changeReveiw.bind(this)}
-                  />
+                  <textarea rows="4" cols="50" type="textarea" style={{ display: "bolock" }} value={this.state.content} onChange={this.changeReveiw.bind(this)} />
                   {/* 글자 10자이상되면 버튼 파랑색으로 변경됨 */}
                   <button
-                    css={css`
-                      float: right;
-                      color: #fff;
-                      background: #1f8ce6;
-                      border: 1px solid #0077d9;
-                      box-shadow: 0 1px 1px 0 rgba(31, 140, 230, 0.3);
-                      font-size: 12px;
-                      padding: 8px 18px;
-                      opacity: 0.5;
-                    `}
+                    style={{ float: "right", color: "#fff", background: "#1f8ce6", border: "1px solid #0077d9", boxShadow: "0 1px 1px 0 rgba(31, 140, 230, 0.3)", fontSize: "12px", padding: "8px 18px", opacity: "0.5" }}
                     onClick={this.sendCommentToServer}
                   >
                     리뷰 남기기
@@ -230,11 +174,9 @@ class ReviewList2 extends Component {
     const rating = null;
     const content = this.state.content;
 
-    axios
-      .post("api/bookstore/register-book-comment", { user_id, sellbook_id, root_id, parent_id, level, isDeleted, time_created, rating, content })
-      .then((res) => {
-        this.props.updateStateBookComment(res.data.book_comment);
-      });
+    axios.post("api/bookstore/register-book-comment", { user_id, sellbook_id, root_id, parent_id, level, isDeleted, time_created, rating, content }).then((res) => {
+      this.props.updateStateBookComment(res.data.book_comment);
+    });
   };
 
   changeReply = (e) => {
@@ -282,41 +224,15 @@ class ReviewList2 extends Component {
                 <button>댓글 달기버튼</button>
               </div>
               <div>
-                <span
-                  css={css`
-                    display: inline-block;
-                    font-size: 11px;
-                    color: #7d8e9e;
-                    font-weight: 700;
-                    width: 40px;
-                  `}
-                >
-                  {child.user_id.substring(0, 3) + "***"}
-                </span>
-                <span
-                  css={css`
-                    font-size: 11px;
-                    color: #7d8e9e;
-                    font-weight: 400;
-                    margin-left: 15px;
-                  `}
-                >
-                  {KoreadateWithTime(child.time_created)}
-                </span>
+                <span style={{ display: "inline-block", fontSize: "11px", color: "#7d8e9e", fontWeight: "700", width: "40px" }}>{child.user_id.substring(0, 3) + "***"}</span>
+                <span style={{ fontSize: "11px", color: "#7d8e9e", fontWeight: "400", marginLeft: "15px" }}>{KoreadateWithTime(child.time_created)}</span>
                 {/* 댓글달기 버튼 누르면 텍스트 입력창 표시 => 컴포넌트로 표시해야함 */}
 
                 <div>
                   <label>
                     <textarea type="textarea" rows={1} cols={40} onChange={this.changeReply} placeholder="이곳에 댓글을 남겨주세요."></textarea>
                     {/* data- 형식으로 attribute(속성)을 저장하면 event발생시 해당 target에서 dataset.속성이름으로 속성값을 불러 올 수 있다. */}
-                    <button
-                      data-id={child._id}
-                      data-book_id={child.book_id}
-                      data-root_id={child.root_id}
-                      data-level={child.level}
-                      data-isdeleted={child.isDeleted}
-                      onClick={this.sendCommentToServer}
-                    >
+                    <button data-id={child._id} data-book_id={child.book_id} data-root_id={child.root_id} data-level={child.level} data-isdeleted={child.isDeleted} onClick={this.sendCommentToServer}>
                       댓글올리기
                     </button>
                   </label>
@@ -350,24 +266,8 @@ class ReviewList2 extends Component {
       return (
         <React.Fragment>
           <li key={comment._id}>
-            <div
-              className="ReviewListWrapper"
-              css={css`
-                padding-top: 14px;
-                display: flex;
-                width: 100%;
-                border-bottom: 1px solid #d1d5d9;
-                /* border-bottom: 0; */
-              `}
-            >
-              <div
-                css={css`
-                  display: flex;
-                  flex-direction: column;
-                  flex: 0.15;
-                  align-items: flex-start;
-                `}
-              >
+            <div className="ReviewListWrapper" style={{ paddingTop: "14px", display: "flex", width: "100%", borderBottom: "1px solid #d1d5d9" }}>
+              <div style={{ display: "flex", flexDirection: "column", flex: "0.15", alignItems: "flex-start" }}>
                 <Rate style={{ display: "block" }} className="smallStar" disabled defaultValue={comment.rating} />
                 <div>{comment.user_id.substring(0, 3) + "***"}</div>
                 <div>{Koreadate(comment.time_created)}</div>
@@ -377,13 +277,17 @@ class ReviewList2 extends Component {
                   flex: 0.85;
                 `}
               >
-                <div
-                  css={css`
-                    padding: 5px 8px 6px 8px;
-                  `}
-                >
-                  {comment.content}
+                <div style={{ padding: "5px 8px 6px 8px" }}>
+                  {comment.content.split("\n").map((line) => {
+                    return (
+                      <span>
+                        {line}
+                        <br />
+                      </span>
+                    );
+                  })}
                 </div>
+
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "end" }}>
                   <button
                     style={{ display: "block" }}
@@ -404,9 +308,7 @@ class ReviewList2 extends Component {
                     댓글보기
                   </button>
                 </div>
-                {comment._id === this.state.child_commmet_show_id && (
-                  <div style={{ display: "block", borderTop: "1px solid #c4d1de" }}>{comments}</div>
-                )}
+                {comment._id === this.state.child_commmet_show_id && <div style={{ display: "block", borderTop: "1px solid #c4d1de" }}>{comments}</div>}
                 {/* <div style={{ display: comment._id === this.state.child_commmet_show_id ? "block" : "none", borderTop: "1px solid #c4d1de" }}>{comments}</div> */}
                 <WriteComment
                   id={comment._id}
@@ -435,18 +337,7 @@ class ReviewList2 extends Component {
     });
     return (
       <>
-        <div
-          className="ReviewListTitle BookReviewTitle"
-          css={css`
-            margin-bottom: 15px;
-            padding: 10px 0;
-            border-bottom: 2px solid #d1d5d9;
-            font-size: 15px;
-            color: #40474d;
-            font-weight: 700;
-            letter-spacing: -0.03em;
-          `}
-        >
+        <div className="ReviewListTitle BookReviewTitle" css={reviewListTitle}>
           리뷰 내용
         </div>
 
@@ -455,3 +346,27 @@ class ReviewList2 extends Component {
     );
   }
 }
+
+const bookDetailBox = css`
+  padding-bottom: 70px;
+`;
+
+const bookDetailTitle = css`
+  margin-bottom: 15px;
+  padding: 10px 0 8px 0;
+  border-bottom: 2px solid #7d8e9e;
+  font-size: 20px;
+  color: #59667a;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+`;
+
+const reviewListTitle = css`
+  margin-bottom: 15px;
+  padding: 10px 0;
+  border-bottom: 2px solid #d1d5d9;
+  font-size: 15px;
+  color: #40474d;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+`;
