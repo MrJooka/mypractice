@@ -27,13 +27,7 @@ class ListGoodForHomeStudy extends Component {
             >
               <div className="StyledThumbnailWrapper" css={styledThumbnailWrapper}>
                 <div className="ThumbnailWrapper" css={thumbnailWrapper}>
-                  <img
-                    className="StyledThumbnailImage"
-                    src={item.book_info.bookcover.url_small}
-                    sizes="(max-wideth: 999px) 100px, 140px"
-                    alt={item.book_info.title}
-                    css={styledThumbnailImage}
-                  />
+                  <img className="StyledThumbnailImage" src={item.book_info.bookcover.url_small} sizes="(max-wideth: 999px) 100px, 140px" alt={item.book_info.title} css={styledThumbnailImage} />
                   <div className="DiscountWrapper" css={discountWrapper}>
                     <div className="DiscountSticker" css={discountSticker}>
                       <span className="DiscountNumber" css={discountNumber}>
@@ -96,13 +90,7 @@ class ListGoodForStudy extends Component {
             >
               <div className="StyledThumbnailWrapper" css={styledThumbnailWrapper}>
                 <div className="ThumbnailWrapper" css={thumbnailWrapper}>
-                  <img
-                    className="StyledThumbnailImage"
-                    src={item.book_info.bookcover.url_small}
-                    sizes="(max-wideth: 999px) 100px, 140px"
-                    alt={item.book_info.title}
-                    css={styledThumbnailImage}
-                  />
+                  <img className="StyledThumbnailImage" src={item.book_info.bookcover.url_small} sizes="(max-wideth: 999px) 100px, 140px" alt={item.book_info.title} css={styledThumbnailImage} />
                   <div className="DiscountWrapper" css={discountWrapper}>
                     <div className="DiscountSticker" css={discountSticker}>
                       <span className="DiscountNumber" css={discountNumber}>
@@ -300,13 +288,7 @@ class ListCogBookRecommendBook extends Component {
             >
               <div className="StyledThumbnailWrapper" css={styledThumbnailWrapper}>
                 <div className="ThumbnailWrapper" css={thumbnailWrapper}>
-                  <img
-                    className="StyledThumbnailImage"
-                    src={item.book_info.bookcover.url_small}
-                    sizes="(max-wideth: 999px) 100px, 140px"
-                    alt={item.book_info.title}
-                    css={styledThumbnailImage}
-                  />
+                  <img className="StyledThumbnailImage" src={item.book_info.bookcover.url_small} sizes="(max-wideth: 999px) 100px, 140px" alt={item.book_info.title} css={styledThumbnailImage} />
                   <div className="DiscountWrapper" css={discountWrapper}>
                     <div className="DiscountSticker" css={discountSticker}>
                       <span className="DiscountNumber" css={discountNumber}>
@@ -525,13 +507,7 @@ class ListRecommendedBook extends Component {
     return (
       <React.Fragment>
         {this.props.serverlist.map((item) => (
-          <ListRecommendedBookContent
-            key={item._id}
-            book_id={item._id}
-            title={item.book_info.title}
-            author={item.book_info.author}
-            url_small={item.book_info.bookcover.url_small}
-          />
+          <ListRecommendedBookContent key={item._id} book_id={item._id} title={item.book_info.title} author={item.book_info.author} url_small={item.book_info.bookcover.url_small} />
         ))}
       </React.Fragment>
     );
@@ -646,7 +622,7 @@ class ReactRidi extends Component {
                 >
                   <Link
                     to="/"
-                    tabindex="-1"
+                    tabIndex="-1"
                     className="BannerImageLink"
                     css={css`
                       width: 100%;
@@ -683,7 +659,7 @@ class ReactRidi extends Component {
                 >
                   <Link
                     to="/"
-                    tabindex="0"
+                    tabIndex="0"
                     className="BannerImageLink"
                     css={css`
                       width: 100%;
@@ -720,7 +696,7 @@ class ReactRidi extends Component {
                 >
                   <Link
                     to="/"
-                    tabindex="-1"
+                    tabIndex="-1"
                     className="BannerImageLink"
                     css={css`
                       width: 100%;
@@ -1958,8 +1934,7 @@ const thumbnailWrapper = css`
   position: relative;
   line-height: 0;
   max-height: inherit;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.15) 0, rgba(0, 0, 0, 0) 5%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0.15) 100%);
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.15)), linear-gradient(90deg, rgba(0, 0, 0, 0.15) 0, rgba(0, 0, 0, 0) 5%, rgba(0, 0, 0, 0) 95%, rgba(0, 0, 0, 0.15) 100%);
 `;
 
 const discountWrapper = css`

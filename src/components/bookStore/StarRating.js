@@ -78,73 +78,99 @@ class StarRating extends Component {
   };
 
   render() {
-    return (
-      <div className="BookDetailBox BookReviewArea" css={bookDetailBox}>
-        <div className="BookDetailTitle BookReviewTitle" css={bookDetailTitle}>
-          리뷰
-        </div>
-        <div style={{ display: "flex", paddingBottom: "30px" }}>
-          <Global
-            styles={css`
-              .bigStar svg {
-                width: 40px;
-                height: 40px;
-              }
+    let _rating = this.props.rating;
+    if (_rating === []) {
+      return <div></div>;
+    } else {
+      let 총별갯수 = 0;
+      let 리뷰갯수 = 0;
+      let fiveStarCount = 0;
+      let fourStarCount = 0;
+      let threeStarCount = 0;
+      let twoStarCount = 0;
+      let oneStarCount = 0;
+      for (let i = 0; i < _rating.length; i++) {
+        총별갯수 = 총별갯수 + _rating[i]._id * _rating[i].count;
+        리뷰갯수 = 리뷰갯수 + _rating[i].count;
+        if (_rating[i]._id == 5) {
+          fiveStarCount = _rating[i].count;
+        } else if (_rating[i]._id == 4) {
+          fourStarCount = _rating[i].count;
+        } else if (_rating[i]._id == 3) {
+          threeStarCount = _rating[i].count;
+        } else if (_rating[i]._id == 2) {
+          twoStarCount = _rating[i].count;
+        } else {
+          oneStarCount = _rating[i].count;
+        }
+      }
+      let 평균평점 = Math.round((총별갯수 / 리뷰갯수) * 100) / 100;
 
-              .smallStar svg {
-                width: 10px;
-                height: 10px;
-              }
+      return (
+        <div className="BookDetailBox BookReviewArea" css={bookDetailBox}>
+          <div className="BookDetailTitle BookReviewTitle" css={bookDetailTitle}>
+            리뷰
+          </div>
+          <div style={{ display: "flex", paddingBottom: "30px" }}>
+            <Global
+              styles={css`
+                .bigStar svg {
+                  width: 40px;
+                  height: 40px;
+                }
 
-              .smallStar > li:not(:last-child) {
-                margin-right: 2px;
-              }
+                .smallStar svg {
+                  width: 10px;
+                  height: 10px;
+                }
 
-              /* .ReviewListWrapper:first-child {
+                .smallStar > li:not(:last-child) {
+                  margin-right: 2px;
+                }
+
+                /* .ReviewListWrapper:first-child {
                 border-top: 0;
               } */
-            `}
-          />
-          <div style={{ display: "flex", flexDirection: "column", flex: "0.2", alignItems: "center" }}>
-            <div>구매자 별점</div>
-            <div>점수</div>
-            <div>
-              <Rate className="smallStar" disabled defaultValue={2} />
+              `}
+            />
+            <div style={{ display: "flex", flexDirection: "column", flex: "0.2", alignItems: "center" }}>
+              <div>구매자 별점</div>
+              <div>{평균평점}</div>
+              <div>
+                <Rate className="smallStar" disabled value={평균평점} />
+              </div>
+              <ul>
+                <li> 별5개 : {fiveStarCount} 개</li>
+                <li> 별4개 : {fourStarCount} 개</li>
+                <li> 별3개 : {threeStarCount} 개</li>
+                <li> 별2개 : {twoStarCount} 개</li>
+                <li> 별1개 : {oneStarCount} 개</li>
+              </ul>
+              <hr width="80%" />
+              <div>{리뷰갯수}명이 평가함</div>
             </div>
-            <ul>
-              <li>별5개 : 50명</li>
-              <li>별4개 : 40명</li>
-              <li>별3개 : 30명</li>
-              <li>별2개 : 20명</li>
-              <li>별1개 : 10명</li>
-            </ul>
-            <hr width="80%" />
-            <div>176명이 평가함</div>
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", flex: "0.8", alignItems: "center" }}>
-            <div>
-              <Rate className="bigStar" onChange={this.handleChange} />
-            </div>
-            <div>
-              <form>
-                <label>
-                  <textarea rows="4" cols="50" type="textarea" style={{ display: "bolock" }} value={this.state.content} onChange={this.changeReveiw.bind(this)} />
-                  {/* 글자 10자이상되면 버튼 파랑색으로 변경됨 */}
-                  <button
-                    style={{ float: "right", color: "#fff", background: "#1f8ce6", border: "1px solid #0077d9", boxShadow: "0 1px 1px 0 rgba(31, 140, 230, 0.3)", fontSize: "12px", padding: "8px 18px", opacity: "0.5" }}
-                    onClick={this.sendCommentToServer}
-                  >
-                    리뷰 남기기
-                  </button>
-                </label>
-              </form>
+            <div style={{ display: "flex", flexDirection: "column", flex: "0.8", alignItems: "center" }}>
+              <div>
+                <Rate className="bigStar" onChange={this.handleChange} />
+              </div>
+              <div>
+                <form>
+                  <label>
+                    <textarea rows="4" cols="50" type="textarea" style={{ display: "bolock" }} value={this.state.content} onChange={this.changeReveiw.bind(this)} />
+                    {/* 글자 10자이상되면 버튼 파랑색으로 변경됨 */}
+                    <button style={{ float: "right", color: "#fff", background: "#1f8ce6", border: "1px solid #0077d9", boxShadow: "0 1px 1px 0 rgba(31, 140, 230, 0.3)", fontSize: "12px", padding: "8px 18px", opacity: "0.5" }} onClick={this.sendCommentToServer}>
+                      리뷰 남기기
+                    </button>
+                  </label>
+                </form>
+              </div>
             </div>
           </div>
-        </div>
 
-        <ReviewList2 book_comment={this.props.book_comment} updateStateBookComment={(value) => this.props.updateStateBookComment(value)} />
-      </div>
-    );
+          <ReviewList2 book_comment={this.props.book_comment} updateStateBookComment={(value) => this.props.updateStateBookComment(value)} />
+        </div>
+      );
+    }
   }
 }
 
@@ -278,9 +304,9 @@ class ReviewList2 extends Component {
                 `}
               >
                 <div style={{ padding: "5px 8px 6px 8px" }}>
-                  {comment.content.split("\n").map((line) => {
+                  {comment.content.split("\n").map((line, i) => {
                     return (
-                      <span>
+                      <span key={i}>
                         {line}
                         <br />
                       </span>
