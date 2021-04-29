@@ -36,11 +36,16 @@ class DetailBook extends Component {
 
       visibility_bookcover: false,
 
-      foldable_book_intro: false,
+      foldable_intro_book: false,
       foldable_intro_author: false,
       foldable_indexes: false,
+
+      intro_author_height: 0,
+      intro_book_height: 0,
+      indexes_height: 0,
     };
   }
+
   componentDidMount() {
     axios.post("api/bookstore/get-book-info", { sellbook_id: sessionStorage.getItem("book_id") }).then((res) => {
       console.log(res.data, "디테일북에서 서버에서 data");
@@ -61,6 +66,21 @@ class DetailBook extends Component {
         rating: res.data.rating,
       });
     });
+
+    let intro_author_height = 0;
+    let intro_book_height = 0;
+    let indexes_height = 0;
+
+    this.간격 = setTimeout(() => {
+      intro_author_height = this.intro_author_height.clientHeight;
+      this.setState(() => ({ intro_author_height }));
+
+      intro_book_height = this.intro_book_height.clientHeight;
+      this.setState(() => ({ intro_book_height }));
+
+      indexes_height = this.indexes_height.clientHeight;
+      this.setState(() => ({ indexes_height }));
+    }, 550);
   }
 
   render() {
@@ -273,8 +293,14 @@ class DetailBook extends Component {
                   <div className="IntroBookTitle" style={{ marginBottom: "15px", padding: "10px 0 8px 0", borderBottom: "2px solid #7d8e9e", fontSize: "20px", color: "#59667a", fontWeight: "700", letterSpacing: "-0.03em" }}>
                     책소개
                   </div>
-                  <div className="IntroBookContent">
-                    <p className="IntroBookParagraph" style={{ lineHeight: "1.8em", fontSize: "13px", color: "#333", wordBreak: "keep-all", wordWrap: "break-word", textAlign: "justify", height: this.state.foldable_book_intro ? "auto" : "180px", overflow: "hidden" }}>
+                  <div className="IntroBookContent" style={{ maxHeight: this.state.foldable_intro_book ? "100%" : "180px", overflow: "hidden" }}>
+                    <p
+                      className="IntroBookParagraph"
+                      ref={(intro_book_height) => {
+                        this.intro_book_height = intro_book_height;
+                      }}
+                      style={{ lineHeight: "1.8em", fontSize: "13px", color: "#333", wordBreak: "keep-all", wordWrap: "break-word", textAlign: "justify" }}
+                    >
                       {this.state.intro_book.split("\n").map((line, i) => {
                         return (
                           <span key={i}>
@@ -289,19 +315,25 @@ class DetailBook extends Component {
                     style={{ display: "block", float: "right", background: "0 0", fontSize: "13px", color: "#4076b5", border: "none" }}
                     onClick={() => {
                       this.setState({
-                        foldable_book_intro: !this.state.foldable_book_intro,
+                        foldable_intro_book: !this.state.foldable_intro_book,
                       });
                     }}
                   >
-                    {this.state.foldable_book_intro ? "접기" : "펼쳐보기"}
+                    {this.state.intro_book_height < 200 ? "" : this.state.foldable_intro_book ? "접기" : "펼쳐보기"}
                   </button>
                 </div>
                 <div className="BookDetailBox IntroAuthorArea" style={bookDetailBox}>
                   <div className="BookDetailTitle IntroAuhorTitle" style={bookDetailTitle}>
                     저자 소개
                   </div>
-                  <div className="BookDetailContent IntroAuthorContent">
-                    <p className="BookDetailParagraph IntroAuthorParagraph" style={{ lineHeight: "1.8em", fontSize: "13px", color: "#333", wordBreak: "keep-all", wordWrap: "break-word", textAlign: "justify", height: this.state.foldable_intro_author ? "auto" : "180px", overflow: "hidden" }}>
+                  <div className="BookDetailContent IntroAuthorContent" style={{ maxHeight: this.state.foldable_intro_author ? "100%" : "180px", overflow: "hidden" }}>
+                    <p
+                      className="BookDetailParagraph IntroAuthorParagraph"
+                      ref={(intro_author_height) => {
+                        this.intro_author_height = intro_author_height;
+                      }}
+                      style={{ lineHeight: "1.8em", fontSize: "13px", color: "#333", wordBreak: "keep-all", wordWrap: "break-word", textAlign: "justify" }}
+                    >
                       {this.state.intro_author.split("\n").map((line, i) => {
                         return (
                           <span key={i}>
@@ -320,15 +352,21 @@ class DetailBook extends Component {
                       });
                     }}
                   >
-                    {this.state.foldable_intro_author ? "접기" : "펼쳐보기"}
+                    {this.state.intro_author_height < 200 ? "" : this.state.foldable_intro_author ? "접기" : "펼쳐보기"}
                   </button>
                 </div>
                 <div className="BookDetailBox BookTOC-Area" style={bookDetailBox}>
                   <div className="BookDetailTitle BookTOC-Title" style={bookDetailTitle}>
                     목차
                   </div>
-                  <div className="BookDetailContent BookTOC-Content">
-                    <p className="BookDetailParagraph BookTOC-Paragraph" style={{ lineHeight: "1.8em", fontSize: "13px", color: "#333", wordBreak: "keep-all", wordWrap: "break-word", textAlign: "justify", height: this.state.foldable_indexes ? "auto" : "180px", overflow: "hidden" }}>
+                  <div className="BookDetailContent BookTOC-Content" style={{ maxHeight: this.state.foldable_indexes ? "100%" : "180px", overflow: "hidden" }}>
+                    <p
+                      className="BookDetailParagraph BookTOC-Paragraph"
+                      ref={(indexes_height) => {
+                        this.indexes_height = indexes_height;
+                      }}
+                      style={{ lineHeight: "1.8em", fontSize: "13px", color: "#333", wordBreak: "keep-all", wordWrap: "break-word", textAlign: "justify" }}
+                    >
                       {this.state.indexes.split("\n").map((line, i) => {
                         return (
                           <span key={i}>
@@ -347,7 +385,7 @@ class DetailBook extends Component {
                       });
                     }}
                   >
-                    {this.state.foldable_indexes ? "접기" : "펼쳐보기"}
+                    {this.state.indexes_height < 200 ? "" : this.state.foldable_indexes ? "접기" : "펼쳐보기"}
                   </button>
                 </div>
                 <StarRating book_comment={this.state.book_comment} rating={this.state.rating} updateStateBookComment={(value) => this.setState({ book_comment: value })} />

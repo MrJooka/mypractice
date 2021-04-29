@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /** @jsxImportSource @emotion/react */
 import { css, Global } from "@emotion/react";
 import React, { Component } from "react";
@@ -228,11 +229,11 @@ class ReviewList2 extends Component {
 
         // 3레벨 이상이 있는 경우, 레벨 하나씩 뿌려준다.
         if (max_level >= 3) {
-          for (var level = 3; level <= max_level; level++) {
-            for (var i = tmp_children.length - 1; i >= 0; i--) {
-              let position = comment.children.findIndex((original) => tmp_children[i].parent_id == original._id && tmp_children[i].level == level);
+          for (var _level = 3; _level <= max_level; _level++) {
+            for (var index = tmp_children.length - 1; index >= 0; index--) {
+              let position = comment.children.findIndex((original) => tmp_children[index].parent_id == original._id && tmp_children[index].level == _level);
               if (position >= 0) {
-                comment.children.splice(position + 1, 0, tmp_children[i]);
+                comment.children.splice(position + 1, 0, tmp_children[index]);
               }
             }
           }
@@ -252,17 +253,16 @@ class ReviewList2 extends Component {
               <div>
                 <span style={{ display: "inline-block", fontSize: "11px", color: "#7d8e9e", fontWeight: "700", width: "40px" }}>{child.user_id.substring(0, 3) + "***"}</span>
                 <span style={{ fontSize: "11px", color: "#7d8e9e", fontWeight: "400", marginLeft: "15px" }}>{KoreadateWithTime(child.time_created)}</span>
-                {/* 댓글달기 버튼 누르면 텍스트 입력창 표시 => 컴포넌트로 표시해야함 */}
-
-                <div>
-                  <label>
-                    <textarea type="textarea" rows={1} cols={40} onChange={this.changeReply} placeholder="이곳에 댓글을 남겨주세요."></textarea>
-                    {/* data- 형식으로 attribute(속성)을 저장하면 event발생시 해당 target에서 dataset.속성이름으로 속성값을 불러 올 수 있다. */}
-                    <button data-id={child._id} data-book_id={child.book_id} data-root_id={child.root_id} data-level={child.level} data-isdeleted={child.isDeleted} onClick={this.sendCommentToServer}>
-                      댓글올리기
-                    </button>
-                  </label>
-                </div>
+              </div>
+              {/* 댓글달기 버튼 누르면 텍스트 입력창 표시 => 컴포넌트로 표시해야함 */}
+              <div>
+                <label>
+                  <textarea type="textarea" rows={1} cols={40} onChange={this.changeReply} placeholder="이곳에 댓글을 남겨주세요."></textarea>
+                  {/* data- 형식으로 attribute(속성)을 저장하면 event발생시 해당 target에서 dataset.속성이름으로 속성값을 불러 올 수 있다. */}
+                  <button data-id={child._id} data-book_id={child.book_id} data-root_id={child.root_id} data-level={child.level} data-isdeleted={child.isDeleted} onClick={this.sendCommentToServer}>
+                    댓글올리기
+                  </button>
+                </label>
               </div>
             </div>
           </div>
@@ -334,7 +334,7 @@ class ReviewList2 extends Component {
                     댓글보기
                   </button>
                 </div>
-                {comment._id === this.state.child_commmet_show_id && <div style={{ display: "block", borderTop: "1px solid #c4d1de" }}>{comments}</div>}
+                {/* {comment._id === this.state.child_commmet_show_id && <div style={{ display: "block", borderTop: "1px solid #c4d1de" }}>{comments}</div>} */}
                 {/* <div style={{ display: comment._id === this.state.child_commmet_show_id ? "block" : "none", borderTop: "1px solid #c4d1de" }}>{comments}</div> */}
                 <WriteComment
                   id={comment._id}
@@ -357,6 +357,7 @@ class ReviewList2 extends Component {
                 />
               </div>
             </div>
+            {comment._id === this.state.child_commmet_show_id && <div style={{ display: "block", borderTop: "1px solid #c4d1de" }}>{comments}</div>}
           </li>
         </React.Fragment>
       );
