@@ -83,16 +83,16 @@ class StarRating extends Component {
     if (_rating === []) {
       return <div></div>;
     } else {
-      let 총별갯수 = 0;
-      let 리뷰갯수 = 0;
+      let total_star_counter = 0;
+      let total_review_counter = 0;
       let fiveStarCount = 0;
       let fourStarCount = 0;
       let threeStarCount = 0;
       let twoStarCount = 0;
       let oneStarCount = 0;
       for (let i = 0; i < _rating.length; i++) {
-        총별갯수 = 총별갯수 + _rating[i]._id * _rating[i].count;
-        리뷰갯수 = 리뷰갯수 + _rating[i].count;
+        total_star_counter = total_star_counter + _rating[i]._id * _rating[i].count;
+        total_review_counter = total_review_counter + _rating[i].count;
         if (_rating[i]._id == 5) {
           fiveStarCount = _rating[i].count;
         } else if (_rating[i]._id == 4) {
@@ -105,7 +105,7 @@ class StarRating extends Component {
           oneStarCount = _rating[i].count;
         }
       }
-      let 평균평점 = Math.round((총별갯수 / 리뷰갯수) * 100) / 100;
+      let average_rating = Math.round((total_star_counter / total_review_counter) * 100) / 100;
 
       return (
         <div className="BookDetailBox BookReviewArea" css={bookDetailBox}>
@@ -136,9 +136,9 @@ class StarRating extends Component {
             />
             <div style={{ display: "flex", flexDirection: "column", flex: "0.2", alignItems: "center" }}>
               <div>구매자 별점</div>
-              <div>{평균평점}</div>
+              <div>{average_rating}</div>
               <div>
-                <Rate className="smallStar" disabled value={평균평점} />
+                <Rate className="smallStar" disabled value={average_rating} />
               </div>
               <ul>
                 <li> 별5개 : {fiveStarCount} 개</li>
@@ -148,7 +148,7 @@ class StarRating extends Component {
                 <li> 별1개 : {oneStarCount} 개</li>
               </ul>
               <hr width="80%" />
-              <div>{리뷰갯수}명이 평가함</div>
+              <div>{total_review_counter}명이 평가함</div>
             </div>
             <div style={{ display: "flex", flexDirection: "column", flex: "0.8", alignItems: "center" }}>
               <div>

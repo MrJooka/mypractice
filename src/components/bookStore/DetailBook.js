@@ -9,6 +9,7 @@ import { AutoComplete, Rate } from "antd";
 import { Link } from "react-router-dom";
 import FavoriteCategory from "./components/FavoriteCategory";
 import StarRating from "./StarRating";
+import CommentStackOverFlow from "./CommentStackOverFlow";
 
 class DetailBook extends Component {
   constructor(props) {
@@ -129,23 +130,7 @@ class DetailBook extends Component {
                             미리보기
                           </button>
                           <div
-                            style={{ display: this.state.visibility_bookcover ? "block" : "none", top: 0, left: 0, position: "fixed", backdropFilter: "blur(1px)", width: "100%", margin: "0 auto", height: "100vh", backgroundColor: "rgb(0 0 0 / 60%)", zIndex: 9999, cursor: "zoom-out" }}
-                            onClick={() => {
-                              this.setState({
-                                visibility_bookcover: !this.state.visibility_bookcover,
-                              });
-                            }}
-                          >
-                            <div style={{ textAlign: "center", position: "absolute", width: "100vw", height: "100vh", padding: "0 8px" }}>
-                              <div style={{ position: "relative", display: "inline-block", verticalAlign: " middle", margin: "0 auto", textAlign: "left" }}>
-                                <figure style={{ display: "block" }}>
-                                  <img src={this.state.bookcover_large} alt="" style={{ width: AutoComplete, maxWidth: "100%", height: "auto", display: "block", lineHeight: "0", padding: "40px 0 40px", maxHeight: "937px", margin: "0 auto" }} />
-                                </figure>
-                              </div>
-                            </div>
-                          </div>
-                          <div
-                            style={{ display: this.state.visibility_bookcover ? "block" : "none", top: 0, left: 0, position: "fixed", width: "100%", margin: "0 auto", height: "100vh", backgroundColor: "rgb(0 0 0 / 40%)", zIndex: 9999, cursor: "zoom-out" }}
+                            style={{ display: this.state.visibility_bookcover ? "block" : "none", top: 0, left: 0, position: "fixed", backdropFilter: "blur(2px)", width: "100%", margin: "0 auto", height: "100vh", backgroundColor: "rgb(0 0 0 / 70%)", zIndex: 9999, cursor: "zoom-out" }}
                             onClick={() => {
                               this.setState({
                                 visibility_bookcover: !this.state.visibility_bookcover,
@@ -389,6 +374,7 @@ class DetailBook extends Component {
                   </button>
                 </div>
                 <StarRating book_comment={this.state.book_comment} rating={this.state.rating} updateStateBookComment={(value) => this.setState({ book_comment: value })} />
+                <CommentStackOverFlow />
               </div>
             </div>
             {/* 광고 AsideRight */}
