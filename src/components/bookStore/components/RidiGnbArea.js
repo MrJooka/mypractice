@@ -11,6 +11,7 @@ class RidiGnbArea extends Component {
   }
 
   render() {
+    console.log(this.props);
     return (
       <React.Fragment>
         <div className="GNBWrapper">
@@ -55,7 +56,7 @@ class RidiGnbArea extends Component {
 
               <ul className="SubMainGNB" css={subMainGNB}>
                 <li className="SubMainGNB-Item-Wrapper-Selected" css={subMainGNBItemWrapper_Selected}>
-                  <Link to="/" className="StyledAnchorForSubMainGNB" css={styledAnchorForSubMainGNB}>
+                  <Link to="/store" className="StyledAnchorForSubMainGNB" css={styledAnchorForSubMainGNB}>
                     <img src="home_white_24dp (1).svg" alt="홈" css={subMainGNBItemIcon} />
                     <span className="SubMainGNBItemLabelStyle" css={subMainGNBItemLabelStyle}>
                       홈
@@ -73,8 +74,55 @@ class RidiGnbArea extends Component {
                   <div className="SubMainGNB_UnSelected" css={subMainGNB_UnSelected}></div>
                 </li>
                 <li className="SubMainGNB-Item-Wrapper" css={subMainGNBItemWrapper}>
-                  <Link to="/" className="StyledAnchorForSubMainGNB" css={styledAnchorForSubMainGNB}>
+                  <Link to="/mycart" className="StyledAnchorForSubMainGNB" css={styledAnchorForSubMainGNB}>
                     <img src="shopping_cart_white_24dp.svg" alt="홈" css={subMainGNBItemIcon} />
+                    {this.props.books_in_cart.length == 0 ? null : (
+                      <div
+                        css={css`
+                          position: absolute;
+                          -webkit-box-pack: end;
+                          justify-content: flex-end;
+                          margin-left: auto;
+                          width: 100%;
+                          max-width: 30px;
+                          -webkit-box-align: center;
+                          align-items: center;
+                          top: -10px;
+                          left: 10px;
+                          display: flex;
+                          max-height: 31px;
+                          height: 100%;
+                        `}
+                      >
+                        <div
+                          css={css`
+                            -webkit-box-align: center;
+                            align-items: center;
+                            height: 20px;
+                            display: flex;
+                            border-radius: 6px;
+                            border-width: 2px;
+                            border-style: solid;
+                            border-color: rgb(31, 140, 230);
+                            border-image: initial;
+                            background: padding-box white;
+                          `}
+                        >
+                          <span
+                            css={css`
+                              font-weight: bold;
+                              padding: 1.5px 2.4px;
+                              font-size: 11.5px;
+                              line-height: 11.5px;
+                              color: rgb(31, 140, 230);
+                            `}
+                          >
+                            {this.props.books_in_cart.length}{" "}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+
                     <span className="SubMainGNBItemLabelStyle" css={subMainGNBItemLabelStyle}>
                       카트
                     </span>

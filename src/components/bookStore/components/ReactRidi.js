@@ -1,11 +1,1419 @@
 /** @jsxImportSource @emotion/react */
-import { Global, css } from "@emotion/react";
+import { css } from "@emotion/react";
 import React, { Component } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import RidiGnbArea from "./RidiGnbArea";
 import FavoriteCategory from "./FavoriteCategory";
 import { GlobalStyle } from "./GlobalStyle";
+
+class ReactRidi extends Component {
+  constructor(props) {
+    console.log("ReactRidi constructor() 매서드 실행됨");
+    super(props);
+    this.state = {
+      sell_book_list: [],
+      search: "",
+    };
+  }
+
+  // componentDidMount에 서버에서 받은 데이터를 this.state로 넣는 이유는 해당 데이터를 자식 컴포넌트의 props전달해야하기 위해서다.
+  // 리액트에서는 처음 render메서드 실행후 된 컴포넌트 render()메서드 안에서 사용되는 state값이나 props값이 변경되었을 때 다시 render()메서드를 실행하여 화면을 그리는데
+  // 서버에서 데이터를 받는 시점은 render()메서드가 실행된 시점보다 늦을 가능성이 아주 크다.
+  // (컴퓨터내부에서 달리기하는게 빠를까? 부산에서 서울까지 왕복하는게 빠를까? 당연히 컴퓨터 내부에서 동작하는 게 빠르고 클라이언트와 서버간 통신이 더 느릴 수박에 없다.)
+  // (자바스크립트는 순차적으로 동작하지만 한개의 메서드가 끝날때까지 기다렸다 다음 메서드를 실행하지 않고 같이 진행한다)
+  // 그래서 render()메서드 안에서 서버에서 받은 데이터를 변수로 전달받을 경우, 변수가 undfined가 되어 오류를 일으킬 가능성이 크다.
+
+  // render()매서드가 실행된 시점보다 늦게 전송받은 서버 데이터를 다시 render()매서드에 안 어딘가에 전달하는 방법은 this.state값을 변경하여 전달하는 방법밖에 없다.
+  // 모든 component가 리액트 DOM에 마운트 (랜더링)된후인
+  // componentDidMount에 실행하여 this.setState로 this.state값을 변경한다면 변경된 state값에 따라 render()매서드가 재실행될 것이다.
+  // state값 변경으로 rendering이 재실행한다고 componentDidMount도 재실행되지는 않는다. 왜냐하면 한번 설계된 DOM구조는 변경되지 않기 때문이다. (단지 state, props값만 변경되는 것일뿐)
+
+  // 리액트홈페이지에서는 이 과정을 시계 표시 프로그래밍으로 설명하는데 랜더 -> 컴포넌트디드마운트 (함수 1초마다 반복실행{시작 셋스테이트:현재시간})->랜더링(재랜더링되었다고 디드마운트가 다시 실행되진 않는다.)->1초후 함수반복으로 인해 스테이트값변경 ->랜더링->1초..->랜더링 .... 무한반복
+
+  componentDidMount() {
+    console.log("ReactRidi componentDidMount 매서드 실행됨");
+    axios.get("/api/bookstore/get-sellbooklist").then((res) => {
+      this.setState({ sell_book_list: res.data.sellbooklist }, () => console.log(this.state.sell_book_list));
+    });
+  }
+
+  searchIndex = (e) => {
+    let value = e.target.value;
+
+    this.setState({ search: value });
+  };
+
+  searchNow = () => {
+    const abc = this.state.sell_book_list;
+    const bbb = abc.filter((it) => it.book_info.category.includes(this.state.search));
+    console.log(bbb);
+  };
+
+  render() {
+    let nowHours = new Date().getHours();
+    let nowMinutes = new Date().getMinutes();
+    console.log("ReactRidi render  매서드 실행됨");
+
+    return (
+      <>
+        <GlobalStyle />
+        <RidiGnbArea books_in_cart={this.props.books_in_cart} />
+        <FavoriteCategory />
+        <div
+          css={css`
+            margin-top: 20px;
+          `}
+        ></div>
+        <main
+          className="Contents"
+          css={css`
+            margin: 0 auto;
+          `}
+        >
+          <div
+            className="CarouselWrapper"
+            css={css`
+              max-width: 2129.8px;
+              width: 100%;
+              margin: 0 auto;
+              position: relative;
+              overflow: hidden;
+            `}
+          >
+            <div
+              className="CarouselView-carouselHeight"
+              css={css`
+                width: 100%;
+                height: 286.6666666666667px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+              `}
+            >
+              <ul
+                className="CarouselList"
+                css={css`
+                  flex: none;
+                  display: flex;
+                  align-items: center;
+                `}
+              >
+                <li
+                  className="CarouselItemContainer"
+                  css={css`
+                    flex: none;
+                    position: relative;
+                    width: 414.95px;
+                    height: 276.6333333333333px;
+                    overflow: hidden;
+                    border-radius: 6px;
+                    line-height: 0;
+                    margin: 0 5px;
+                  `}
+                >
+                  <Link
+                    to="/"
+                    tabIndex="-1"
+                    className="BannerImageLink"
+                    css={css`
+                      width: 100%;
+                      height: 100%;
+                      display: inline-block;
+                      outline: none;
+                    `}
+                  >
+                    <img
+                      alt="노블엔진_만능감정사 Q의 사건수첩 세트(--04-10)"
+                      src="image/RidiEvent1.jpg"
+                      className="BannerImage"
+                      css={css`
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        object-position: 0 0;
+                      `}
+                    />
+                  </Link>
+                </li>
+                <li
+                  className="CarouselItemContainer-Center"
+                  css={css`
+                    flex: none;
+                    position: relative;
+                    width: 430px;
+                    height: 286.6666666666667px;
+                    overflow: hidden;
+                    border-radius: 6px;
+                    line-height: 0;
+                    margin: 0 5px;
+                  `}
+                >
+                  <Link
+                    to="/"
+                    tabIndex="0"
+                    className="BannerImageLink"
+                    css={css`
+                      width: 100%;
+                      height: 100%;
+                      display: inline-block;
+                      outline: none;
+                    `}
+                  >
+                    <img
+                      alt="문학동네_엘릭시르 대여전 (--04-15)"
+                      src="image/RidiEvent2.jpg"
+                      className="BannerImage"
+                      css={css`
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        object-position: 0 0;
+                      `}
+                    />
+                  </Link>
+                </li>
+                <li
+                  className="CarouselItemContainer"
+                  css={css`
+                    flex: none;
+                    position: relative;
+                    width: 414.95px;
+                    height: 276.6333333333333px;
+                    overflow: hidden;
+                    border-radius: 6px;
+                    line-height: 0;
+                    margin: 0 5px;
+                  `}
+                >
+                  <Link
+                    to="/"
+                    tabIndex="-1"
+                    className="BannerImageLink"
+                    css={css`
+                      width: 100%;
+                      height: 100%;
+                      display: inline-block;
+                      outline: none;
+                    `}
+                  >
+                    <img
+                      alt="궁리_래리 고닉 (--04-13)"
+                      src="image/RidiEvent3.jpg"
+                      className="BannerImage"
+                      css={css`
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        object-position: 0 0;
+                      `}
+                    />
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div
+              className="CarouselControllerWrapper"
+              css={css`
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                pointer-events: none;
+              `}
+            >
+              <div
+                className="CarouselController"
+                css={css`
+                  width: 430px;
+                  height: 286.6666666666667px;
+                  position: relative;
+                `}
+              >
+                <div
+                  className="SlideBadge"
+                  css={css`
+                    position: absolute;
+                    right: 10px;
+                    bottom: 10px;
+                    width: 54px;
+                    height: 24px;
+                    background-color: rgba(0, 0, 0, 0.4);
+                    border: 1px solid rgba(255, 255, 255, 0.25);
+                    border-radius: 12px;
+                    font-size: 12px;
+                    line-height: 22px;
+                    text-align: center;
+                    color: white;
+                  `}
+                >
+                  <strong>17</strong> / 20
+                </div>
+              </div>
+            </div>
+            <div
+              className="CarouselControllerWrapper"
+              css={css`
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                pointer-events: none;
+              `}
+            >
+              <div
+                className="ArrowWrapper"
+                css={css`
+                  opacity: 0.7;
+                  margin: 0px 20px;
+                  pointer-events: auto;
+                `}
+              >
+                <button
+                  type="button"
+                  className="Arrow-clearOutline-defaultOpacity-Arrow-arrowStyle"
+                  css={css`
+                    background: white;
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 40px;
+                    box-shadow: rgb(0 0 0 / 33%) 0px 0.8px 3px;
+                    opacity: 0.5;
+                    transition: opacity 0.1s ease 0s;
+                    cursor: pointer;
+                  `}
+                >
+                  <svg
+                    width="11"
+                    height="14"
+                    className="leftRotate-mergedStyle"
+                    css={css`
+                      transform-origin: center center;
+                      transform: rotateX(180deg) translate(-2%, 0px) rotate(180deg);
+                      top: 1.5px;
+                      fill: rgb(128, 137, 145);
+                    `}
+                  >
+                    <path d="M1.78 13.013L7.68 7 1.78.987 2.75 0l6.875 7-6.875 7z"></path>
+                  </svg>
+                  <span
+                    className="a11y"
+                    aria-label="이전 배너 보기"
+                    css={css`
+                      position: absolute;
+                      width: 1px;
+                      height: 1px;
+                      margin: -1px;
+                      padding: 0px;
+                      overflow: hidden;
+                      border: 0px;
+                      clip: rect(0px, 0px, 0px, 0px);
+                    `}
+                  >
+                    이전 배너 보기
+                  </span>
+                </button>
+              </div>
+              <div
+                className="CarouselController"
+                css={css`
+                  position: relative;
+                  width: 430px;
+                  height: 286.6666666666667px;
+                `}
+              ></div>
+              <div
+                className="ArrowWrapper"
+                css={css`
+                  opacity: 0.7;
+                  margin: 0px 20px;
+                  pointer-events: auto;
+                `}
+              >
+                <button
+                  type="button"
+                  className="Arrow-clearOutline-defaultOpacity-Arrow-arrowStyle"
+                  css={css`
+                    background: white;
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 40px;
+                    box-shadow: rgb(0 0 0 / 33%) 0px 0.8px 3px;
+                    opacity: 0.5;
+                    transition: opacity 0.1s ease 0s;
+                    cursor: pointer;
+                  `}
+                >
+                  <svg
+                    width="11"
+                    height="14"
+                    className="RightmergedStyle"
+                    css={css`
+                      top: 1.5px;
+                      fill: rgb(128, 137, 145);
+                    `}
+                  >
+                    <path d="M1.78 13.013L7.68 7 1.78.987 2.75 0l6.875 7-6.875 7z"></path>
+                  </svg>
+                  <span
+                    className="a11y"
+                    aria-label="다음 배너 보기"
+                    css={css`
+                      position: absolute;
+                      width: 1px;
+                      height: 1px;
+                      margin: -1px;
+                      padding: 0px;
+                      overflow: hidden;
+                      border: 0px;
+                      clip: rect(0px, 0px, 0px, 0px);
+                    `}
+                  >
+                    다음 배너 보기
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <section
+            className="QuickMenu"
+            css={css`
+              position: relative;
+              max-width: 1000px;
+              margin: 0 auto;
+            `}
+          >
+            <h2
+              className="HiddenText"
+              css={css`
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                margin: -1px;
+                padding: 0px;
+                overflow: hidden;
+                border: 0px;
+                clip: rect(0px, 0px, 0px, 0px);
+              `}
+            >
+              퀵메뉴
+            </h2>
+            <ul
+              className="QuickMenuWrapper"
+              css={css`
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 24px 13px;
+                max-width: 1000px;
+                margin: 0 auto;
+                overflow: auto;
+              `}
+            >
+              <li
+                className="MenuItem"
+                css={css`
+                  padding-left: 10px;
+                  margin-right: 9px;
+                  flex: none;
+                  display: inline-block;
+                `}
+              >
+                <Link
+                  className="MenuItemAnchor"
+                  to="/"
+                  css={css`
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    position: relative;
+                    width: 100%;
+                    flex: none;
+                  `}
+                >
+                  <svg
+                    className="QuickMenuShape"
+                    css={css`
+                      flex: none;
+                      height: 44px;
+                      width: 44px;
+                    `}
+                  >
+                    <rect
+                      rx="8"
+                      ry="8"
+                      width="44"
+                      height="44"
+                      css={css`
+                        fill: rgb(223, 19, 19);
+                        stroke: black;
+                        stroke-width: 1;
+                      `}
+                    />
+                  </svg>
+                  <img
+                    src="image/new2.svg"
+                    className="QuickMenuImage"
+                    css={css`
+                      top: 0;
+                      position: absolute;
+                      width: 44px;
+                      height: 44px;
+                    `}
+                    alt=""
+                  />
+                  <span
+                    css={css`
+                      font-size: 13px;
+                      line-height: 1.23;
+                      color: #525a61;
+                      min-width: 76px;
+                      text-align: center;
+                      word-break: keep-all;
+                      margin-top: 8px;
+                    `}
+                  >
+                    신간
+                  </span>
+                </Link>
+              </li>
+              <li
+                className="MenuItem"
+                css={css`
+                  margin-right: 9px;
+                  flex: none;
+                  display: inline-block;
+                `}
+              >
+                <Link
+                  className="MenuItemAnchor"
+                  to="/"
+                  css={css`
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    position: relative;
+                    width: 100%;
+                    flex: none;
+                  `}
+                >
+                  <svg
+                    className="QuickMenuShape"
+                    css={css`
+                      flex: none;
+                      height: 44px;
+                      width: 44px;
+                    `}
+                  >
+                    <rect
+                      rx="8"
+                      ry="8"
+                      width="44"
+                      height="44"
+                      css={css`
+                        fill: red;
+                        stroke: black;
+                        stroke-width: 1;
+                        opacity: 0.5;
+                      `}
+                    />
+                  </svg>
+                  <img
+                    src="category_black_24dp.svg"
+                    className="QuickMenuImage"
+                    css={css`
+                      top: 0;
+                      position: absolute;
+                      width: 44px;
+                      height: 44px;
+                    `}
+                    alt=""
+                  />
+                  <span
+                    css={css`
+                      font-size: 13px;
+                      line-height: 1.23;
+                      color: #525a61;
+                      min-width: 76px;
+                      text-align: center;
+                      word-break: keep-all;
+                      margin-top: 8px;
+                    `}
+                  >
+                    이벤트
+                  </span>
+                </Link>
+              </li>
+              <li
+                className="MenuItem"
+                css={css`
+                  margin-right: 9px;
+                  flex: none;
+                  display: inline-block;
+                `}
+              >
+                <Link
+                  className="MenuItemAnchor"
+                  to="/"
+                  css={css`
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    position: relative;
+                    width: 100%;
+                    flex: none;
+                  `}
+                >
+                  <svg
+                    className="QuickMenuShape"
+                    css={css`
+                      flex: none;
+                      height: 44px;
+                      width: 44px;
+                    `}
+                  >
+                    <rect
+                      rx="8"
+                      ry="8"
+                      width="44"
+                      height="44"
+                      css={css`
+                        fill: red;
+                        stroke: black;
+                        stroke-width: 1;
+                        opacity: 0.5;
+                      `}
+                    />
+                  </svg>
+                  <img
+                    src="category_black_24dp.svg"
+                    className="QuickMenuImage"
+                    css={css`
+                      top: 0;
+                      position: absolute;
+                      width: 44px;
+                      height: 44px;
+                    `}
+                    alt=""
+                  />
+                  <span
+                    css={css`
+                      font-size: 13px;
+                      line-height: 1.23;
+                      color: #525a61;
+                      min-width: 76px;
+                      text-align: center;
+                      word-break: keep-all;
+                      margin-top: 8px;
+                    `}
+                  >
+                    베스트셀러
+                  </span>
+                </Link>
+              </li>
+              <li
+                className="MenuItem"
+                css={css`
+                  margin-right: 9px;
+                  flex: none;
+                  display: inline-block;
+                `}
+              >
+                <Link
+                  className="MenuItemAnchor"
+                  to="/"
+                  css={css`
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    position: relative;
+                    width: 100%;
+                    flex: none;
+                  `}
+                >
+                  <svg
+                    className="QuickMenuShape"
+                    css={css`
+                      flex: none;
+                      height: 44px;
+                      width: 44px;
+                    `}
+                  >
+                    <rect
+                      rx="8"
+                      ry="8"
+                      width="44"
+                      height="44"
+                      css={css`
+                        fill: red;
+                        stroke: black;
+                        stroke-width: 1;
+                        opacity: 0.5;
+                      `}
+                    />
+                  </svg>
+                  <img
+                    src="category_black_24dp.svg"
+                    className="QuickMenuImage"
+                    css={css`
+                      top: 0;
+                      position: absolute;
+                      width: 44px;
+                      height: 44px;
+                    `}
+                    alt=""
+                  />
+                  <span
+                    css={css`
+                      font-size: 13px;
+                      line-height: 1.23;
+                      color: #525a61;
+                      min-width: 76px;
+                      text-align: center;
+                      word-break: keep-all;
+                      margin-top: 8px;
+                    `}
+                  >
+                    대여관
+                  </span>
+                </Link>
+              </li>
+              <li
+                className="MenuItem"
+                css={css`
+                  margin-right: 9px;
+                  flex: none;
+                  display: inline-block;
+                `}
+              >
+                <Link
+                  className="MenuItemAnchor"
+                  to="/"
+                  css={css`
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    position: relative;
+                    width: 100%;
+                    flex: none;
+                  `}
+                >
+                  <svg
+                    className="QuickMenuShape"
+                    css={css`
+                      flex: none;
+                      height: 44px;
+                      width: 44px;
+                    `}
+                  >
+                    <rect
+                      rx="8"
+                      ry="8"
+                      width="44"
+                      height="44"
+                      css={css`
+                        fill: red;
+                        stroke: black;
+                        stroke-width: 1;
+                        opacity: 0.5;
+                      `}
+                    />
+                  </svg>
+                  <img
+                    src="category_black_24dp.svg"
+                    className="QuickMenuImage"
+                    css={css`
+                      top: 0;
+                      position: absolute;
+                      width: 44px;
+                      height: 44px;
+                    `}
+                    alt=""
+                  />
+                  <span
+                    css={css`
+                      font-size: 13px;
+                      line-height: 1.23;
+                      color: #525a61;
+                      min-width: 76px;
+                      text-align: center;
+                      word-break: keep-all;
+                      margin-top: 8px;
+                    `}
+                  >
+                    인기세트
+                  </span>
+                </Link>
+              </li>
+              <li
+                className="MenuItem"
+                css={css`
+                  margin-right: 9px;
+                  flex: none;
+                  display: inline-block;
+                `}
+              >
+                <Link
+                  className="MenuItemAnchor"
+                  to="/"
+                  css={css`
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    position: relative;
+                    width: 100%;
+                    flex: none;
+                  `}
+                >
+                  <svg
+                    className="QuickMenuShape"
+                    css={css`
+                      flex: none;
+                      height: 44px;
+                      width: 44px;
+                    `}
+                  >
+                    <rect
+                      rx="8"
+                      ry="8"
+                      width="44"
+                      height="44"
+                      css={css`
+                        fill: red;
+                        stroke: black;
+                        stroke-width: 1;
+                        opacity: 0.5;
+                      `}
+                    />
+                  </svg>
+                  <img
+                    src="category_black_24dp.svg"
+                    className="QuickMenuImage"
+                    css={css`
+                      top: 0;
+                      position: absolute;
+                      width: 44px;
+                      height: 44px;
+                    `}
+                    alt=""
+                  />
+                  <span
+                    css={css`
+                      font-size: 13px;
+                      line-height: 1.23;
+                      color: #525a61;
+                      min-width: 76px;
+                      text-align: center;
+                      word-break: keep-all;
+                      margin-top: 8px;
+                    `}
+                  >
+                    신간 캘린더
+                  </span>
+                </Link>
+              </li>
+              <li
+                className="MenuItem"
+                css={css`
+                  margin-right: 9px;
+                  flex: none;
+                  display: inline-block;
+                `}
+              >
+                <Link
+                  className="MenuItemAnchor"
+                  to="/"
+                  css={css`
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    position: relative;
+                    width: 100%;
+                    flex: none;
+                  `}
+                >
+                  <svg
+                    className="QuickMenuShape"
+                    css={css`
+                      flex: none;
+                      height: 44px;
+                      width: 44px;
+                    `}
+                  >
+                    <rect
+                      rx="8"
+                      ry="8"
+                      width="44"
+                      height="44"
+                      css={css`
+                        fill: red;
+                        stroke: black;
+                        stroke-width: 1;
+                        opacity: 0.5;
+                      `}
+                    />
+                  </svg>
+                  <img
+                    src="category_black_24dp.svg"
+                    className="QuickMenuImage"
+                    css={css`
+                      top: 0;
+                      position: absolute;
+                      width: 44px;
+                      height: 44px;
+                    `}
+                    alt=""
+                  />
+                  <span
+                    css={css`
+                      font-size: 13px;
+                      line-height: 1.23;
+                      color: #525a61;
+                      min-width: 76px;
+                      text-align: center;
+                      word-break: keep-all;
+                      margin-top: 8px;
+                    `}
+                  >
+                    혜택
+                  </span>
+                </Link>
+              </li>
+              <li
+                className="MenuItem"
+                css={css`
+                  margin-right: 9px;
+                  flex: none;
+                  display: inline-block;
+                `}
+              >
+                <Link
+                  className="MenuItemAnchor"
+                  to="/"
+                  css={css`
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    position: relative;
+                    width: 100%;
+                    flex: none;
+                  `}
+                >
+                  <svg
+                    className="QuickMenuShape"
+                    css={css`
+                      flex: none;
+                      height: 44px;
+                      width: 44px;
+                    `}
+                  >
+                    <rect
+                      rx="8"
+                      ry="8"
+                      width="44"
+                      height="44"
+                      css={css`
+                        fill: red;
+                        stroke: black;
+                        stroke-width: 1;
+                        opacity: 0.5;
+                      `}
+                    />
+                  </svg>
+                  <img
+                    src="category_black_24dp.svg"
+                    className="QuickMenuImage"
+                    css={css`
+                      top: 0;
+                      position: absolute;
+                      width: 44px;
+                      height: 44px;
+                    `}
+                    alt=""
+                  />
+                  <span
+                    css={css`
+                      font-size: 13px;
+                      line-height: 1.23;
+                      color: #525a61;
+                      min-width: 76px;
+                      text-align: center;
+                      word-break: keep-all;
+                      margin-top: 8px;
+                    `}
+                  >
+                    위클리 쿠폰
+                  </span>
+                </Link>
+              </li>
+              <li
+                className="MenuItem"
+                css={css`
+                  margin-right: 9px;
+                  flex: none;
+                  display: inline-block;
+                `}
+              >
+                <Link
+                  className="MenuItemAnchor"
+                  to="/"
+                  css={css`
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    position: relative;
+                    width: 100%;
+                    flex: none;
+                  `}
+                >
+                  <svg
+                    className="QuickMenuShape"
+                    css={css`
+                      flex: none;
+                      height: 44px;
+                      width: 44px;
+                    `}
+                  >
+                    <rect
+                      rx="8"
+                      ry="8"
+                      width="44"
+                      height="44"
+                      css={css`
+                        fill: red;
+                        stroke: black;
+                        stroke-width: 1;
+                        opacity: 0.5;
+                      `}
+                    />
+                  </svg>
+                  <img
+                    src="category_black_24dp.svg"
+                    className="QuickMenuImage"
+                    css={css`
+                      top: 0;
+                      position: absolute;
+                      width: 44px;
+                      height: 44px;
+                    `}
+                    alt=""
+                  />
+                  <span
+                    css={css`
+                      font-size: 13px;
+                      line-height: 1.23;
+                      color: #525a61;
+                      min-width: 76px;
+                      text-align: center;
+                      word-break: keep-all;
+                      margin-top: 8px;
+                    `}
+                  >
+                    콕북 스터디
+                  </span>
+                </Link>
+              </li>
+            </ul>
+          </section>
+          <section
+            className="RecommenderBookWrapper"
+            css={css`
+              padding-top: 36px;
+              padding-bottom: 36px;
+              background: #afbdd4;
+            `}
+          >
+            <h2
+              className="sectionTitle"
+              css={css`
+                max-width: 1000px;
+                margin: 0 auto;
+                padding-left: 25px;
+                padding-right: 8px;
+                font-size: 19px;
+                font-weight: normal;
+                color: white;
+              `}
+            >
+              집 앞 서점에 방금 나온 신간!
+            </h2>
+            <div
+              className="CarouselWrapper"
+              css={css`
+                width: 1005px;
+                margin: 20px auto 0px;
+                position: relative;
+              `}
+            >
+              <div
+                className="BookCarouselWrapper"
+                css={css`
+                  width: 964px;
+                  margin: -8px auto 0px;
+                  overflow: hidden;
+                `}
+              >
+                <ul
+                  className="BookCarouselList"
+                  css={css`
+                    display: flex;
+                    flex-wrap: nowrap;
+                    padding-top: 8px;
+                    padding-left: 7px;
+                  `}
+                >
+                  <ListRecommendedBook serverlist={this.state.sell_book_list} />
+                </ul>
+              </div>
+            </div>
+          </section>
+          <section
+            className="SectionWrapper"
+            css={css`
+              max-width: 1000px;
+              margin: 0 auto;
+              padding: 24px 0;
+              position: relative;
+            `}
+          >
+            <h2
+              className="SectionTitle"
+              css={css`
+                max-width: 990px;
+                margin: 0 auto 16px;
+                padding: 6px 20px 0;
+                display: flex;
+                flex-direction: column;
+                font-size: 19px;
+                font-weight: normal;
+                line-height: 26px;
+                color: #000000;
+                word-break: keep-all;
+              `}
+            >
+              <div
+                className="TimerWrapper"
+                css={css`
+                  width: 96px;
+                  height: 30px;
+                  padding: 9px;
+                  padding-right: 13px;
+                  margin-bottom: 16px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  background-image: linear-gradient(255deg, #0077d9 4%, #72d2e0);
+                  border-radius: 14px;
+                  font-size: 13px;
+                  font-weight: bold;
+                  color: white;
+                `}
+              >
+                <img
+                  src="image/watch_later_white_24dp.svg"
+                  height="12"
+                  width="12"
+                  alt="시계아이콘"
+                  css={css`
+                    flex: none;
+                  `}
+                />
+                <span
+                  css={css`
+                    flex: none;
+                  `}
+                >
+                  {nowHours}시 {nowMinutes}분
+                </span>
+              </div>
+              "사람들이 지금 많이 읽고 있는 책"
+            </h2>
+            <div
+              className="BooklistControllerContainer"
+              css={css`
+                position: relative;
+              `}
+            >
+              <div
+                className="SlidingContainer-scrollBarHidden"
+                css={css`
+                  display: flex;
+                  flex-wrap: nowrap;
+                  overflow-x: auto;
+                  overflow-y: hidden;
+                `}
+              >
+                <div
+                  className="Content-BookListWrapper"
+                  css={css`
+                    flex: 1 0 auto;
+                  `}
+                >
+                  <ul
+                    type="small"
+                    className="BookList-grid"
+                    css={css`
+                      display: grid;
+                      grid: repeat(3, 94px) / auto-flow 308px;
+                      grid-column-gap: 13px;
+                      padding: 0 24px;
+                    `}
+                  >
+                    <ListPopularBook serverlist={this.state.sell_book_list} />
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section
+            className="RecommenderBookWrapper-noBG"
+            css={css`
+              padding-top: 24px;
+              padding-bottom: 24px;
+            `}
+          >
+            <h2
+              className="sectionTitle"
+              css={css`
+                max-width: 1000px;
+                margin: 0 auto;
+                padding-left: 25px;
+                padding-right: 8px;
+                font-size: 19px;
+                font-weight: normal;
+              `}
+            >
+              오늘, 콕북의 발견
+            </h2>
+            <div
+              className="CarouselWrapper"
+              css={css`
+                width: 1005px;
+                margin: 20px auto 0px;
+                position: relative;
+              `}
+            >
+              <div
+                className="BookCarouselWrapper"
+                css={css`
+                  width: 964px;
+                  margin: -8px auto 0px;
+                  overflow: hidden;
+                `}
+              >
+                <ul
+                  className="BookCarouselList"
+                  css={css`
+                    display: flex;
+                    flex-wrap: nowrap;
+                    padding-top: 8px;
+                    padding-left: 7px;
+                  `}
+                >
+                  <ListCogBookRecommendBook serverlist={this.state.sell_book_list} />
+                </ul>
+              </div>
+            </div>
+          </section>
+          <section
+            className="SectionWrapper"
+            css={css`
+              max-width: 1000px;
+              margin: 0 auto;
+              padding: 24px 0;
+              position: relative;
+            `}
+          >
+            <h2
+              className="SectionTitle"
+              css={css`
+                max-width: 990px;
+                margin: 0 auto 16px;
+                padding: 6px 20px 0;
+                display: flex;
+                flex-direction: column;
+                font-size: 19px;
+                font-weight: normal;
+                line-height: 26px;
+                color: #000000;
+                word-break: keep-all;
+              `}
+            >
+              <Link
+                to="/"
+                className="LingWrapper"
+                css={css`
+                  display: flex;
+                  align-items: center;
+                  color: black;
+                `}
+              >
+                베스트셀러
+                <img
+                  src="image/arrow_forward_ios_black_24dp.svg"
+                  alt="화살표"
+                  css={css`
+                    flex: none;
+                    width: 11px;
+                    height: 14px;
+                    margin-left: 8px;
+                  `}
+                />
+              </Link>
+            </h2>
+            <div
+              className="BooklistControllerContainer"
+              css={css`
+                position: relative;
+              `}
+            >
+              <div
+                className="SlidingContainer-scrollBarHidden"
+                css={css`
+                  display: flex;
+                  flex-wrap: nowrap;
+                  overflow-x: auto;
+                  overflow-y: hidden;
+                `}
+              >
+                <div
+                  className="Content-BookListWrapper"
+                  css={css`
+                    flex: 1 0 auto;
+                  `}
+                >
+                  <ul
+                    type="big"
+                    className="BookList-grid"
+                    css={css`
+                      display: grid;
+                      grid: repeat(3, 138px) / auto-flow 308px;
+                      grid-column-gap: 13px;
+                      padding: 0 24px;
+                    `}
+                  >
+                    <ListBestSellerBook serverlist={this.state.sell_book_list} />
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section
+            className="RecommenderBookWrapper-noBG-withAuthor"
+            css={css`
+              padding-top: 24px;
+              padding-bottom: 24px;
+            `}
+          >
+            <h2
+              className="sectionTitle"
+              css={css`
+                max-width: 1000px;
+                margin: 0 auto;
+                padding-left: 25px;
+                padding-right: 8px;
+                font-size: 19px;
+                font-weight: normal;
+              `}
+            >
+              봄 바람이 살랑살랑, 공부하기 좋은 시간
+            </h2>
+            <div
+              className="CarouselWrapper"
+              css={css`
+                width: 1005px;
+                margin: 20px auto 0px;
+                position: relative;
+              `}
+            >
+              <div
+                className="BookCarouselWrapper"
+                css={css`
+                  width: 964px;
+                  margin: -8px auto 0px;
+                  overflow: hidden;
+                `}
+              >
+                <ul
+                  className="BookCarouselList"
+                  css={css`
+                    display: flex;
+                    flex-wrap: nowrap;
+                    padding-top: 8px;
+                    padding-left: 7px;
+                  `}
+                >
+                  <ListGoodForStudy serverlist={this.state.sell_book_list} />
+                </ul>
+              </div>
+            </div>
+          </section>
+          <section
+            className="RecommenderBookWrapper-noBG-withAuthor"
+            css={css`
+              padding-top: 24px;
+              padding-bottom: 24px;
+            `}
+          >
+            <h2
+              className="sectionTitle"
+              css={css`
+                max-width: 1000px;
+                margin: 0 auto;
+                padding-left: 25px;
+                padding-right: 8px;
+                font-size: 19px;
+                font-weight: normal;
+              `}
+            >
+              집 콕! 북 스터디하기 좋은 계절
+            </h2>
+            <div
+              className="CarouselWrapper"
+              css={css`
+                width: 1005px;
+                margin: 20px auto 0px;
+                position: relative;
+              `}
+            >
+              <div
+                className="BookCarouselWrapper"
+                css={css`
+                  width: 964px;
+                  margin: -8px auto 0px;
+                  overflow: hidden;
+                `}
+              >
+                <ul
+                  className="BookCarouselList"
+                  css={css`
+                    display: flex;
+                    flex-wrap: nowrap;
+                    padding-top: 8px;
+                    padding-left: 7px;
+                  `}
+                >
+                  <ListGoodForHomeStudy serverlist={this.state.sell_book_list} />
+                </ul>
+              </div>
+            </div>
+          </section>
+        </main>
+      </>
+    );
+  }
+}
+
+export default ReactRidi;
 
 class ListGoodForHomeStudy extends Component {
   constructor(props) {
@@ -513,1405 +1921,6 @@ class ListRecommendedBook extends Component {
     );
   }
 }
-
-class ReactRidi extends Component {
-  constructor(props) {
-    console.log("ReactRidi constructor() 매서드 실행됨");
-    super(props);
-    this.state = {
-      sell_book_list: [],
-      search: "",
-    };
-  }
-
-  // componentDidMount에 서버에서 받은 데이터를 this.state로 넣는 이유는 해당 데이터를 자식 컴포넌트의 props전달해야하기 위해서다.
-  // 리액트에서는 처음 render메서드 실행후 된 컴포넌트 render()메서드 안에서 사용되는 state값이나 props값이 변경되었을 때 다시 render()메서드를 실행하여 화면을 그리는데
-  // 서버에서 데이터를 받는 시점은 render()메서드가 실행된 시점보다 늦을 가능성이 아주 크다.
-  // (컴퓨터내부에서 달리기하는게 빠를까? 부산에서 서울까지 왕복하는게 빠를까? 당연히 컴퓨터 내부에서 동작하는 게 빠르고 클라이언트와 서버간 통신이 더 느릴 수박에 없다.)
-  // (자바스크립트는 순차적으로 동작하지만 한개의 메서드가 끝날때까지 기다렸다 다음 메서드를 실행하지 않고 같이 진행한다)
-  // 그래서 render()메서드 안에서 서버에서 받은 데이터를 변수로 전달받을 경우, 변수가 undfined가 되어 오류를 일으킬 가능성이 크다.
-
-  // render()매서드가 실행된 시점보다 늦게 전송받은 서버 데이터를 다시 render()매서드에 안 어딘가에 전달하는 방법은 this.state값을 변경하여 전달하는 방법밖에 없다.
-  // 모든 component가 리액트 DOM에 마운트 (랜더링)된후인
-  // componentDidMount에 실행하여 this.setState로 this.state값을 변경한다면 변경된 state값에 따라 render()매서드가 재실행될 것이다.
-  // state값 변경으로 rendering이 재실행한다고 componentDidMount도 재실행되지는 않는다. 왜냐하면 한번 설계된 DOM구조는 변경되지 않기 때문이다. (단지 state, props값만 변경되는 것일뿐)
-
-  // 리액트홈페이지에서는 이 과정을 시계 표시 프로그래밍으로 설명하는데 랜더 -> 컴포넌트디드마운트 (함수 1초마다 반복실행{시작 셋스테이트:현재시간})->랜더링(재랜더링되었다고 디드마운트가 다시 실행되진 않는다.)->1초후 함수반복으로 인해 스테이트값변경 ->랜더링->1초..->랜더링 .... 무한반복
-
-  componentDidMount() {
-    console.log("ReactRidi componentDidMount 매서드 실행됨");
-    axios.get("/api/bookstore/get-sellbooklist").then((res) => {
-      this.setState({ sell_book_list: res.data.sellbooklist }, () => console.log(this.state.sell_book_list));
-    });
-  }
-
-  searchIndex = (e) => {
-    let value = e.target.value;
-
-    this.setState({ search: value });
-  };
-
-  searchNow = () => {
-    const abc = this.state.sell_book_list;
-    const bbb = abc.filter((it) => it.book_info.category.includes(this.state.search));
-    console.log(bbb);
-  };
-
-  render() {
-    let nowHours = new Date().getHours();
-    let nowMinutes = new Date().getMinutes();
-    console.log("ReactRidi render  매서드 실행됨");
-
-    return (
-      <>
-        <GlobalStyle />
-        <RidiGnbArea />
-        <FavoriteCategory />
-        <div
-          css={css`
-            margin-top: 20px;
-          `}
-        ></div>
-        <main
-          className="Contents"
-          css={css`
-            margin: 0 auto;
-          `}
-        >
-          <div
-            className="CarouselWrapper"
-            css={css`
-              max-width: 2129.8px;
-              width: 100%;
-              margin: 0 auto;
-              position: relative;
-              overflow: hidden;
-            `}
-          >
-            <div
-              className="CarouselView-carouselHeight"
-              css={css`
-                width: 100%;
-                height: 286.6666666666667px;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-              `}
-            >
-              <ul
-                className="CarouselList"
-                css={css`
-                  flex: none;
-                  display: flex;
-                  align-items: center;
-                `}
-              >
-                <li
-                  className="CarouselItemContainer"
-                  css={css`
-                    flex: none;
-                    position: relative;
-                    width: 414.95px;
-                    height: 276.6333333333333px;
-                    overflow: hidden;
-                    border-radius: 6px;
-                    line-height: 0;
-                    margin: 0 5px;
-                  `}
-                >
-                  <Link
-                    to="/"
-                    tabIndex="-1"
-                    className="BannerImageLink"
-                    css={css`
-                      width: 100%;
-                      height: 100%;
-                      display: inline-block;
-                      outline: none;
-                    `}
-                  >
-                    <img
-                      alt="노블엔진_만능감정사 Q의 사건수첩 세트(--04-10)"
-                      src="image/RidiEvent1.jpg"
-                      className="BannerImage"
-                      css={css`
-                        width: 100%;
-                        height: 100%;
-                        object-fit: cover;
-                        object-position: 0 0;
-                      `}
-                    />
-                  </Link>
-                </li>
-                <li
-                  className="CarouselItemContainer-Center"
-                  css={css`
-                    flex: none;
-                    position: relative;
-                    width: 430px;
-                    height: 286.6666666666667px;
-                    overflow: hidden;
-                    border-radius: 6px;
-                    line-height: 0;
-                    margin: 0 5px;
-                  `}
-                >
-                  <Link
-                    to="/"
-                    tabIndex="0"
-                    className="BannerImageLink"
-                    css={css`
-                      width: 100%;
-                      height: 100%;
-                      display: inline-block;
-                      outline: none;
-                    `}
-                  >
-                    <img
-                      alt="문학동네_엘릭시르 대여전 (--04-15)"
-                      src="image/RidiEvent2.jpg"
-                      className="BannerImage"
-                      css={css`
-                        width: 100%;
-                        height: 100%;
-                        object-fit: cover;
-                        object-position: 0 0;
-                      `}
-                    />
-                  </Link>
-                </li>
-                <li
-                  className="CarouselItemContainer"
-                  css={css`
-                    flex: none;
-                    position: relative;
-                    width: 414.95px;
-                    height: 276.6333333333333px;
-                    overflow: hidden;
-                    border-radius: 6px;
-                    line-height: 0;
-                    margin: 0 5px;
-                  `}
-                >
-                  <Link
-                    to="/"
-                    tabIndex="-1"
-                    className="BannerImageLink"
-                    css={css`
-                      width: 100%;
-                      height: 100%;
-                      display: inline-block;
-                      outline: none;
-                    `}
-                  >
-                    <img
-                      alt="궁리_래리 고닉 (--04-13)"
-                      src="image/RidiEvent3.jpg"
-                      className="BannerImage"
-                      css={css`
-                        width: 100%;
-                        height: 100%;
-                        object-fit: cover;
-                        object-position: 0 0;
-                      `}
-                    />
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div
-              className="CarouselControllerWrapper"
-              css={css`
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                pointer-events: none;
-              `}
-            >
-              <div
-                className="CarouselController"
-                css={css`
-                  width: 430px;
-                  height: 286.6666666666667px;
-                  position: relative;
-                `}
-              >
-                <div
-                  className="SlideBadge"
-                  css={css`
-                    position: absolute;
-                    right: 10px;
-                    bottom: 10px;
-                    width: 54px;
-                    height: 24px;
-                    background-color: rgba(0, 0, 0, 0.4);
-                    border: 1px solid rgba(255, 255, 255, 0.25);
-                    border-radius: 12px;
-                    font-size: 12px;
-                    line-height: 22px;
-                    text-align: center;
-                    color: white;
-                  `}
-                >
-                  <strong>17</strong> / 20
-                </div>
-              </div>
-            </div>
-            <div
-              className="CarouselControllerWrapper"
-              css={css`
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                pointer-events: none;
-              `}
-            >
-              <div
-                className="ArrowWrapper"
-                css={css`
-                  opacity: 0.7;
-                  margin: 0px 20px;
-                  pointer-events: auto;
-                `}
-              >
-                <button
-                  type="button"
-                  className="Arrow-clearOutline-defaultOpacity-Arrow-arrowStyle"
-                  css={css`
-                    background: white;
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 40px;
-                    box-shadow: rgb(0 0 0 / 33%) 0px 0.8px 3px;
-                    opacity: 0.5;
-                    transition: opacity 0.1s ease 0s;
-                    cursor: pointer;
-                  `}
-                >
-                  <svg
-                    width="11"
-                    height="14"
-                    className="leftRotate-mergedStyle"
-                    css={css`
-                      transform-origin: center center;
-                      transform: rotateX(180deg) translate(-2%, 0px) rotate(180deg);
-                      top: 1.5px;
-                      fill: rgb(128, 137, 145);
-                    `}
-                  >
-                    <path d="M1.78 13.013L7.68 7 1.78.987 2.75 0l6.875 7-6.875 7z"></path>
-                  </svg>
-                  <span
-                    className="a11y"
-                    aria-label="이전 배너 보기"
-                    css={css`
-                      position: absolute;
-                      width: 1px;
-                      height: 1px;
-                      margin: -1px;
-                      padding: 0px;
-                      overflow: hidden;
-                      border: 0px;
-                      clip: rect(0px, 0px, 0px, 0px);
-                    `}
-                  >
-                    이전 배너 보기
-                  </span>
-                </button>
-              </div>
-              <div
-                className="CarouselController"
-                css={css`
-                  position: relative;
-                  width: 430px;
-                  height: 286.6666666666667px;
-                `}
-              ></div>
-              <div
-                className="ArrowWrapper"
-                css={css`
-                  opacity: 0.7;
-                  margin: 0px 20px;
-                  pointer-events: auto;
-                `}
-              >
-                <button
-                  type="button"
-                  className="Arrow-clearOutline-defaultOpacity-Arrow-arrowStyle"
-                  css={css`
-                    background: white;
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 40px;
-                    box-shadow: rgb(0 0 0 / 33%) 0px 0.8px 3px;
-                    opacity: 0.5;
-                    transition: opacity 0.1s ease 0s;
-                    cursor: pointer;
-                  `}
-                >
-                  <svg
-                    width="11"
-                    height="14"
-                    className="RightmergedStyle"
-                    css={css`
-                      top: 1.5px;
-                      fill: rgb(128, 137, 145);
-                    `}
-                  >
-                    <path d="M1.78 13.013L7.68 7 1.78.987 2.75 0l6.875 7-6.875 7z"></path>
-                  </svg>
-                  <span
-                    className="a11y"
-                    aria-label="다음 배너 보기"
-                    css={css`
-                      position: absolute;
-                      width: 1px;
-                      height: 1px;
-                      margin: -1px;
-                      padding: 0px;
-                      overflow: hidden;
-                      border: 0px;
-                      clip: rect(0px, 0px, 0px, 0px);
-                    `}
-                  >
-                    다음 배너 보기
-                  </span>
-                </button>
-              </div>
-            </div>
-          </div>
-          <section
-            className="QuickMenu"
-            css={css`
-              position: relative;
-              max-width: 1000px;
-              margin: 0 auto;
-            `}
-          >
-            <h2
-              className="HiddenText"
-              css={css`
-                position: absolute;
-                width: 1px;
-                height: 1px;
-                margin: -1px;
-                padding: 0px;
-                overflow: hidden;
-                border: 0px;
-                clip: rect(0px, 0px, 0px, 0px);
-              `}
-            >
-              퀵메뉴
-            </h2>
-            <ul
-              className="QuickMenuWrapper"
-              css={css`
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                padding: 24px 13px;
-                max-width: 1000px;
-                margin: 0 auto;
-                overflow: auto;
-              `}
-            >
-              <li
-                className="MenuItem"
-                css={css`
-                  padding-left: 10px;
-                  margin-right: 9px;
-                  flex: none;
-                  display: inline-block;
-                `}
-              >
-                <Link
-                  className="MenuItemAnchor"
-                  to="/"
-                  css={css`
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    position: relative;
-                    width: 100%;
-                    flex: none;
-                  `}
-                >
-                  <svg
-                    className="QuickMenuShape"
-                    css={css`
-                      flex: none;
-                      height: 44px;
-                      width: 44px;
-                    `}
-                  >
-                    <rect
-                      rx="8"
-                      ry="8"
-                      width="44"
-                      height="44"
-                      css={css`
-                        fill: rgb(223, 19, 19);
-                        stroke: black;
-                        stroke-width: 1;
-                      `}
-                    />
-                  </svg>
-                  <img
-                    src="image/new2.svg"
-                    className="QuickMenuImage"
-                    css={css`
-                      top: 0;
-                      position: absolute;
-                      width: 44px;
-                      height: 44px;
-                    `}
-                  />
-                  <span
-                    css={css`
-                      font-size: 13px;
-                      line-height: 1.23;
-                      color: #525a61;
-                      min-width: 76px;
-                      text-align: center;
-                      word-break: keep-all;
-                      margin-top: 8px;
-                    `}
-                  >
-                    신간
-                  </span>
-                </Link>
-              </li>
-              <li
-                className="MenuItem"
-                css={css`
-                  margin-right: 9px;
-                  flex: none;
-                  display: inline-block;
-                `}
-              >
-                <Link
-                  className="MenuItemAnchor"
-                  to="/"
-                  css={css`
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    position: relative;
-                    width: 100%;
-                    flex: none;
-                  `}
-                >
-                  <svg
-                    className="QuickMenuShape"
-                    css={css`
-                      flex: none;
-                      height: 44px;
-                      width: 44px;
-                    `}
-                  >
-                    <rect
-                      rx="8"
-                      ry="8"
-                      width="44"
-                      height="44"
-                      css={css`
-                        fill: red;
-                        stroke: black;
-                        stroke-width: 1;
-                        opacity: 0.5;
-                      `}
-                    />
-                  </svg>
-                  <img
-                    src="category_black_24dp.svg"
-                    className="QuickMenuImage"
-                    css={css`
-                      top: 0;
-                      position: absolute;
-                      width: 44px;
-                      height: 44px;
-                    `}
-                  />
-                  <span
-                    css={css`
-                      font-size: 13px;
-                      line-height: 1.23;
-                      color: #525a61;
-                      min-width: 76px;
-                      text-align: center;
-                      word-break: keep-all;
-                      margin-top: 8px;
-                    `}
-                  >
-                    이벤트
-                  </span>
-                </Link>
-              </li>
-              <li
-                className="MenuItem"
-                css={css`
-                  margin-right: 9px;
-                  flex: none;
-                  display: inline-block;
-                `}
-              >
-                <Link
-                  className="MenuItemAnchor"
-                  to="/"
-                  css={css`
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    position: relative;
-                    width: 100%;
-                    flex: none;
-                  `}
-                >
-                  <svg
-                    className="QuickMenuShape"
-                    css={css`
-                      flex: none;
-                      height: 44px;
-                      width: 44px;
-                    `}
-                  >
-                    <rect
-                      rx="8"
-                      ry="8"
-                      width="44"
-                      height="44"
-                      css={css`
-                        fill: red;
-                        stroke: black;
-                        stroke-width: 1;
-                        opacity: 0.5;
-                      `}
-                    />
-                  </svg>
-                  <img
-                    src="category_black_24dp.svg"
-                    className="QuickMenuImage"
-                    css={css`
-                      top: 0;
-                      position: absolute;
-                      width: 44px;
-                      height: 44px;
-                    `}
-                  />
-                  <span
-                    css={css`
-                      font-size: 13px;
-                      line-height: 1.23;
-                      color: #525a61;
-                      min-width: 76px;
-                      text-align: center;
-                      word-break: keep-all;
-                      margin-top: 8px;
-                    `}
-                  >
-                    베스트셀러
-                  </span>
-                </Link>
-              </li>
-              <li
-                className="MenuItem"
-                css={css`
-                  margin-right: 9px;
-                  flex: none;
-                  display: inline-block;
-                `}
-              >
-                <Link
-                  className="MenuItemAnchor"
-                  to="/"
-                  css={css`
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    position: relative;
-                    width: 100%;
-                    flex: none;
-                  `}
-                >
-                  <svg
-                    className="QuickMenuShape"
-                    css={css`
-                      flex: none;
-                      height: 44px;
-                      width: 44px;
-                    `}
-                  >
-                    <rect
-                      rx="8"
-                      ry="8"
-                      width="44"
-                      height="44"
-                      css={css`
-                        fill: red;
-                        stroke: black;
-                        stroke-width: 1;
-                        opacity: 0.5;
-                      `}
-                    />
-                  </svg>
-                  <img
-                    src="category_black_24dp.svg"
-                    className="QuickMenuImage"
-                    css={css`
-                      top: 0;
-                      position: absolute;
-                      width: 44px;
-                      height: 44px;
-                    `}
-                  />
-                  <span
-                    css={css`
-                      font-size: 13px;
-                      line-height: 1.23;
-                      color: #525a61;
-                      min-width: 76px;
-                      text-align: center;
-                      word-break: keep-all;
-                      margin-top: 8px;
-                    `}
-                  >
-                    대여관
-                  </span>
-                </Link>
-              </li>
-              <li
-                className="MenuItem"
-                css={css`
-                  margin-right: 9px;
-                  flex: none;
-                  display: inline-block;
-                `}
-              >
-                <Link
-                  className="MenuItemAnchor"
-                  to="/"
-                  css={css`
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    position: relative;
-                    width: 100%;
-                    flex: none;
-                  `}
-                >
-                  <svg
-                    className="QuickMenuShape"
-                    css={css`
-                      flex: none;
-                      height: 44px;
-                      width: 44px;
-                    `}
-                  >
-                    <rect
-                      rx="8"
-                      ry="8"
-                      width="44"
-                      height="44"
-                      css={css`
-                        fill: red;
-                        stroke: black;
-                        stroke-width: 1;
-                        opacity: 0.5;
-                      `}
-                    />
-                  </svg>
-                  <img
-                    src="category_black_24dp.svg"
-                    className="QuickMenuImage"
-                    css={css`
-                      top: 0;
-                      position: absolute;
-                      width: 44px;
-                      height: 44px;
-                    `}
-                  />
-                  <span
-                    css={css`
-                      font-size: 13px;
-                      line-height: 1.23;
-                      color: #525a61;
-                      min-width: 76px;
-                      text-align: center;
-                      word-break: keep-all;
-                      margin-top: 8px;
-                    `}
-                  >
-                    인기세트
-                  </span>
-                </Link>
-              </li>
-              <li
-                className="MenuItem"
-                css={css`
-                  margin-right: 9px;
-                  flex: none;
-                  display: inline-block;
-                `}
-              >
-                <Link
-                  className="MenuItemAnchor"
-                  to="/"
-                  css={css`
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    position: relative;
-                    width: 100%;
-                    flex: none;
-                  `}
-                >
-                  <svg
-                    className="QuickMenuShape"
-                    css={css`
-                      flex: none;
-                      height: 44px;
-                      width: 44px;
-                    `}
-                  >
-                    <rect
-                      rx="8"
-                      ry="8"
-                      width="44"
-                      height="44"
-                      css={css`
-                        fill: red;
-                        stroke: black;
-                        stroke-width: 1;
-                        opacity: 0.5;
-                      `}
-                    />
-                  </svg>
-                  <img
-                    src="category_black_24dp.svg"
-                    className="QuickMenuImage"
-                    css={css`
-                      top: 0;
-                      position: absolute;
-                      width: 44px;
-                      height: 44px;
-                    `}
-                  />
-                  <span
-                    css={css`
-                      font-size: 13px;
-                      line-height: 1.23;
-                      color: #525a61;
-                      min-width: 76px;
-                      text-align: center;
-                      word-break: keep-all;
-                      margin-top: 8px;
-                    `}
-                  >
-                    신간 캘린더
-                  </span>
-                </Link>
-              </li>
-              <li
-                className="MenuItem"
-                css={css`
-                  margin-right: 9px;
-                  flex: none;
-                  display: inline-block;
-                `}
-              >
-                <Link
-                  className="MenuItemAnchor"
-                  to="/"
-                  css={css`
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    position: relative;
-                    width: 100%;
-                    flex: none;
-                  `}
-                >
-                  <svg
-                    className="QuickMenuShape"
-                    css={css`
-                      flex: none;
-                      height: 44px;
-                      width: 44px;
-                    `}
-                  >
-                    <rect
-                      rx="8"
-                      ry="8"
-                      width="44"
-                      height="44"
-                      css={css`
-                        fill: red;
-                        stroke: black;
-                        stroke-width: 1;
-                        opacity: 0.5;
-                      `}
-                    />
-                  </svg>
-                  <img
-                    src="category_black_24dp.svg"
-                    className="QuickMenuImage"
-                    css={css`
-                      top: 0;
-                      position: absolute;
-                      width: 44px;
-                      height: 44px;
-                    `}
-                  />
-                  <span
-                    css={css`
-                      font-size: 13px;
-                      line-height: 1.23;
-                      color: #525a61;
-                      min-width: 76px;
-                      text-align: center;
-                      word-break: keep-all;
-                      margin-top: 8px;
-                    `}
-                  >
-                    혜택
-                  </span>
-                </Link>
-              </li>
-              <li
-                className="MenuItem"
-                css={css`
-                  margin-right: 9px;
-                  flex: none;
-                  display: inline-block;
-                `}
-              >
-                <Link
-                  className="MenuItemAnchor"
-                  to="/"
-                  css={css`
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    position: relative;
-                    width: 100%;
-                    flex: none;
-                  `}
-                >
-                  <svg
-                    className="QuickMenuShape"
-                    css={css`
-                      flex: none;
-                      height: 44px;
-                      width: 44px;
-                    `}
-                  >
-                    <rect
-                      rx="8"
-                      ry="8"
-                      width="44"
-                      height="44"
-                      css={css`
-                        fill: red;
-                        stroke: black;
-                        stroke-width: 1;
-                        opacity: 0.5;
-                      `}
-                    />
-                  </svg>
-                  <img
-                    src="category_black_24dp.svg"
-                    className="QuickMenuImage"
-                    css={css`
-                      top: 0;
-                      position: absolute;
-                      width: 44px;
-                      height: 44px;
-                    `}
-                  />
-                  <span
-                    css={css`
-                      font-size: 13px;
-                      line-height: 1.23;
-                      color: #525a61;
-                      min-width: 76px;
-                      text-align: center;
-                      word-break: keep-all;
-                      margin-top: 8px;
-                    `}
-                  >
-                    위클리 쿠폰
-                  </span>
-                </Link>
-              </li>
-              <li
-                className="MenuItem"
-                css={css`
-                  margin-right: 9px;
-                  flex: none;
-                  display: inline-block;
-                `}
-              >
-                <Link
-                  className="MenuItemAnchor"
-                  to="/"
-                  css={css`
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    position: relative;
-                    width: 100%;
-                    flex: none;
-                  `}
-                >
-                  <svg
-                    className="QuickMenuShape"
-                    css={css`
-                      flex: none;
-                      height: 44px;
-                      width: 44px;
-                    `}
-                  >
-                    <rect
-                      rx="8"
-                      ry="8"
-                      width="44"
-                      height="44"
-                      css={css`
-                        fill: red;
-                        stroke: black;
-                        stroke-width: 1;
-                        opacity: 0.5;
-                      `}
-                    />
-                  </svg>
-                  <img
-                    src="category_black_24dp.svg"
-                    className="QuickMenuImage"
-                    css={css`
-                      top: 0;
-                      position: absolute;
-                      width: 44px;
-                      height: 44px;
-                    `}
-                  />
-                  <span
-                    css={css`
-                      font-size: 13px;
-                      line-height: 1.23;
-                      color: #525a61;
-                      min-width: 76px;
-                      text-align: center;
-                      word-break: keep-all;
-                      margin-top: 8px;
-                    `}
-                  >
-                    콕북 스터디
-                  </span>
-                </Link>
-              </li>
-            </ul>
-          </section>
-          <section
-            className="RecommenderBookWrapper"
-            css={css`
-              padding-top: 36px;
-              padding-bottom: 36px;
-              background: #afbdd4;
-            `}
-          >
-            <h2
-              className="sectionTitle"
-              css={css`
-                max-width: 1000px;
-                margin: 0 auto;
-                padding-left: 25px;
-                padding-right: 8px;
-                font-size: 19px;
-                font-weight: normal;
-                color: white;
-              `}
-            >
-              집 앞 서점에 방금 나온 신간!
-            </h2>
-            <div
-              className="CarouselWrapper"
-              css={css`
-                width: 1005px;
-                margin: 20px auto 0px;
-                position: relative;
-              `}
-            >
-              <div
-                className="BookCarouselWrapper"
-                css={css`
-                  width: 964px;
-                  margin: -8px auto 0px;
-                  overflow: hidden;
-                `}
-              >
-                <ul
-                  className="BookCarouselList"
-                  css={css`
-                    display: flex;
-                    flex-wrap: nowrap;
-                    padding-top: 8px;
-                    padding-left: 7px;
-                  `}
-                >
-                  <ListRecommendedBook serverlist={this.state.sell_book_list} />
-                </ul>
-              </div>
-            </div>
-          </section>
-          <section
-            className="SectionWrapper"
-            css={css`
-              max-width: 1000px;
-              margin: 0 auto;
-              padding: 24px 0;
-              position: relative;
-            `}
-          >
-            <h2
-              className="SectionTitle"
-              css={css`
-                max-width: 990px;
-                margin: 0 auto 16px;
-                padding: 6px 20px 0;
-                display: flex;
-                flex-direction: column;
-                font-size: 19px;
-                font-weight: normal;
-                line-height: 26px;
-                color: #000000;
-                word-break: keep-all;
-              `}
-            >
-              <div
-                className="TimerWrapper"
-                css={css`
-                  width: 96px;
-                  height: 30px;
-                  padding: 9px;
-                  padding-right: 13px;
-                  margin-bottom: 16px;
-                  display: flex;
-                  align-items: center;
-                  justify-content: space-between;
-                  background-image: linear-gradient(255deg, #0077d9 4%, #72d2e0);
-                  border-radius: 14px;
-                  font-size: 13px;
-                  font-weight: bold;
-                  color: white;
-                `}
-              >
-                <img
-                  src="image/watch_later_white_24dp.svg"
-                  height="12"
-                  width="12"
-                  alt="시계아이콘"
-                  css={css`
-                    flex: none;
-                  `}
-                />
-                <span
-                  css={css`
-                    flex: none;
-                  `}
-                >
-                  {nowHours}시 {nowMinutes}분
-                </span>
-              </div>
-              "사람들이 지금 많이 읽고 있는 책"
-            </h2>
-            <div
-              className="BooklistControllerContainer"
-              css={css`
-                position: relative;
-              `}
-            >
-              <div
-                className="SlidingContainer-scrollBarHidden"
-                css={css`
-                  display: flex;
-                  flex-wrap: nowrap;
-                  overflow-x: auto;
-                  overflow-y: hidden;
-                `}
-              >
-                <div
-                  className="Content-BookListWrapper"
-                  css={css`
-                    flex: 1 0 auto;
-                  `}
-                >
-                  <ul
-                    type="small"
-                    className="BookList-grid"
-                    css={css`
-                      display: grid;
-                      grid: repeat(3, 94px) / auto-flow 308px;
-                      grid-column-gap: 13px;
-                      padding: 0 24px;
-                    `}
-                  >
-                    <ListPopularBook serverlist={this.state.sell_book_list} />
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </section>
-          <section
-            className="RecommenderBookWrapper-noBG"
-            css={css`
-              padding-top: 24px;
-              padding-bottom: 24px;
-            `}
-          >
-            <h2
-              className="sectionTitle"
-              css={css`
-                max-width: 1000px;
-                margin: 0 auto;
-                padding-left: 25px;
-                padding-right: 8px;
-                font-size: 19px;
-                font-weight: normal;
-              `}
-            >
-              오늘, 콕북의 발견
-            </h2>
-            <div
-              className="CarouselWrapper"
-              css={css`
-                width: 1005px;
-                margin: 20px auto 0px;
-                position: relative;
-              `}
-            >
-              <div
-                className="BookCarouselWrapper"
-                css={css`
-                  width: 964px;
-                  margin: -8px auto 0px;
-                  overflow: hidden;
-                `}
-              >
-                <ul
-                  className="BookCarouselList"
-                  css={css`
-                    display: flex;
-                    flex-wrap: nowrap;
-                    padding-top: 8px;
-                    padding-left: 7px;
-                  `}
-                >
-                  <ListCogBookRecommendBook serverlist={this.state.sell_book_list} />
-                </ul>
-              </div>
-            </div>
-          </section>
-          <section
-            className="SectionWrapper"
-            css={css`
-              max-width: 1000px;
-              margin: 0 auto;
-              padding: 24px 0;
-              position: relative;
-            `}
-          >
-            <h2
-              className="SectionTitle"
-              css={css`
-                max-width: 990px;
-                margin: 0 auto 16px;
-                padding: 6px 20px 0;
-                display: flex;
-                flex-direction: column;
-                font-size: 19px;
-                font-weight: normal;
-                line-height: 26px;
-                color: #000000;
-                word-break: keep-all;
-              `}
-            >
-              <Link
-                to="/"
-                className="LingWrapper"
-                css={css`
-                  display: flex;
-                  align-items: center;
-                  color: black;
-                `}
-              >
-                베스트셀러
-                <img
-                  src="image/arrow_forward_ios_black_24dp.svg"
-                  alt="화살표"
-                  css={css`
-                    flex: none;
-                    width: 11px;
-                    height: 14px;
-                    margin-left: 8px;
-                  `}
-                />
-              </Link>
-            </h2>
-            <div
-              className="BooklistControllerContainer"
-              css={css`
-                position: relative;
-              `}
-            >
-              <div
-                className="SlidingContainer-scrollBarHidden"
-                css={css`
-                  display: flex;
-                  flex-wrap: nowrap;
-                  overflow-x: auto;
-                  overflow-y: hidden;
-                `}
-              >
-                <div
-                  className="Content-BookListWrapper"
-                  css={css`
-                    flex: 1 0 auto;
-                  `}
-                >
-                  <ul
-                    type="big"
-                    className="BookList-grid"
-                    css={css`
-                      display: grid;
-                      grid: repeat(3, 138px) / auto-flow 308px;
-                      grid-column-gap: 13px;
-                      padding: 0 24px;
-                    `}
-                  >
-                    <ListBestSellerBook serverlist={this.state.sell_book_list} />
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </section>
-          <section
-            className="RecommenderBookWrapper-noBG-withAuthor"
-            css={css`
-              padding-top: 24px;
-              padding-bottom: 24px;
-            `}
-          >
-            <h2
-              className="sectionTitle"
-              css={css`
-                max-width: 1000px;
-                margin: 0 auto;
-                padding-left: 25px;
-                padding-right: 8px;
-                font-size: 19px;
-                font-weight: normal;
-              `}
-            >
-              봄 바람이 살랑살랑, 공부하기 좋은 시간
-            </h2>
-            <div
-              className="CarouselWrapper"
-              css={css`
-                width: 1005px;
-                margin: 20px auto 0px;
-                position: relative;
-              `}
-            >
-              <div
-                className="BookCarouselWrapper"
-                css={css`
-                  width: 964px;
-                  margin: -8px auto 0px;
-                  overflow: hidden;
-                `}
-              >
-                <ul
-                  className="BookCarouselList"
-                  css={css`
-                    display: flex;
-                    flex-wrap: nowrap;
-                    padding-top: 8px;
-                    padding-left: 7px;
-                  `}
-                >
-                  <ListGoodForStudy serverlist={this.state.sell_book_list} />
-                </ul>
-              </div>
-            </div>
-          </section>
-          <section
-            className="RecommenderBookWrapper-noBG-withAuthor"
-            css={css`
-              padding-top: 24px;
-              padding-bottom: 24px;
-            `}
-          >
-            <h2
-              className="sectionTitle"
-              css={css`
-                max-width: 1000px;
-                margin: 0 auto;
-                padding-left: 25px;
-                padding-right: 8px;
-                font-size: 19px;
-                font-weight: normal;
-              `}
-            >
-              집 콕! 북 스터디하기 좋은 계절
-            </h2>
-            <div
-              className="CarouselWrapper"
-              css={css`
-                width: 1005px;
-                margin: 20px auto 0px;
-                position: relative;
-              `}
-            >
-              <div
-                className="BookCarouselWrapper"
-                css={css`
-                  width: 964px;
-                  margin: -8px auto 0px;
-                  overflow: hidden;
-                `}
-              >
-                <ul
-                  className="BookCarouselList"
-                  css={css`
-                    display: flex;
-                    flex-wrap: nowrap;
-                    padding-top: 8px;
-                    padding-left: 7px;
-                  `}
-                >
-                  <ListGoodForHomeStudy serverlist={this.state.sell_book_list} />
-                </ul>
-              </div>
-            </div>
-          </section>
-        </main>
-      </>
-    );
-  }
-}
-
-export default ReactRidi;
 
 const bookWrapper = css`
   display: flex;

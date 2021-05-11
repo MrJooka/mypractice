@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import FavoriteCategory from "./components/FavoriteCategory";
 import StarRating from "./StarRating";
 import CommentStackOverFlow from "./CommentStackOverFlow";
+import { ShoppingFilled, ShoppingOutlined } from "@ant-design/icons";
 
 class DetailBook extends Component {
   constructor(props) {
@@ -84,6 +85,23 @@ class DetailBook extends Component {
     }, 550);
   }
 
+  onChangeCartStatus = () => {
+    if (!this.props.books_in_cart.find((book_id) => book_id == this.state.book_id)) {
+      //담겼다고 알려주기
+      alert(`제목 : ${this.state.title}\n책이 카트에 추가되었습니다.`);
+      //서버에 책 정보 보내기
+      axios.post("api주소입력", this.state.book_id).then((res) => {
+        //카트에 책 담기
+        // this.props.부모컴포props실행()
+      });
+      //서버에 보내고 나서 GNB 카트아이콘에 숫자 변경
+      this.props.onAddBookInCart(this.state.book_id);
+    } else {
+      alert(`제목 : ${this.state.title}\n책이 카트에서 삭제되었습니다.`);
+      this.props.onDeleteBookInCart(this.state.book_id);
+    }
+  };
+
   render() {
     console.log("DetailBook render() 메서드 실행됨");
 
@@ -104,7 +122,7 @@ class DetailBook extends Component {
 
       return (
         <React.Fragment>
-          <GlobalStyle /> <RidiGnbArea /> <FavoriteCategory />
+          <GlobalStyle /> <RidiGnbArea books_in_cart={this.props.books_in_cart} /> <FavoriteCategory />
           <div className="BookDetailPage" style={bookDetailPage}>
             <div className="BookDetailArea" style={bookDetailArea}>
               <div className="BookDetailWrapper" style={bookDetailWrapper}>
@@ -130,7 +148,19 @@ class DetailBook extends Component {
                             미리보기
                           </button>
                           <div
-                            style={{ display: this.state.visibility_bookcover ? "block" : "none", top: 0, left: 0, position: "fixed", backdropFilter: "blur(2px)", width: "100%", margin: "0 auto", height: "100vh", backgroundColor: "rgb(0 0 0 / 70%)", zIndex: 9999, cursor: "zoom-out" }}
+                            style={{
+                              display: this.state.visibility_bookcover ? "block" : "none",
+                              top: 0,
+                              left: 0,
+                              position: "fixed",
+                              backdropFilter: "blur(2px)",
+                              width: "100%",
+                              margin: "0 auto",
+                              height: "100vh",
+                              backgroundColor: "rgb(0 0 0 / 70%)",
+                              zIndex: 9999,
+                              cursor: "zoom-out",
+                            }}
                             onClick={() => {
                               this.setState({
                                 visibility_bookcover: !this.state.visibility_bookcover,
@@ -140,7 +170,11 @@ class DetailBook extends Component {
                             <div style={{ textAlign: "center", position: "absolute", width: "100vw", height: "100vh", padding: "0 8px" }}>
                               <div style={{ position: "relative", display: "inline-block", verticalAlign: " middle", margin: "0 auto", textAlign: "left" }}>
                                 <figure style={{ display: "block" }}>
-                                  <img src={this.state.bookcover_large} alt="" style={{ width: AutoComplete, maxWidth: "100%", height: "auto", display: "block", lineHeight: "0", padding: "40px 0 40px", maxHeight: "937px", margin: "0 auto" }} />
+                                  <img
+                                    src={this.state.bookcover_large}
+                                    alt=""
+                                    style={{ width: AutoComplete, maxWidth: "100%", height: "auto", display: "block", lineHeight: "0", padding: "40px 0 40px", maxHeight: "937px", margin: "0 auto" }}
+                                  />
                                 </figure>
                               </div>
                             </div>
@@ -190,17 +224,132 @@ class DetailBook extends Component {
                         <table style={{ width: "100%", borderCollapse: "collapse", borderTop: "1px solid #e6e8eb", borderBottom: "1px solid #e6e8eb", borderSpacing: "0" }}>
                           <tbody>
                             <tr>
-                              <th rowSpan="2" style={{ fontWeight: "bold", textAlign: "center", margin: "0", lineHeight: "1em", letterSpacing: "-0.03em", minHeight: "36px", padding: "9px 0", verticalAlign: "middle", fontSize: "13px", boxSizing: "border-box", color: "#40474d", borderRight: "1px solid #e6e8eb", background: "#f7fafc", width: "27.5%" }}>
+                              <th
+                                rowSpan="2"
+                                style={{
+                                  fontWeight: "bold",
+                                  textAlign: "center",
+                                  margin: "0",
+                                  lineHeight: "1em",
+                                  letterSpacing: "-0.03em",
+                                  minHeight: "36px",
+                                  padding: "9px 0",
+                                  verticalAlign: "middle",
+                                  fontSize: "13px",
+                                  boxSizing: "border-box",
+                                  color: "#40474d",
+                                  borderRight: "1px solid #e6e8eb",
+                                  background: "#f7fafc",
+                                  width: "27.5%",
+                                }}
+                              >
                                 금액
                               </th>
-                              <td style={{ width: "27.5%", padding: "10px", whiteSpace: "nowrap", color: "#808991", verticalAlign: "middle", fontSize: "13px", boxSizing: "border-box", minHeight: "36px", lineHeight: "1em", letterSpacing: "-0.03em" }}> 전자책 정가 </td>
-                              <td style={{ width: "27.5%", textAlign: "right", fontWeight: "700", padding: "10px", whiteSpace: "nowrap", color: "#808991", minHeight: "36px", verticalAlign: "middle", fontSize: "13px", boxSizing: "border-box", lineHeight: "1em", letterSpacing: "-0.03em" }}> {this.state.price}원 </td>
-                              <td style={{ width: "20%", paddingLeft: "0", whiteSpace: "nowrap", color: "#808991", minHeight: "36px", padding: "9px 0", verticalAlign: "middle", fontSize: "13px", boxSizing: "border-box", lineHeight: "1em", letterSpacing: "-0.03em" }}> 10% 할인 </td>
+                              <td
+                                style={{
+                                  width: "27.5%",
+                                  padding: "10px",
+                                  whiteSpace: "nowrap",
+                                  color: "#808991",
+                                  verticalAlign: "middle",
+                                  fontSize: "13px",
+                                  boxSizing: "border-box",
+                                  minHeight: "36px",
+                                  lineHeight: "1em",
+                                  letterSpacing: "-0.03em",
+                                }}
+                              >
+                                전자책 정가{" "}
+                              </td>
+                              <td
+                                style={{
+                                  width: "27.5%",
+                                  textAlign: "right",
+                                  fontWeight: "700",
+                                  padding: "10px",
+                                  whiteSpace: "nowrap",
+                                  color: "#808991",
+                                  minHeight: "36px",
+                                  verticalAlign: "middle",
+                                  fontSize: "13px",
+                                  boxSizing: "border-box",
+                                  lineHeight: "1em",
+                                  letterSpacing: "-0.03em",
+                                }}
+                              >
+                                {this.state.price}원{" "}
+                              </td>
+                              <td
+                                style={{
+                                  width: "20%",
+                                  paddingLeft: "0",
+                                  whiteSpace: "nowrap",
+                                  color: "#808991",
+                                  minHeight: "36px",
+                                  padding: "9px 0",
+                                  verticalAlign: "middle",
+                                  fontSize: "13px",
+                                  boxSizing: "border-box",
+                                  lineHeight: "1em",
+                                  letterSpacing: "-0.03em",
+                                }}
+                              >
+                                10% 할인{" "}
+                              </td>
                             </tr>
                             <tr style={{ verticalAlign: "inherit", borderColor: "inherit" }}>
-                              <td style={{ width: "25%", padding: "10px", whiteSpace: "nowrap", color: "#1f8ce6", verticalAlign: "middle", fontSize: "13px", boxSizing: "border-box", minHeight: "36px", lineHeight: "1em", letterSpacing: "-0.03em" }}> 판매가 </td>
-                              <td style={{ width: "27.5%", textAlign: "right", fontWeight: "700", padding: "10px", whiteSpace: "nowrap", color: "#1f8ce6", minHeight: "36px", verticalAlign: "middle", fontSize: "13px", boxSizing: "border-box", lineHeight: "1em", letterSpacing: "-0.03em" }}> {this.state.price}원 </td>
-                              <td style={{ color: "#eb5847", fontWeight: "700", width: "20%", paddingLeft: "0", whiteSpace: "nowrap", minHeight: "36px", padding: "9px 0", verticalAlign: "middle", fontSize: "13px", boxSizing: "border-box", lineHeight: "1em", letterSpacing: "-0.03em" }}> 10% 할인 </td>
+                              <td
+                                style={{
+                                  width: "25%",
+                                  padding: "10px",
+                                  whiteSpace: "nowrap",
+                                  color: "#1f8ce6",
+                                  verticalAlign: "middle",
+                                  fontSize: "13px",
+                                  boxSizing: "border-box",
+                                  minHeight: "36px",
+                                  lineHeight: "1em",
+                                  letterSpacing: "-0.03em",
+                                }}
+                              >
+                                판매가{" "}
+                              </td>
+                              <td
+                                style={{
+                                  width: "27.5%",
+                                  textAlign: "right",
+                                  fontWeight: "700",
+                                  padding: "10px",
+                                  whiteSpace: "nowrap",
+                                  color: "#1f8ce6",
+                                  minHeight: "36px",
+                                  verticalAlign: "middle",
+                                  fontSize: "13px",
+                                  boxSizing: "border-box",
+                                  lineHeight: "1em",
+                                  letterSpacing: "-0.03em",
+                                }}
+                              >
+                                {this.state.price}원{" "}
+                              </td>
+                              <td
+                                style={{
+                                  color: "#eb5847",
+                                  fontWeight: "700",
+                                  width: "20%",
+                                  paddingLeft: "0",
+                                  whiteSpace: "nowrap",
+                                  minHeight: "36px",
+                                  padding: "9px 0",
+                                  verticalAlign: "middle",
+                                  fontSize: "13px",
+                                  boxSizing: "border-box",
+                                  lineHeight: "1em",
+                                  letterSpacing: "-0.03em",
+                                }}
+                              >
+                                10% 할인{" "}
+                              </td>
                             </tr>
                           </tbody>
                         </table>
@@ -208,22 +357,47 @@ class DetailBook extends Component {
                       <div>
                         <ul style={{ float: "right", display: "inline-table", whiteSpace: "nowrap", listStyle: "none", margin: "0", padding: "0", overflow: "hidden" }}>
                           <li style={buttonStyle1}>
-                            <button style={{ height: "48px", width: "48px", border: "1px solid #d1d5d9", boxShadow: "0 1px 1px 0 rgb(209 213 217 / 30%)", borderRadius: "4px", display: "inline-block" }}>
+                            <button
+                              style={{ height: "48px", width: "48px", border: "1px solid #d1d5d9", boxShadow: "0 1px 1px 0 rgb(209 213 217 / 30%)", borderRadius: "4px", display: "inline-block" }}
+                            >
                               <img src="image/favorite_black_24dp.svg" alt="" style={{ width: "25px" }} />
                             </button>
                           </li>
                           <li style={buttonStyle1}>
-                            <button style={{ height: "48px", width: "48px", border: "1px solid #d1d5d9", boxShadow: "0 1px 1px 0 rgb(209 213 217 / 30%)", borderRadius: "4px", display: "inline-block" }}>
-                              <img src="image/shopping_cart_black_24dp.svg" alt="" style={{ width: "25px" }} />
+                            <button
+                              style={{ height: "48px", width: "48px", border: "1px solid #d1d5d9", boxShadow: "0 1px 1px 0 rgb(209 213 217 / 30%)", borderRadius: "4px", display: "inline-block" }}
+                              onClick={this.onChangeCartStatus}
+                            >
+                              {this.props.books_in_cart.find((book_id) => book_id == this.state.book_id) ? (
+                                <ShoppingFilled style={{ fontSize: "25px", color: "tomato" }} />
+                              ) : (
+                                <ShoppingOutlined style={{ fontSize: "25px" }} />
+                              )}
                             </button>
                           </li>
                           <li style={buttonStyle1}>
-                            <button style={{ height: "48px", width: "48px", border: "1px solid #d1d5d9", boxShadow: "0 1px 1px 0 rgb(209 213 217 / 30%)", borderRadius: "4px", display: "inline-block" }}>
+                            <button
+                              style={{ height: "48px", width: "48px", border: "1px solid #d1d5d9", boxShadow: "0 1px 1px 0 rgb(209 213 217 / 30%)", borderRadius: "4px", display: "inline-block" }}
+                            >
                               <img src="image/card_giftcard_black_24dp.svg" alt="" style={{ width: "25px" }} />
                             </button>
                           </li>
                           <li style={buttonStyle1_last}>
-                            <Link to="/order" style={{ borderRadius: "4px", fontWeight: "700", textAlign: "center", color: "#fff", background: "#1f8ce6", float: "left", height: "48px", lineHeight: "46px", minWidth: "112px", fontSize: "15px" }}>
+                            <Link
+                              to="/order"
+                              style={{
+                                borderRadius: "4px",
+                                fontWeight: "700",
+                                textAlign: "center",
+                                color: "#fff",
+                                background: "#1f8ce6",
+                                float: "left",
+                                height: "48px",
+                                lineHeight: "46px",
+                                minWidth: "112px",
+                                fontSize: "15px",
+                              }}
+                            >
                               구매하기
                             </Link>
                           </li>
@@ -231,7 +405,10 @@ class DetailBook extends Component {
                       </div>
                     </div>
                   </div>
-                  <div className="MetaInfoWrapper" style={{ display: "grid", msGridColumns: "260px auto", gridTemplateColumns: "260px auto", marginTop: "40px", padding: "20px 26px 13px", border: "solid 4px #f2f4f5" }}>
+                  <div
+                    className="MetaInfoWrapper"
+                    style={{ display: "grid", msGridColumns: "260px auto", gridTemplateColumns: "260px auto", marginTop: "40px", padding: "20px 26px 13px", border: "solid 4px #f2f4f5" }}
+                  >
                     <ul style={{}}>
                       <li style={bookMetaInfoLiTag}>
                         <span style={bookMetaInfoSpanTag}> 출간정보 </span>
@@ -275,7 +452,10 @@ class DetailBook extends Component {
                   </div>
                 </div>
                 <div className="IntroBookArea" style={{ paddingBottom: "70px" }}>
-                  <div className="IntroBookTitle" style={{ marginBottom: "15px", padding: "10px 0 8px 0", borderBottom: "2px solid #7d8e9e", fontSize: "20px", color: "#59667a", fontWeight: "700", letterSpacing: "-0.03em" }}>
+                  <div
+                    className="IntroBookTitle"
+                    style={{ marginBottom: "15px", padding: "10px 0 8px 0", borderBottom: "2px solid #7d8e9e", fontSize: "20px", color: "#59667a", fontWeight: "700", letterSpacing: "-0.03em" }}
+                  >
                     책소개
                   </div>
                   <div className="IntroBookContent" style={{ maxHeight: this.state.foldable_intro_book ? "100%" : "180px", overflow: "hidden" }}>

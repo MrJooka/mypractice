@@ -19,12 +19,14 @@ import BookNaming from "./components/Write/BookEditing/BookNaming";
 import DetailBook from "./components/bookStore/DetailBook";
 import OrderPage from "./components/bookStore/OrderPage";
 import LinkCategory from "./components/bookStore/LinkCategory";
+import MyCart from "./components/bookStore/MyCart";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoggedIn: false,
+      books_in_cart: [],
     };
   }
   updatedLoginState = (value) => {
@@ -32,6 +34,21 @@ class App extends Component {
       isLoggedIn: value,
     });
   };
+
+  onAddBookInCart = (book_id) => {
+    let new_books_in_cart = [...this.state.books_in_cart, book_id];
+    this.setState({
+      books_in_cart: new_books_in_cart,
+    });
+  };
+
+  onDeleteBookInCart = (book_id) => {
+    let new_books_in_cart = this.state.books_in_cart.filter((_book_id) => _book_id != book_id);
+    this.setState({
+      books_in_cart: new_books_in_cart,
+    });
+  };
+
   render() {
     return (
       <div className="App">
@@ -46,9 +63,16 @@ class App extends Component {
             <Route exact path="/study" component={StudyMain} />
             <Route exact path="/myinfo" component={MyInfoMain} />
             <Route exact path="/write" render={() => <WritingMain updatedLoginState={this.updatedLoginState} />} />
-            <Route exact path="/store" component={BookStoreMain} />
+            <Route exact path="/store">
+              <BookStoreMain books_in_cart={this.state.books_in_cart} />
+            </Route>
             <Route exact path="/order" component={OrderPage} />
-            <Route exact path="/detail-book" component={DetailBook} />
+            <Route exact path="/detail-book">
+              <DetailBook onAddBookInCart={this.onAddBookInCart} onDeleteBookInCart={this.onDeleteBookInCart} books_in_cart={this.state.books_in_cart} />
+            </Route>
+            <Route exact path="/mycart">
+              <MyCart books_in_cart={this.state.books_in_cart} />
+            </Route>
             <Route exact path="/link-category" component={LinkCategory} />
             <Route exact path="/mentoring" component={MentoringMain} />
             <Route exact path="/start-study" component={StudyFlip} />
