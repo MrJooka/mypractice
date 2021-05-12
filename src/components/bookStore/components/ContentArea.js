@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import { Layout } from "antd";
 import SimpleSlider from "../SimpleSlider";
 import AdSlider from "../AdSlider";
 
 const { Content } = Layout;
 
-class ContentArea extends Component {
+class ContentArea extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {};
@@ -28,11 +28,7 @@ class ContentArea extends Component {
         }}
       >
         <div>
-          <input
-            type="text"
-            placeholder="찾고 있는 책 이름을 입력하세요."
-            onChange={this.searchIndex}
-          ></input>
+          <input type="text" placeholder="찾고 있는 책 이름을 입력하세요." onChange={this.searchIndex}></input>
           <button onClick={this.searchNow}>검색</button>
         </div>
         {/* <Layout
@@ -50,15 +46,9 @@ class ContentArea extends Component {
             overflow: "initial",
           }}
         >
-          <div
-            className="site-layout-background"
-            style={{ padding: 24, textAlign: "left" }}
-          >
+          <div className="site-layout-background" style={{ padding: 24, textAlign: "left" }}>
             <AdSlider text="광고" />
-            <SimpleSlider
-              sell_book_list={this.props.sell_book_list}
-              text="Cogbook 추천"
-            />
+            <SimpleSlider sell_book_list={this.props.sell_book_list} text="Cogbook 추천" />
           </div>
         </Content>
         {/* </Layout> */}

@@ -1,25 +1,24 @@
 import { Button, Checkbox } from "antd";
 import axios from "axios";
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import { GlobalStyle } from "./components/GlobalStyle";
 import RidiGnbArea from "./components/RidiGnbArea";
 
-class MyCartBookList extends Component {
+class MyCartBookList extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {};
   }
 
   render() {
-    console.log(this.props.books_in_cart);
     return (
       <React.Fragment>
         {this.props.books_in_cart.map((book) => (
           <li key={book._id} style={{ display: "flex", padding: "15px 0 15px 0" }}>
             <div style={{ display: "flex", alignItems: "center" }}>
               <Checkbox
+                checked={this.props.checked_books_list.includes(book._id)}
                 style={{ margin: "10px" }}
-                defaultChecked={true}
                 onChange={(e) => {
                   console.log(e.target.checked);
                   if (e.target.checked) {
@@ -50,12 +49,10 @@ class MyCartBookList extends Component {
               <div style={{ fontSize: "22px", lineHeight: "22px", fontWeight: "bold" }}>{book.book_info.title}</div>
               <div style={{ fontSize: "15px", color: "darkgray" }}>{book.book_info.author}</div>
               <div style={{ marginBottom: "3px" }}>
-                <Button>위시리스트로 이동</Button>
                 <Button
                   onClick={() => {
                     this.props.onDeleteBookFromCart(book._id);
                   }}
-                  style={{ marginLeft: "8px" }}
                 >
                   삭제
                 </Button>
@@ -71,18 +68,20 @@ class MyCartBookList extends Component {
     );
   }
 }
-
-class MyCart extends Component {
+class MyCart extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       books_in_cart: [],
       checked_books_list: [],
+      checked_books_list2: [],
+      original_books_list: [],
     };
   }
 
   onDeleteBookFromCart = (_id) => {
     // 서버에 카트에서 삭제 요청 메세지 보내야함
+    // 그리고 서버에서 받아온다.
 
     let newCartList = [...this.state.books_in_cart];
     newCartList = newCartList.filter((book) => book._id != _id);
@@ -93,78 +92,112 @@ class MyCart extends Component {
 
   onAddCheckedBooksList = (id) => {
     let new_checked_books_list = [...this.state.checked_books_list, id];
+
     this.setState({
       checked_books_list: new_checked_books_list,
+      checked_books_list2: [...this.state.checked_books_list2, this.state.books_in_cart.find((book) => book._id == id)],
     });
   };
 
   onDeleteCheckedBooksList = (id) => {
-    let new_checked_books_list = [...this.state.checked_books_list, id];
+    let new_checked_books_list = [...this.state.checked_books_list];
     new_checked_books_list = new_checked_books_list.filter((_id) => _id != id);
+
     this.setState({
       checked_books_list: new_checked_books_list,
+      checked_books_list2: this.state.checked_books_list2.filter((book) => book._id != id),
     });
+  };
+
+  onToggleAllCheckbox = () => {
+    if (this.state.original_books_list.length !== this.state.checked_books_list.length) {
+      let checked_books_list = [];
+      this.state.books_in_cart.map((book) => checked_books_list.push(book._id));
+      this.setState({
+        checked_books_list: checked_books_list,
+        checked_books_list2: this.state.books_in_cart,
+      });
+    } else {
+      this.setState({
+        checked_books_list: [],
+        checked_books_list2: [],
+      });
+    }
   };
 
   componentDidMount() {
     axios.get("/api/bookstore/get-sellbooklist").then((res) => {
-      let checked_book_list = [];
-      res.data.sellbooklist.map((book) => checked_book_list.push(book._id));
+      let checked_books_list = [];
+      res.data.sellbooklist.map((book) => checked_books_list.push(book._id));
 
-      this.setState({ books_in_cart: res.data.sellbooklist, checked_books_list: checked_book_list });
+      this.setState({ books_in_cart: res.data.sellbooklist, checked_books_list: checked_books_list, original_books_list: checked_books_list, checked_books_list2: res.data.sellbooklist });
     });
   }
 
   render() {
-    console.log(this.state.checked_books_list);
-    return (
-      <React.Fragment>
-        <GlobalStyle />
-        <RidiGnbArea books_in_cart={this.props.books_in_cart} />
-        <div
-          style={{
-            position: "relative",
-            maxWidth: "1000px",
-            margin: "0 auto",
-          }}
-        >
-          <div style={{ width: "952px", maxWidth: "1000px", marginTop: "25px", fontSize: "24px", fontWeight: "bold" }}>
-            카트
-            <div style={{ display: "flex" }}>
-              <div style={{ width: "680px", padding: "15px", border: "1px solid #d1d5d9" }}>
-                <div style={{ fontSize: "20px", fontWeight: "bold", paddingBottom: "8px", borderBottom: "1px solid #d1d5d9" }}>
-                  <Checkbox style={{ margin: "10px" }} /> 전체선택
-                  <Button
-                    onClick={() => {
-                      let new_books_in_cart = [...this.state.books_in_cart];
-                      for (let i in this.state.checked_books_list) {
-                        new_books_in_cart = new_books_in_cart.filter((book) => book._id !== this.state.checked_books_list[i]);
-                      }
+    if (this.state.books_in_cart == []) {
+      return <div>"로딩중"</div>;
+    } else {
+      let total = 0;
+      for (let index in this.state.checked_books_list2) {
+        total += Number(this.state.checked_books_list2[index].book_info.price);
+      }
+      return (
+        <React.Fragment>
+          <GlobalStyle />
+          <RidiGnbArea books_in_cart={this.props.books_in_cart} />
+          <div
+            style={{
+              position: "relative",
+              maxWidth: "1000px",
+              margin: "0 auto",
+            }}
+          >
+            <div style={{ width: "952px", maxWidth: "1000px", marginTop: "25px", fontSize: "24px", fontWeight: "bold" }}>
+              카트
+              <div style={{ display: "flex" }}>
+                <div style={{ width: "680px", padding: "15px", border: "1px solid #d1d5d9" }}>
+                  <div style={{ fontSize: "20px", fontWeight: "bold", paddingBottom: "8px", borderBottom: "1px solid #d1d5d9" }}>
+                    <Checkbox checked={this.state.original_books_list.length == this.state.checked_books_list.length} onChange={this.onToggleAllCheckbox} style={{ margin: "10px" }} />
+                    {this.state.original_books_list.length == this.state.checked_books_list.length ? "전체 해제" : "전체 선택"}
+                    {this.state.checked_books_list.length > 0 ? (
+                      <Button
+                        onClick={() => {
+                          let new_books_in_cart = [...this.state.books_in_cart];
+                          for (let i in this.state.checked_books_list) {
+                            new_books_in_cart = new_books_in_cart.filter((book) => book._id !== this.state.checked_books_list[i]);
+                          }
 
-                      this.setState({
-                        books_in_cart: new_books_in_cart,
-                      });
-                    }}
-                    style={{ marginLeft: "30px" }}
-                  >
-                    선택된 책 카트에서 삭제
-                  </Button>
+                          this.setState({
+                            books_in_cart: new_books_in_cart,
+                            checked_books_list2: new_books_in_cart,
+                          });
+                        }}
+                        style={{ marginLeft: "30px" }}
+                      >
+                        선택된 책 카트에서 삭제
+                      </Button>
+                    ) : null}
+                  </div>
+                  <ul>
+                    <MyCartBookList
+                      onAddCheckedBooksList={this.onAddCheckedBooksList}
+                      onDeleteCheckedBooksList={this.onDeleteCheckedBooksList}
+                      books_in_cart={this.state.books_in_cart}
+                      onDeleteBookFromCart={this.onDeleteBookFromCart}
+                      checked_books_list={this.state.checked_books_list}
+                    />
+                  </ul>
                 </div>
-                <ul>
-                  <MyCartBookList
-                    onAddCheckedBooksList={this.onAddCheckedBooksList}
-                    onDeleteCheckedBooksList={this.onDeleteCheckedBooksList}
-                    books_in_cart={this.state.books_in_cart}
-                    onDeleteBookFromCart={this.onDeleteBookFromCart}
-                  />
-                </ul>
+                <div style={{ width: "272px", height: "600px", marginLeft: "20px", border: "1px solid #d1d5d9" }}>
+                  <div>금액 :{total}</div>
+                </div>
               </div>
-              <div style={{ width: "272px", height: "600px", marginLeft: "20px", border: "1px solid #d1d5d9" }}>결제창</div>
             </div>
           </div>
-        </div>
-      </React.Fragment>
-    );
+        </React.Fragment>
+      );
+    }
   }
 }
 

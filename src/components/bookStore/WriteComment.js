@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import axios from "axios";
 
-class WriteComment extends Component {
+class WriteComment extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,13 +28,11 @@ class WriteComment extends Component {
     const rating = 0;
     const content = this.state.content;
 
-    axios
-      .post("api/bookstore/register-book-comment", { user_id, sellbook_id, root_id, parent_id, level, isDeleted, time_created, rating, content })
-      .then((res) => {
-        this.props.updateStateBookComment(res.data.book_comment);
-        this.changeVisivility();
-        this.setState({ content: "" });
-      });
+    axios.post("api/bookstore/register-book-comment", { user_id, sellbook_id, root_id, parent_id, level, isDeleted, time_created, rating, content }).then((res) => {
+      this.props.updateStateBookComment(res.data.book_comment);
+      this.changeVisivility();
+      this.setState({ content: "" });
+    });
   };
 
   changeReply = (e) => {

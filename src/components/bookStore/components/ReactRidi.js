@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import RidiGnbArea from "./RidiGnbArea";
 import FavoriteCategory from "./FavoriteCategory";
 import { GlobalStyle } from "./GlobalStyle";
 
-class ReactRidi extends Component {
+class ReactRidi extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -1399,7 +1399,7 @@ class ReactRidi extends Component {
 
 export default ReactRidi;
 
-class ListGoodForHomeStudy extends Component {
+class ListGoodForHomeStudy extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {};
@@ -1461,7 +1461,7 @@ class ListGoodForHomeStudy extends Component {
   }
 }
 
-class ListGoodForStudy extends Component {
+class ListGoodForStudy extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {};
@@ -1511,7 +1511,7 @@ class ListGoodForStudy extends Component {
   }
 }
 
-class ListBestSellerBook extends Component {
+class ListBestSellerBook extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {};
@@ -1655,7 +1655,7 @@ class ListBestSellerBook extends Component {
   }
 }
 
-class ListCogBookRecommendBook extends Component {
+class ListCogBookRecommendBook extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {};
@@ -1698,7 +1698,7 @@ class ListCogBookRecommendBook extends Component {
   }
 }
 
-class ListPopularBook extends Component {
+class ListPopularBook extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {};
@@ -1821,7 +1821,7 @@ class ListPopularBook extends Component {
   }
 }
 
-class ListRecommendedBookContent extends Component {
+class ListRecommendedBookContent extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {};
@@ -1875,7 +1875,7 @@ class ListRecommendedBookContent extends Component {
   }
 }
 
-class ListRecommendedBook extends Component {
+class ListRecommendedBook extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {};

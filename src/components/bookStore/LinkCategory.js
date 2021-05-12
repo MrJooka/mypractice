@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import { Layout, Table, Tag } from "antd";
 import TocSider from "./TocSider";
 import axios from "axios";
@@ -9,7 +9,7 @@ const { Content } = Layout;
 
 const value = sessionStorage.getItem("category");
 
-class LinkCategory extends Component {
+class LinkCategory extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,9 +27,7 @@ class LinkCategory extends Component {
 
   render() {
     const bookList = this.state.bookList;
-    const categoryBookList = bookList.filter((it) =>
-      it.book_info.category.includes(value)
-    );
+    const categoryBookList = bookList.filter((it) => it.book_info.category.includes(value));
     console.log(value);
     console.log(categoryBookList);
 
@@ -89,11 +87,7 @@ class LinkCategory extends Component {
           <Content style={{ margin: "24px 16px 0" }}>
             <CategoryBookList categorybooklist={categoryBookList} />
             {/* <ul>{showCategoryBookList}</ul> */}
-            <Table
-              columns={category_columns}
-              dataSource={category_data}
-              pagination={{ position: ["bottomLeft"] }}
-            ></Table>
+            <Table columns={category_columns} dataSource={category_data} pagination={{ position: ["bottomLeft"] }}></Table>
           </Content>
         </Layout>
       </Layout>

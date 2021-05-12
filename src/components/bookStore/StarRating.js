@@ -1,12 +1,12 @@
 /* eslint-disable eqeqeq */
 /** @jsxImportSource @emotion/react */
 import { css, Global } from "@emotion/react";
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import { Rate } from "antd";
 import axios from "axios";
 import WriteComment from "./WriteComment";
 
-class StarRating extends Component {
+class StarRating extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -159,7 +159,19 @@ class StarRating extends Component {
                   <label>
                     <textarea rows="4" cols="50" type="textarea" style={{ display: "bolock" }} value={this.state.content} onChange={this.changeReveiw.bind(this)} />
                     {/* 글자 10자이상되면 버튼 파랑색으로 변경됨 */}
-                    <button style={{ float: "right", color: "#fff", background: "#1f8ce6", border: "1px solid #0077d9", boxShadow: "0 1px 1px 0 rgba(31, 140, 230, 0.3)", fontSize: "12px", padding: "8px 18px", opacity: "0.5" }} onClick={this.sendCommentToServer}>
+                    <button
+                      style={{
+                        float: "right",
+                        color: "#fff",
+                        background: "#1f8ce6",
+                        border: "1px solid #0077d9",
+                        boxShadow: "0 1px 1px 0 rgba(31, 140, 230, 0.3)",
+                        fontSize: "12px",
+                        padding: "8px 18px",
+                        opacity: "0.5",
+                      }}
+                      onClick={this.sendCommentToServer}
+                    >
                       리뷰 남기기
                     </button>
                   </label>
@@ -177,7 +189,7 @@ class StarRating extends Component {
 
 export default StarRating;
 
-class ReviewList2 extends Component {
+class ReviewList2 extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {

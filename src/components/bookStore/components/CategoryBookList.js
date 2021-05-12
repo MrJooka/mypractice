@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 // import "./stylesCategoryLink.css";
 import styled, { css } from "styled-components";
 
@@ -36,7 +36,7 @@ const StyledLi = styled.li`
   /* justify-content: space-between; */
 `;
 
-class CategoryBookList extends Component {
+class CategoryBookList extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {};
@@ -49,24 +49,14 @@ class CategoryBookList extends Component {
             return (
               <StyledLi>
                 <div className="thumb">
-                  <a
-                    className="sp_thmb thmb100x"
-                    href="/book-detail"
-                    title={item.book_info.title}
-                  >
-                    <img
-                      width="100px"
-                      src="https://picsum.photos/id/24/200/300"
-                      alt="thumb"
-                    ></img>
+                  <a className="sp_thmb thmb100x" href="/book-detail" title={item.book_info.title}>
+                    <img width="100px" src="https://picsum.photos/id/24/200/300" alt="thumb"></img>
                   </a>
                 </div>
                 <div>
                   <dl>
                     <dt>
-                      <span className="tit">
-                        {item.book_info.intro_author}{" "}
-                      </span>
+                      <span className="tit">{item.book_info.intro_author} </span>
                     </dt>
                     <dd className="text_intro">{item.book_info.intro_book}</dd>
                     <dd className="book_info">
@@ -107,5 +97,5 @@ class CategoryBookList extends Component {
 export default CategoryBookList;
 
 const BookTag = {
-  fontSize: "10px"
-}
+  fontSize: "10px",
+};

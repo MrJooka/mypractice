@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import { Modal } from "antd";
 import axios from "axios";
 import Category from "../Category";
 
 // textarea태그로 변경해야함
 
-class AddSellBookModalForRidi extends Component {
+class AddSellBookModalForRidi extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {

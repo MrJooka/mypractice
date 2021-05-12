@@ -1,10 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { css, Global } from "@emotion/react";
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import { Link } from "react-router-dom";
 import AddSellBookModalForRidi from "./AddSellBookModalForRidi";
 
-class RidiGnbArea extends Component {
+class RidiGnbArea extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {};

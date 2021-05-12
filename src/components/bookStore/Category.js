@@ -1,16 +1,14 @@
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import InputTag from "./InputTag";
 
-class Category extends Component {
+class Category extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {};
   }
 
   getCheckboxValue = () => {
-    const selectedEls = document.querySelectorAll(
-      'input[name="category"]:checked'
-    );
+    const selectedEls = document.querySelectorAll('input[name="category"]:checked');
 
     var values = [].map.call(selectedEls, function (obj) {
       return obj.value;
@@ -47,13 +45,7 @@ class Category extends Component {
               background: "white",
             }}
           >
-            <input
-              type="checkbox"
-              name="category"
-              value="elementaryschool"
-              style={{ marginRight: "10px" }}
-              onClick={this.getCheckboxValue}
-            />
+            <input type="checkbox" name="category" value="elementaryschool" style={{ marginRight: "10px" }} onClick={this.getCheckboxValue} />
             초등
           </label>
           <label
@@ -65,13 +57,7 @@ class Category extends Component {
               background: "white",
             }}
           >
-            <input
-              type="checkbox"
-              name="category"
-              value="middleschool"
-              style={{ marginRight: "10px" }}
-              onClick={this.getCheckboxValue}
-            />
+            <input type="checkbox" name="category" value="middleschool" style={{ marginRight: "10px" }} onClick={this.getCheckboxValue} />
             중등
           </label>
           <label
@@ -83,13 +69,7 @@ class Category extends Component {
               background: "white",
             }}
           >
-            <input
-              type="checkbox"
-              name="category"
-              value="highschool"
-              style={{ marginRight: "10px" }}
-              onClick={this.getCheckboxValue}
-            />
+            <input type="checkbox" name="category" value="highschool" style={{ marginRight: "10px" }} onClick={this.getCheckboxValue} />
             고등
           </label>
           <label
@@ -101,13 +81,7 @@ class Category extends Component {
               background: "white",
             }}
           >
-            <input
-              type="checkbox"
-              name="category"
-              value="worker"
-              style={{ marginRight: "10px" }}
-              onClick={this.getCheckboxValue}
-            />
+            <input type="checkbox" name="category" value="worker" style={{ marginRight: "10px" }} onClick={this.getCheckboxValue} />
             직장인
           </label>
 
@@ -120,13 +94,7 @@ class Category extends Component {
               background: "white",
             }}
           >
-            <input
-              type="checkbox"
-              name="category"
-              value="english"
-              style={{ marginRight: "10px" }}
-              onClick={this.getCheckboxValue}
-            />
+            <input type="checkbox" name="category" value="english" style={{ marginRight: "10px" }} onClick={this.getCheckboxValue} />
             영어
           </label>
           <label
@@ -138,13 +106,7 @@ class Category extends Component {
               background: "white",
             }}
           >
-            <input
-              type="checkbox"
-              name="category"
-              value="chinese"
-              style={{ marginRight: "10px" }}
-              onClick={this.getCheckboxValue}
-            />
+            <input type="checkbox" name="category" value="chinese" style={{ marginRight: "10px" }} onClick={this.getCheckboxValue} />
             중국어
           </label>
           <label
@@ -156,13 +118,7 @@ class Category extends Component {
               background: "white",
             }}
           >
-            <input
-              type="checkbox"
-              name="category"
-              value="japanese"
-              style={{ marginRight: "10px" }}
-              onClick={this.getCheckboxValue}
-            />
+            <input type="checkbox" name="category" value="japanese" style={{ marginRight: "10px" }} onClick={this.getCheckboxValue} />
             일본어
           </label>
           <label
@@ -174,13 +130,7 @@ class Category extends Component {
               background: "white",
             }}
           >
-            <input
-              type="checkbox"
-              name="category"
-              value="coding"
-              style={{ marginRight: "10px" }}
-              onClick={this.getCheckboxValue}
-            />
+            <input type="checkbox" name="category" value="coding" style={{ marginRight: "10px" }} onClick={this.getCheckboxValue} />
             코딩
           </label>
         </div>

@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import axios from "axios";
 import RidiGnbArea from "./components/RidiGnbArea";
 import { GlobalStyle } from "./components/GlobalStyle";
@@ -12,7 +12,7 @@ import StarRating from "./StarRating";
 import CommentStackOverFlow from "./CommentStackOverFlow";
 import { ShoppingFilled, ShoppingOutlined } from "@ant-design/icons";
 
-class DetailBook extends Component {
+class DetailBook extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {

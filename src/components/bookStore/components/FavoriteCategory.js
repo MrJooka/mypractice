@@ -1,10 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import { Link } from "react-router-dom";
 import TocSider from "../TocSider";
 
-class FavoriteCategory extends Component {
+class FavoriteCategory extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {

@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import "./InputTag.css";
 
 let hashtag = [];
 
-class InputTag extends Component {
+class InputTag extends PureComponent {
   constructor() {
     super();
 
@@ -21,9 +21,7 @@ class InputTag extends Component {
   inputKeyDown = (e) => {
     const val = e.target.value;
     if (e.key === "Enter" && val) {
-      if (
-        this.state.tags.find((tag) => tag.toLowerCase() === val.toLowerCase())
-      ) {
+      if (this.state.tags.find((tag) => tag.toLowerCase() === val.toLowerCase())) {
         return;
       }
       this.setState({ tags: [...this.state.tags, val] });

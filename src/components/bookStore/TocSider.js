@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import { Layout, Menu } from "antd";
 
 const { Sider } = Layout;
 
-class TocSider extends Component {
+class TocSider extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
