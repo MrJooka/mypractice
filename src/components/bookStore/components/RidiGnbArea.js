@@ -11,7 +11,6 @@ class RidiGnbArea extends Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <React.Fragment>
         <div className="GNBWrapper">

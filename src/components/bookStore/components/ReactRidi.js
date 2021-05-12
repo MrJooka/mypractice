@@ -9,11 +9,9 @@ import { GlobalStyle } from "./GlobalStyle";
 
 class ReactRidi extends Component {
   constructor(props) {
-    console.log("ReactRidi constructor() 매서드 실행됨");
     super(props);
     this.state = {
       sell_book_list: [],
-      search: "",
     };
   }
 
@@ -32,28 +30,14 @@ class ReactRidi extends Component {
   // 리액트홈페이지에서는 이 과정을 시계 표시 프로그래밍으로 설명하는데 랜더 -> 컴포넌트디드마운트 (함수 1초마다 반복실행{시작 셋스테이트:현재시간})->랜더링(재랜더링되었다고 디드마운트가 다시 실행되진 않는다.)->1초후 함수반복으로 인해 스테이트값변경 ->랜더링->1초..->랜더링 .... 무한반복
 
   componentDidMount() {
-    console.log("ReactRidi componentDidMount 매서드 실행됨");
     axios.get("/api/bookstore/get-sellbooklist").then((res) => {
-      this.setState({ sell_book_list: res.data.sellbooklist }, () => console.log(this.state.sell_book_list));
+      this.setState({ sell_book_list: res.data.sellbooklist });
     });
   }
-
-  searchIndex = (e) => {
-    let value = e.target.value;
-
-    this.setState({ search: value });
-  };
-
-  searchNow = () => {
-    const abc = this.state.sell_book_list;
-    const bbb = abc.filter((it) => it.book_info.category.includes(this.state.search));
-    console.log(bbb);
-  };
 
   render() {
     let nowHours = new Date().getHours();
     let nowMinutes = new Date().getMinutes();
-    console.log("ReactRidi render  매서드 실행됨");
 
     return (
       <>
@@ -1417,7 +1401,6 @@ export default ReactRidi;
 
 class ListGoodForHomeStudy extends Component {
   constructor(props) {
-    console.log("ListGoodForHomeStudy constructor() 매서드 실행됨");
     super(props);
     this.state = {};
   }
@@ -1480,7 +1463,6 @@ class ListGoodForHomeStudy extends Component {
 
 class ListGoodForStudy extends Component {
   constructor(props) {
-    console.log("ListGoodForStudy constructor() 매서드 실행됨");
     super(props);
     this.state = {};
   }
@@ -1531,12 +1513,10 @@ class ListGoodForStudy extends Component {
 
 class ListBestSellerBook extends Component {
   constructor(props) {
-    console.log("ListBestSellerBook constructor() 매서드 실행됨");
     super(props);
     this.state = {};
   }
   render() {
-    console.log("ListBestSellerBook render() 매서드 실행됨");
     return (
       <React.Fragment>
         {this.props.serverlist.map((item, i) => (
@@ -1677,12 +1657,10 @@ class ListBestSellerBook extends Component {
 
 class ListCogBookRecommendBook extends Component {
   constructor(props) {
-    console.log("ListGoBookRecommedBook constructor() 매서드 실행됨");
     super(props);
     this.state = {};
   }
   render() {
-    console.log("ListcogBookRecommendBook render() 매서드 실행됨");
     return (
       <React.Fragment>
         {this.props.serverlist.map((item) => (
@@ -1722,13 +1700,11 @@ class ListCogBookRecommendBook extends Component {
 
 class ListPopularBook extends Component {
   constructor(props) {
-    console.log("ListPopularBook constructor() 매서드 실행됨");
     super(props);
     this.state = {};
   }
 
   render() {
-    console.log("ListPopularBook render() 매서드 실행됨");
     return (
       <React.Fragment>
         {this.props.serverlist.map((item, i) => (
@@ -1847,19 +1823,15 @@ class ListPopularBook extends Component {
 
 class ListRecommendedBookContent extends Component {
   constructor(props) {
-    console.log("ListGoodRecommendedBookContent constructor() 매서드 실행됨");
     super(props);
     this.state = {};
   }
 
   move = (e) => {
-    console.log("clicked");
-    console.log(this.props.book_id);
     sessionStorage.setItem("book_id", this.props.book_id);
   };
 
   render() {
-    console.log("ListRecommendBookcontent render() 매서드 실행됨");
     return (
       <React.Fragment>
         <li className="BookWrapper" css={bookWrapper}>
@@ -1905,13 +1877,11 @@ class ListRecommendedBookContent extends Component {
 
 class ListRecommendedBook extends Component {
   constructor(props) {
-    console.log("ListRecommendedBook constructor() 매서드 실행됨");
     super(props);
     this.state = {};
   }
 
   render() {
-    console.log("ListRecommendedBook render() 매서드 실행됨");
     return (
       <React.Fragment>
         {this.props.serverlist.map((item) => (
