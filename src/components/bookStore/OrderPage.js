@@ -1,160 +1,143 @@
-/** @jsxImportSource @emotion/react */
-import React, { Component } from "react";
+import { Button, Checkbox } from "antd";
+import { CheckCircleTwoTone } from "@ant-design/icons";
 import axios from "axios";
-import RidiGnbArea from "./components/RidiGnbArea";
+import React, { Component, PureComponent } from "react";
 import { GlobalStyle } from "./components/GlobalStyle";
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
+import RidiGnbArea from "./components/RidiGnbArea";
 
-import { Link } from "react-router-dom";
+class MyCartBookList extends PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
-class OrderPage extends Component {
+  render() {
+    return (
+      <React.Fragment>
+        {this.props.books_in_cart.map((book) => (
+          <li key={book._id} style={{ display: "flex", padding: "15px 0 15px 0" }}>
+            <div>
+              <img
+                className="ThumbnailImage"
+                src={book.book_info.bookcover.url_small}
+                alt=""
+                sizes="80px"
+                style={{
+                  width: "80px",
+                  maxHeight: "114px",
+                }}
+              />
+            </div>
+            <div style={{ width: "400px", marginLeft: "15px", display: "flex", flexDirection: "column", justifyContent: "space-around" }}>
+              <div style={{ fontSize: "22px", lineHeight: "22px", fontWeight: "bold" }}>{book.book_info.title}</div>
+              <div style={{ fontSize: "15px", color: "darkgray" }}>{book.book_info.author}</div>
+            </div>
+            <div style={{ display: "flex", justifyContent: "space-around", alignItems: "center", width: "200px" }}>
+              <div style={{ fontSize: "18px", color: "royalblue", fontWeight: "bold" }}>{isNaN(book.book_info.promotion.gap) ? "-" : book.book_info.promotion.gap}</div>
+              <div style={{ fontSize: "18px", color: "royalblue", fontWeight: "bold" }}>{Number(book.book_info.price).toLocaleString()} 원</div>
+            </div>
+          </li>
+        ))}
+      </React.Fragment>
+    );
+  }
+}
+class OrderPage extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      inModification: true,
-      title: "",
-      category: [],
-      hashtag: [],
-      author: "",
-      publisher: "",
-      thumbnail: null,
-      intro_book: "",
-      intro_author: "",
-      indexes: "",
-      price: 0,
-      promotion_name: "",
-      promotion_gap: "",
-      promotion_price: 0,
-      promotion_period_from: 0,
-      promotion_period_to: 0,
-      original_book_id: "",
+      books_in_cart: [],
     };
-    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   componentDidMount() {
     axios.get("/api/bookstore/get-sellbooklist").then((res) => {
-      let somebook = res.data.sellbooklist.find((iid) => iid._id === sessionStorage.getItem("book_id"));
-      this.setState({
-        title: somebook.book_info.title,
-        category: somebook.book_info.category,
-        hashtag: somebook.book_info.hashtag,
-        author: somebook.book_info.author,
-        publisher: somebook.book_info.publisher,
-        bookcover_medium: somebook.book_info.bookcover.url_large,
-        intro_book: somebook.book_info.intro_book,
-        intro_author: somebook.book_info.intro_author,
-        indexes: somebook.book_info.indexes,
-        price: somebook.book_info.price,
-        // promotion_name: "",
-        // promotion_gap: "",
-        // promotion_price: 0,
-        // promotion_period_from: 0,
-        // promotion_period_to: 0,
-        original_book_id: somebook._id,
-      });
-    });
-  }
-
-  handleInputChange(event) {
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
-
-    this.setState({
-      [name]: value,
+      this.setState({ books_in_cart: res.data.sellbooklist });
     });
   }
 
   render() {
-    console.log("OrderPage 컴포 랜더링됨");
-    return (
-      <div>
-        <GlobalStyle />
-        <RidiGnbArea />
-        안녕하세요.
-      </div>
-    );
+    if (this.state.books_in_cart == []) {
+      return <div>"로딩중"</div>;
+    } else {
+      let total = 0;
+      for (let index in this.state.books_in_cart) {
+        total += Number(this.state.books_in_cart[index].book_info.price);
+        console.log(this.state.books_in_cart[index].book_info.price);
+      }
+      let total_gap = 0;
+      for (let index in this.state.books_in_cart) {
+        if (!isNaN(this.state.books_in_cart[index].book_info.promotion.gap)) {
+          total_gap += Number(this.state.books_in_cart[index].book_info.promotion.gap);
+        }
+      }
+      return (
+        <React.Fragment>
+          <GlobalStyle />
+          <RidiGnbArea books_in_cart={this.props.books_in_cart} />
+          <div
+            style={{
+              position: "relative",
+              maxWidth: "1000px",
+              margin: "0 auto",
+            }}
+          >
+            <div style={{ width: "952px", maxWidth: "1000px", marginTop: "25px", fontSize: "24px", fontWeight: "bold" }}>
+              <div style={{ display: "flex" }}>
+                <div style={{ width: "680px" }}>
+                  <div style={{ paddingBottom: "20px" }}>주문하기</div>
+                  <div style={{ border: "1px solid #d1d5d9", padding: "0 15px" }}>
+                    <div style={{ fontSize: "20px", fontWeight: "bold" }}></div>
+                    <ul>
+                      <MyCartBookList books_in_cart={this.state.books_in_cart} />
+                    </ul>
+                  </div>
+                </div>
+                <div style={{ width: "272px", height: "100%", marginLeft: "20px" }}>
+                  <div style={{ paddingBottom: "20px" }}>금액</div>
+                  <div>
+                    <div style={{ border: "1px solid #87b4e9" }}>
+                      <p style={{ padding: "20px 20px 0 20px", color: "#5382b9", fontSize: "12px", fontWeight: "700", display: "flex", alignItems: "center" }}>
+                        <CheckCircleTwoTone twoToneColor="#87b4e9" style={{ fontSize: "15px" }} />
+                        <span style={{ fontSize: "15px", marginLeft: "5px" }}>{this.state.books_in_cart.length}권을 선택하셨습니다.</span>
+                      </p>
+                      <ul style={{ marginBottom: "20px" }}>
+                        <li style={{ padding: "15px 20px 0 20px", display: "flex", justifyContent: "space-between" }}>
+                          <span style={{ verticalAlign: "middle", color: "#738096", fontSize: "17px" }}>총 주문금액</span>
+                          <span style={{ verticalAlign: "middle", fontWeight: "700", fontSize: "17px" }}>{Number(total).toLocaleString()} 원</span>
+                        </li>
+                        <li style={{ padding: "15px 20px 0 20px", display: "flex", justifyContent: "space-between" }}>
+                          <span style={{ verticalAlign: "middle", color: "#738096", fontSize: "17px" }}>할인 금액</span>
+                          <span style={{ verticalAlign: "middle", fontWeight: "700", fontSize: "17px" }}>{Number(total_gap).toLocaleString()} 원</span>
+                        </li>
+                      </ul>
+                      <p style={{ padding: "20px", background: "#ebf6ff", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                        <span style={{ verticalAlign: "middle", color: "#738096", fontSize: "17px" }}>합계</span>
+                        <span style={{ verticalAlign: "middle", fontWeight: "700", fontSize: "22px", color: "#1f8ce6" }}>{Number(total - total_gap).toLocaleString()} 원</span>
+                      </p>
+                    </div>
+                    <div>
+                      <Button
+                        onClick={() => {
+                          window.location.href = "/order";
+                        }}
+                        type="primary"
+                        size="large"
+                        block
+                        style={{ marginTop: "10px" }}
+                      >
+                        선택 구매하기
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </React.Fragment>
+      );
+    }
   }
 }
 
 export default OrderPage;
-
-const bookDetailPage = css`
-  display: flex;
-  width: 1015px;
-  margin: 0 auto;
-`;
-
-const bookDetailArea = css`
-  flex: 802.5;
-`;
-
-const bookDetailWrapper = css`
-  margin-left: 26px;
-  padding-right: 35px;
-`;
-
-const mainInfoWrapper = css`
-  display: flex;
-  padding-top: 30px;
-`;
-
-const bookcoverWrapper = css`
-  flex: 220;
-`;
-
-const bookcoverBox = css`
-  display: flex;
-  justify-content: start;
-`;
-
-const bookcoverDiv = css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const previewButton = css`
-  margin: 0;
-  padding: 0;
-  -webkit-tap-highlight-color: transparent;
-  box-sizing: border-box;
-  border-radius: 4px;
-  font-weight: 700;
-  display: inline-block;
-  text-align: center;
-  cursor: pointer;
-  line-height: 1em;
-  vertical-align: baseline;
-  transition: background 0.2s, color 0.2s;
-  background: #fff;
-  border: 1px solid #1f8ce6;
-  box-shadow: 0 1px 1px 0 rgb(31 140 230 / 30%);
-  font-size: 13px;
-  margin-top: 9px;
-  width: 130px;
-  padding: 12px 0;
-  color: #1f8ce6;
-`;
-
-const mainInfoData = css`
-  margin: 20px 0;
-`;
-
-const CategoryItems = styled.li`
-  display: inline;
-  margin-right: 10px;
-  font-size: 12px;
-  color: #333;
-  &::after {
-    content: ",";
-  }
-  &::before {
-    content: "  ";
-  }
-  &:last-child:after {
-    content: "";
-  }
-`;

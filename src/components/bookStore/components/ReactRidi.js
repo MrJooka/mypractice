@@ -32,6 +32,8 @@ class ReactRidi extends PureComponent {
   componentDidMount() {
     axios.get("/api/bookstore/get-sellbooklist").then((res) => {
       this.setState({ sell_book_list: res.data.sellbooklist });
+      console.log(res);
+      this.props.onAddBookInCartFromServer(res.data.user.cart);
     });
   }
 

@@ -86,18 +86,20 @@ class DetailBook extends PureComponent {
   }
 
   onChangeCartStatus = () => {
+    let sellbook_id = this.state.book_id;
     if (!this.props.books_in_cart.find((book_id) => book_id == this.state.book_id)) {
       //담겼다고 알려주기
-      alert(`제목 : ${this.state.title}\n책이 카트에 추가되었습니다.`);
+
       //서버에 책 정보 보내기
-      axios.post("api주소입력", this.state.book_id).then((res) => {
+      axios.post("/api/bookstore/update-book-cart", { sellbook_id }).then((res) => {
         //카트에 책 담기
         // this.props.부모컴포props실행()
+        console.log(res);
+        alert(`제목 : ${this.state.title}\n책이 카트에 추가되었습니다.`);
+        this.props.onAddBookInCart(this.state.book_id);
       });
       //서버에 보내고 나서 GNB 카트아이콘에 숫자 변경
-      this.props.onAddBookInCart(this.state.book_id);
     } else {
-      alert(`제목 : ${this.state.title}\n책이 카트에서 삭제되었습니다.`);
       this.props.onDeleteBookInCart(this.state.book_id);
     }
   };

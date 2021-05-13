@@ -7,7 +7,9 @@ import AddSellBookModalForRidi from "./AddSellBookModalForRidi";
 class RidiGnbArea extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      activated_menu: "home",
+    };
   }
 
   render() {
@@ -55,25 +57,71 @@ class RidiGnbArea extends PureComponent {
 
               <ul className="SubMainGNB" css={subMainGNB}>
                 <li className="SubMainGNB-Item-Wrapper-Selected" css={subMainGNBItemWrapper_Selected}>
-                  <Link to="/store" className="StyledAnchorForSubMainGNB" css={styledAnchorForSubMainGNB}>
+                  <Link
+                    to="/store"
+                    onClick={() => {
+                      this.setState({
+                        activated_menu: "home",
+                      });
+                    }}
+                    className="StyledAnchorForSubMainGNB"
+                    css={styledAnchorForSubMainGNB}
+                  >
                     <img src="home_white_24dp (1).svg" alt="홈" css={subMainGNBItemIcon} />
                     <span className="SubMainGNBItemLabelStyle" css={subMainGNBItemLabelStyle}>
                       홈
                     </span>
                   </Link>
-                  <div className="SubMainGNB_Selected" selected css={subMainGNBSelected}></div>
+                  <div
+                    className="SubMainGNB_Selected"
+                    selected
+                    style={{
+                      display: "block",
+                      background: this.state.activated_menu == "home" ? "rgb(153, 209, 255)" : "transparent",
+                      height: "5px",
+                      width: "100%",
+                      top: "1px",
+                    }}
+                  ></div>
                 </li>
                 <li className="SubMainGNB-Item-Wrapper" css={subMainGNBItemWrapper}>
-                  <Link to="/" className="StyledAnchorForSubMainGNB" css={styledAnchorForSubMainGNB}>
+                  <Link
+                    to="/store"
+                    onClick={() => {
+                      this.setState({
+                        activated_menu: "notification",
+                      });
+                    }}
+                    className="StyledAnchorForSubMainGNB"
+                    css={styledAnchorForSubMainGNB}
+                  >
                     <img src="notifications_white_24dp.svg" alt="홈" css={subMainGNBItemIcon} />
                     <span className="SubMainGNBItemLabelStyle" css={subMainGNBItemLabelStyle}>
                       알림
                     </span>
                   </Link>
-                  <div className="SubMainGNB_UnSelected" css={subMainGNB_UnSelected}></div>
+                  <div
+                    className="SubMainGNB_UnSelected"
+                    style={{
+                      display: "block",
+                      background: this.state.activated_menu == "notification" ? "rgb(153, 209, 255)" : "transparent",
+                      height: "5px",
+                      width: "100%",
+                      top: "1px",
+                    }}
+                  ></div>
                 </li>
                 <li className="SubMainGNB-Item-Wrapper" css={subMainGNBItemWrapper}>
-                  <Link to="/mycart" className="StyledAnchorForSubMainGNB" css={styledAnchorForSubMainGNB}>
+                  <Link
+                    to="/mycart"
+                    onClick={() => {
+                      this.setState({
+                        activated_menu: "cart",
+                      });
+                    }}
+                    className="StyledAnchorForSubMainGNB"
+                    css={styledAnchorForSubMainGNB}
+                  >
                     <img src="shopping_cart_white_24dp.svg" alt="홈" css={subMainGNBItemIcon} />
                     {this.props.books_in_cart.length == 0 ? null : (
                       <div
@@ -126,16 +174,43 @@ class RidiGnbArea extends PureComponent {
                       카트
                     </span>
                   </Link>
-                  <div className="SubMainGNB_UnSelected" css={subMainGNB_UnSelected}></div>
+                  <div
+                    className="SubMainGNB_UnSelected"
+                    style={{
+                      display: "block",
+                      background: this.state.activated_menu == "cart" ? "rgb(153, 209, 255)" : "transparent",
+                      height: "5px",
+                      width: "100%",
+                      top: "1px",
+                    }}
+                  ></div>
                 </li>
                 <li className="SubMainGNB-Item-Wrapper" css={subMainGNBItemWrapper}>
-                  <Link to="/" className="StyledAnchorForSubMainGNB" css={styledAnchorForSubMainGNB}>
+                  <Link
+                    to="/mypage"
+                    onClick={() => {
+                      this.setState({
+                        activated_menu: "myinfo",
+                      });
+                    }}
+                    className="StyledAnchorForSubMainGNB"
+                    css={styledAnchorForSubMainGNB}
+                  >
                     <img src="person_outline_white_24dp.svg" alt="홈" css={subMainGNBItemIcon} />
                     <span className="SubMainGNBItemLabelStyle" css={subMainGNBItemLabelStyle}>
                       마이콕북
                     </span>
                   </Link>
-                  <div className="SubMainGNB_UnSelected" css={subMainGNB_UnSelected}></div>
+                  <div
+                    className="SubMainGNB_UnSelected"
+                    style={{
+                      display: "block",
+                      background: this.state.activated_menu == "myinfo" ? "rgb(153, 209, 255)" : "transparent",
+                      height: "5px",
+                      width: "100%",
+                      top: "1px",
+                    }}
+                  ></div>
                 </li>
               </ul>
             </div>
@@ -253,7 +328,7 @@ const subMainGNBItemWrapper = css`
   display: flex;
   flex-direction: column;
   height: 37px;
-  padding-bottom: 4px;
+  padding-bottom: 0px;
 `;
 
 const styledAnchorForSubMainGNB = css`

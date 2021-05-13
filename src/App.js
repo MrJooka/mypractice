@@ -20,6 +20,8 @@ import DetailBook from "./components/bookStore/DetailBook";
 import OrderPage from "./components/bookStore/OrderPage";
 import LinkCategory from "./components/bookStore/LinkCategory";
 import MyCart from "./components/bookStore/MyCart";
+import MyPage from "./components/bookStore/MyPage";
+import axios from "axios";
 
 class App extends Component {
   constructor(props) {
@@ -37,15 +39,26 @@ class App extends Component {
 
   onAddBookInCart = (book_id) => {
     let new_books_in_cart = [...this.state.books_in_cart, book_id];
+    axios.post("/api/bookstore/update-book-cart", { cart: new_books_in_cart }).then((res) => {
+      this.setState({
+        books_in_cart: new_books_in_cart,
+      });
+    });
+  };
+
+  onAddBookInCartFromServer = (cart) => {
     this.setState({
-      books_in_cart: new_books_in_cart,
+      books_in_cart: cart,
     });
   };
 
   onDeleteBookInCart = (book_id) => {
     let new_books_in_cart = this.state.books_in_cart.filter((_book_id) => _book_id != book_id);
-    this.setState({
-      books_in_cart: new_books_in_cart,
+    axios.post("/api/bookstore/update-book-cart", { cart: new_books_in_cart }).then((res) => {
+      this.setState({
+        books_in_cart: new_books_in_cart,
+      });
+      console.log(res);
     });
   };
 
@@ -64,14 +77,19 @@ class App extends Component {
             <Route exact path="/myinfo" component={MyInfoMain} />
             <Route exact path="/write" render={() => <WritingMain updatedLoginState={this.updatedLoginState} />} />
             <Route exact path="/store">
-              <BookStoreMain books_in_cart={this.state.books_in_cart} />
+              <BookStoreMain books_in_cart={this.state.books_in_cart} onAddBookInCartFromServer={this.onAddBookInCartFromServer} />
             </Route>
-            <Route exact path="/order" component={OrderPage} />
+            <Route exact path="/order">
+              <OrderPage books_in_cart={this.state.books_in_cart} />
+            </Route>
+            <Route exact path="/mypage">
+              <MyPage books_in_cart={this.state.books_in_cart} />
+            </Route>
             <Route exact path="/detail-book">
               <DetailBook onAddBookInCart={this.onAddBookInCart} onDeleteBookInCart={this.onDeleteBookInCart} books_in_cart={this.state.books_in_cart} />
             </Route>
             <Route exact path="/mycart">
-              <MyCart books_in_cart={this.state.books_in_cart} />
+              <MyCart books_in_cart={this.state.books_in_cart} onDeleteBookInCart={this.onDeleteBookInCart} />
             </Route>
             <Route exact path="/link-category" component={LinkCategory} />
             <Route exact path="/mentoring" component={MentoringMain} />

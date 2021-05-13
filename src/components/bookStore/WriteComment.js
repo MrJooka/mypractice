@@ -28,7 +28,7 @@ class WriteComment extends PureComponent {
     const rating = 0;
     const content = this.state.content;
 
-    axios.post("api/bookstore/register-book-comment", { user_id, sellbook_id, root_id, parent_id, level, isDeleted, time_created, rating, content }).then((res) => {
+    axios.post("api/bookstore/create-book-comment", { user_id, sellbook_id, root_id, parent_id, level, isDeleted, time_created, rating, content }).then((res) => {
       this.props.updateStateBookComment(res.data.book_comment);
       this.changeVisivility();
       this.setState({ content: "" });

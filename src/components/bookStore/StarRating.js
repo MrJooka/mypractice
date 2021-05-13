@@ -65,8 +65,8 @@ class StarRating extends PureComponent {
     //         content: 'dfadfdfe'
     //       }
     //     }
-    // axios.post("api/bookstore/register-book-comment", { register_comment }).then((res) => {
-    axios.post("api/bookstore/register-book-comment", { user_id, sellbook_id, root_id, parent_id, level, isDeleted, time_created, rating, content }).then((res) => {
+    // axios.post("api/bookstore/create-book-comment", { register_comment }).then((res) => {
+    axios.post("api/bookstore/create-book-comment", { user_id, sellbook_id, root_id, parent_id, level, isDeleted, time_created, rating, content }).then((res) => {
       this.props.updateStateBookComment(res.data.book_comment);
     });
   };
@@ -213,7 +213,7 @@ class ReviewList2 extends PureComponent {
     const rating = null;
     const content = this.state.content;
 
-    axios.post("api/bookstore/register-book-comment", { user_id, sellbook_id, root_id, parent_id, level, isDeleted, time_created, rating, content }).then((res) => {
+    axios.post("api/bookstore/create-book-comment", { user_id, sellbook_id, root_id, parent_id, level, isDeleted, time_created, rating, content }).then((res) => {
       this.props.updateStateBookComment(res.data.book_comment);
     });
   };
