@@ -33,7 +33,7 @@ class ReactRidi extends PureComponent {
     axios.get("/api/bookstore/get-sellbooklist").then((res) => {
       this.setState({ sell_book_list: res.data.sellbooklist });
       console.log(res);
-      this.props.onAddBookInCartFromServer(res.data.user.cart);
+      this.props.onUpdateBookIdListInCartInState(res.data.user.cart);
     });
   }
 
@@ -44,7 +44,7 @@ class ReactRidi extends PureComponent {
     return (
       <>
         <GlobalStyle />
-        <RidiGnbArea books_in_cart={this.props.books_in_cart} />
+        <RidiGnbArea book_id_in_cart={this.props.book_id_in_cart} onChangeSelectedNavMenu={this.props.onChangeSelectedNavMenu} selected_nav_menu={this.props.selected_nav_menu} />
         <FavoriteCategory />
         <div
           css={css`

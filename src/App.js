@@ -28,9 +28,17 @@ class App extends Component {
     super(props);
     this.state = {
       isLoggedIn: false,
-      books_in_cart: [],
+      book_id_in_cart: null,
+      selected_nav_menu: "home",
     };
   }
+
+  onChangeSelectedNavMenu = (menu) => {
+    this.setState({
+      selected_nav_menu: menu,
+    });
+  };
+
   updatedLoginState = (value) => {
     this.setState({
       isLoggedIn: value,
@@ -38,31 +46,44 @@ class App extends Component {
   };
 
   onAddBookInCart = (book_id) => {
-    let new_books_in_cart = [...this.state.books_in_cart, book_id];
-    axios.post("/api/bookstore/update-book-cart", { cart: new_books_in_cart }).then((res) => {
+    let new_book_id_in_cart = [...this.state.book_id_in_cart, book_id];
+    axios.post("/api/bookstore/update-book-cart", { cart: new_book_id_in_cart }).then((res) => {
       this.setState({
-        books_in_cart: new_books_in_cart,
+        book_id_in_cart: new_book_id_in_cart,
       });
     });
+    localStorage.setItem("cart", JSON.stringify(new_book_id_in_cart));
   };
 
-  onAddBookInCartFromServer = (cart) => {
+  onUpdateBookIdListInCartInState = (book_id_list) => {
     this.setState({
-      books_in_cart: cart,
+      book_id_in_cart: book_id_list,
     });
+    localStorage.setItem("cart", JSON.stringify(book_id_list));
+  };
+
+  onUpdateBooKIdListInCartInServer = (book_id_list) => {
+    axios.post("/api/bookstore/update-book-cart", { cart: book_id_list }).then((res) => {
+      this.onUpdateBookIdListInCartInState(book_id_list);
+    });
+    localStorage.setItem("cart", JSON.stringify(book_id_list));
   };
 
   onDeleteBookInCart = (book_id) => {
-    let new_books_in_cart = this.state.books_in_cart.filter((_book_id) => _book_id != book_id);
-    axios.post("/api/bookstore/update-book-cart", { cart: new_books_in_cart }).then((res) => {
+    let new_book_id_in_cart = this.state.book_id_in_cart.filter((_book_id) => _book_id != book_id);
+    axios.post("/api/bookstore/update-book-cart", { cart: new_book_id_in_cart }).then((res) => {
       this.setState({
-        books_in_cart: new_books_in_cart,
+        book_id_in_cart: new_book_id_in_cart,
       });
       console.log(res);
+      localStorage.setItem("cart", JSON.stringify(new_book_id_in_cart));
     });
   };
 
   render() {
+    const cardItems = JSON.parse(localStorage.getItem("cart"));
+    console.log(cardItems);
+
     return (
       <div className="App">
         <Affix offsetTop={0}>
@@ -72,24 +93,45 @@ class App extends Component {
           <Switch>
             <Route exact path="/" render={() => <Home updatedLoginState={this.updatedLoginState} isLoggedIn={this.state.isLoggedIn} />} />
             <Route exact path="/register" component={Register} />
-            <Route exact path="/login" component={Login} />
+            <Route exact path="/login">
+              <Login onUpdateBooKIdListInCartInServer={this.onUpdateBooKIdListInCartInServer} />
+            </Route>
             <Route exact path="/study" component={StudyMain} />
             <Route exact path="/myinfo" component={MyInfoMain} />
             <Route exact path="/write" render={() => <WritingMain updatedLoginState={this.updatedLoginState} />} />
             <Route exact path="/store">
-              <BookStoreMain books_in_cart={this.state.books_in_cart} onAddBookInCartFromServer={this.onAddBookInCartFromServer} />
+              <BookStoreMain
+                book_id_in_cart={this.state.book_id_in_cart}
+                onUpdateBookIdListInCartInState={this.onUpdateBookIdListInCartInState}
+                onChangeSelectedNavMenu={this.onChangeSelectedNavMenu}
+                selected_nav_menu={this.state.selected_nav_menu}
+              />
             </Route>
             <Route exact path="/order">
-              <OrderPage books_in_cart={this.state.books_in_cart} />
+              <OrderPage book_id_in_cart={this.state.book_id_in_cart} onChangeSelectedNavMenu={this.onChangeSelectedNavMenu} selected_nav_menu={this.state.selected_nav_menu} />
             </Route>
             <Route exact path="/mypage">
-              <MyPage books_in_cart={this.state.books_in_cart} />
+              <MyPage book_id_in_cart={this.state.book_id_in_cart} onChangeSelectedNavMenu={this.onChangeSelectedNavMenu} selected_nav_menu={this.state.selected_nav_menu} />
             </Route>
             <Route exact path="/detail-book">
-              <DetailBook onAddBookInCart={this.onAddBookInCart} onDeleteBookInCart={this.onDeleteBookInCart} books_in_cart={this.state.books_in_cart} />
+              <DetailBook
+                onAddBookInCart={this.onAddBookInCart}
+                onUpdateBookIdListInCartInState={this.onUpdateBookIdListInCartInState}
+                onDeleteBookInCart={this.onDeleteBookInCart}
+                book_id_in_cart={this.state.book_id_in_cart}
+                onChangeSelectedNavMenu={this.onChangeSelectedNavMenu}
+                selected_nav_menu={this.state.selected_nav_menu}
+              />
             </Route>
             <Route exact path="/mycart">
-              <MyCart books_in_cart={this.state.books_in_cart} onDeleteBookInCart={this.onDeleteBookInCart} />
+              <MyCart
+                book_id_in_cart={this.state.book_id_in_cart}
+                onUpdateBookIdListInCartInState={this.onUpdateBookIdListInCartInState}
+                onUpdateBooKIdListInCartInServer={this.onUpdateBooKIdListInCartInServer}
+                onDeleteBookInCart={this.onDeleteBookInCart}
+                onChangeSelectedNavMenu={this.onChangeSelectedNavMenu}
+                selected_nav_menu={this.state.selected_nav_menu}
+              />
             </Route>
             <Route exact path="/link-category" component={LinkCategory} />
             <Route exact path="/mentoring" component={MentoringMain} />

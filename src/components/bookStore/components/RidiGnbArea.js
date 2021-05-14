@@ -7,12 +7,12 @@ import AddSellBookModalForRidi from "./AddSellBookModalForRidi";
 class RidiGnbArea extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {
-      activated_menu: "home",
-    };
+    this.state = {};
   }
 
   render() {
+    let cartItems = JSON.parse(localStorage.getItem("cart"));
+    let props_alter = this.props.book_id_in_cart || cartItems || [];
     return (
       <React.Fragment>
         <div className="GNBWrapper">
@@ -60,9 +60,7 @@ class RidiGnbArea extends PureComponent {
                   <Link
                     to="/store"
                     onClick={() => {
-                      this.setState({
-                        activated_menu: "home",
-                      });
+                      this.props.onChangeSelectedNavMenu("home");
                     }}
                     className="StyledAnchorForSubMainGNB"
                     css={styledAnchorForSubMainGNB}
@@ -77,7 +75,7 @@ class RidiGnbArea extends PureComponent {
                     selected
                     style={{
                       display: "block",
-                      background: this.state.activated_menu == "home" ? "rgb(153, 209, 255)" : "transparent",
+                      background: this.props.selected_nav_menu == "home" ? "rgb(153, 209, 255)" : "transparent",
                       height: "5px",
                       width: "100%",
                       top: "1px",
@@ -88,9 +86,7 @@ class RidiGnbArea extends PureComponent {
                   <Link
                     to="/store"
                     onClick={() => {
-                      this.setState({
-                        activated_menu: "notification",
-                      });
+                      this.props.onChangeSelectedNavMenu("notification");
                     }}
                     className="StyledAnchorForSubMainGNB"
                     css={styledAnchorForSubMainGNB}
@@ -104,7 +100,7 @@ class RidiGnbArea extends PureComponent {
                     className="SubMainGNB_UnSelected"
                     style={{
                       display: "block",
-                      background: this.state.activated_menu == "notification" ? "rgb(153, 209, 255)" : "transparent",
+                      background: this.props.selected_nav_menu == "notification" ? "rgb(153, 209, 255)" : "transparent",
                       height: "5px",
                       width: "100%",
                       top: "1px",
@@ -115,15 +111,13 @@ class RidiGnbArea extends PureComponent {
                   <Link
                     to="/mycart"
                     onClick={() => {
-                      this.setState({
-                        activated_menu: "cart",
-                      });
+                      this.props.onChangeSelectedNavMenu("cart");
                     }}
                     className="StyledAnchorForSubMainGNB"
                     css={styledAnchorForSubMainGNB}
                   >
                     <img src="shopping_cart_white_24dp.svg" alt="홈" css={subMainGNBItemIcon} />
-                    {this.props.books_in_cart.length == 0 ? null : (
+                    {props_alter.length == 0 ? null : (
                       <div
                         css={css`
                           position: absolute;
@@ -164,7 +158,7 @@ class RidiGnbArea extends PureComponent {
                               color: rgb(31, 140, 230);
                             `}
                           >
-                            {this.props.books_in_cart.length}{" "}
+                            {props_alter.length}{" "}
                           </span>
                         </div>
                       </div>
@@ -178,7 +172,7 @@ class RidiGnbArea extends PureComponent {
                     className="SubMainGNB_UnSelected"
                     style={{
                       display: "block",
-                      background: this.state.activated_menu == "cart" ? "rgb(153, 209, 255)" : "transparent",
+                      background: this.props.selected_nav_menu == "cart" ? "rgb(153, 209, 255)" : "transparent",
                       height: "5px",
                       width: "100%",
                       top: "1px",
@@ -189,9 +183,7 @@ class RidiGnbArea extends PureComponent {
                   <Link
                     to="/mypage"
                     onClick={() => {
-                      this.setState({
-                        activated_menu: "myinfo",
-                      });
+                      this.props.onChangeSelectedNavMenu("myinfo");
                     }}
                     className="StyledAnchorForSubMainGNB"
                     css={styledAnchorForSubMainGNB}
@@ -205,7 +197,7 @@ class RidiGnbArea extends PureComponent {
                     className="SubMainGNB_UnSelected"
                     style={{
                       display: "block",
-                      background: this.state.activated_menu == "myinfo" ? "rgb(153, 209, 255)" : "transparent",
+                      background: this.props.selected_nav_menu == "myinfo" ? "rgb(153, 209, 255)" : "transparent",
                       height: "5px",
                       width: "100%",
                       top: "1px",

@@ -68,6 +68,12 @@ class DetailBook extends PureComponent {
         rating: res.data.rating,
       });
     });
+    axios.post("/api/bookstore/get-book-cart").then((res) => {
+      console.log("카트 서버 데이터", res);
+      let books_in_cart = [];
+      res.data.user.cart.map((book) => books_in_cart.push(book._id));
+      this.props.onUpdateBookIdListInCartInState(books_in_cart);
+    });
 
     let intro_author_height = 0;
     let intro_book_height = 0;
@@ -87,7 +93,7 @@ class DetailBook extends PureComponent {
 
   onChangeCartStatus = () => {
     let sellbook_id = this.state.book_id;
-    if (!this.props.books_in_cart.find((book_id) => book_id == this.state.book_id)) {
+    if (!this.props.book_id_in_cart.find((book_id) => book_id == this.state.book_id)) {
       //담겼다고 알려주기
 
       //서버에 책 정보 보내기
@@ -101,6 +107,7 @@ class DetailBook extends PureComponent {
       //서버에 보내고 나서 GNB 카트아이콘에 숫자 변경
     } else {
       this.props.onDeleteBookInCart(this.state.book_id);
+      alert(`제목 : ${this.state.title}\n책이 카트에서 삭제되었습니다.`);
     }
   };
 
@@ -124,7 +131,9 @@ class DetailBook extends PureComponent {
 
       return (
         <React.Fragment>
-          <GlobalStyle /> <RidiGnbArea books_in_cart={this.props.books_in_cart} /> <FavoriteCategory />
+          <GlobalStyle />
+          <RidiGnbArea book_id_in_cart={this.props.book_id_in_cart} onChangeSelectedNavMenu={this.props.onChangeSelectedNavMenu} selected_nav_menu={this.props.selected_nav_menu} />
+          <FavoriteCategory />
           <div className="BookDetailPage" style={bookDetailPage}>
             <div className="BookDetailArea" style={bookDetailArea}>
               <div className="BookDetailWrapper" style={bookDetailWrapper}>
@@ -370,7 +379,7 @@ class DetailBook extends PureComponent {
                               style={{ height: "48px", width: "48px", border: "1px solid #d1d5d9", boxShadow: "0 1px 1px 0 rgb(209 213 217 / 30%)", borderRadius: "4px", display: "inline-block" }}
                               onClick={this.onChangeCartStatus}
                             >
-                              {this.props.books_in_cart.find((book_id) => book_id == this.state.book_id) ? (
+                              {this.props.book_id_in_cart.find((book_id) => book_id == this.state.book_id) ? (
                                 <ShoppingFilled style={{ fontSize: "25px", color: "tomato" }} />
                               ) : (
                                 <ShoppingOutlined style={{ fontSize: "25px" }} />
