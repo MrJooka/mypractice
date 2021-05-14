@@ -30,6 +30,8 @@ class App extends Component {
       isLoggedIn: false,
       book_id_in_cart: null,
       selected_nav_menu: "home",
+      checked_book_id_list: [],
+      checked_books_list: [],
     };
   }
 
@@ -80,9 +82,13 @@ class App extends Component {
     });
   };
 
+  onCheckedListForPurchase = (book_id_list, books_list) => {
+    localStorage.setItem("book_id_list", JSON.stringify(book_id_list));
+    localStorage.setItem("books_list", JSON.stringify(books_list));
+  };
+
   render() {
-    const cardItems = JSON.parse(localStorage.getItem("cart"));
-    console.log(cardItems);
+    console.log(this.state.checked_book_id_list);
 
     return (
       <div className="App">
@@ -108,7 +114,12 @@ class App extends Component {
               />
             </Route>
             <Route exact path="/order">
-              <OrderPage book_id_in_cart={this.state.book_id_in_cart} onChangeSelectedNavMenu={this.onChangeSelectedNavMenu} selected_nav_menu={this.state.selected_nav_menu} />
+              <OrderPage
+                book_id_in_cart={this.state.book_id_in_cart}
+                onChangeSelectedNavMenu={this.onChangeSelectedNavMenu}
+                selected_nav_menu={this.state.selected_nav_menu}
+                onUpdateBooKIdListInCartInServer={this.onUpdateBooKIdListInCartInServer}
+              />
             </Route>
             <Route exact path="/mypage">
               <MyPage book_id_in_cart={this.state.book_id_in_cart} onChangeSelectedNavMenu={this.onChangeSelectedNavMenu} selected_nav_menu={this.state.selected_nav_menu} />
@@ -131,6 +142,7 @@ class App extends Component {
                 onDeleteBookInCart={this.onDeleteBookInCart}
                 onChangeSelectedNavMenu={this.onChangeSelectedNavMenu}
                 selected_nav_menu={this.state.selected_nav_menu}
+                onCheckedListForPurchase={this.onCheckedListForPurchase}
               />
             </Route>
             <Route exact path="/link-category" component={LinkCategory} />

@@ -128,6 +128,23 @@ class MyCart extends PureComponent {
     }
   };
 
+  onDeleteCheckedBooksFromCart = () => {
+    let new_books_in_cart = [...this.state.books_in_cart];
+    let new_book_id_in_cart = [...this.props.book_id_in_cart];
+    for (let i in this.state.checked_book_id_list) {
+      new_books_in_cart = new_books_in_cart.filter((book) => book._id !== this.state.checked_book_id_list[i]);
+      new_book_id_in_cart = new_book_id_in_cart.filter((book_id) => book_id !== this.state.checked_book_id_list[i]);
+    }
+
+    this.props.onUpdateBooKIdListInCartInServer(new_book_id_in_cart);
+
+    this.setState({
+      books_in_cart: new_books_in_cart,
+      checked_books_list: [],
+      checked_book_id_list: [],
+    });
+  };
+
   componentDidMount() {
     axios.post("/api/bookstore/get-book-cart").then((res) => {
       let checked_book_id_list = [];
@@ -177,25 +194,7 @@ class MyCart extends PureComponent {
                     />
                     {props_alter.length == this.state.checked_book_id_list.length ? "전체 해제" : "전체 선택"}
                     {this.state.checked_book_id_list.length > 0 ? (
-                      <Button
-                        onClick={() => {
-                          let new_books_in_cart = [...this.state.books_in_cart];
-                          let new_book_id_in_cart = [...props_alter];
-                          for (let i in this.state.checked_book_id_list) {
-                            new_books_in_cart = new_books_in_cart.filter((book) => book._id !== this.state.checked_book_id_list[i]);
-                            new_book_id_in_cart = new_book_id_in_cart.filter((book_id) => book_id !== this.state.checked_book_id_list[i]);
-                          }
-
-                          this.props.onUpdateBooKIdListInCartInServer(new_book_id_in_cart);
-
-                          this.setState({
-                            books_in_cart: new_books_in_cart,
-                            checked_books_list: [],
-                            checked_book_id_list: [],
-                          });
-                        }}
-                        style={{ marginLeft: "30px" }}
-                      >
+                      <Button onClick={this.onDeleteCheckedBooksFromCart} style={{ marginLeft: "30px" }}>
                         선택된 책 카트에서 삭제
                       </Button>
                     ) : null}
@@ -238,6 +237,7 @@ class MyCart extends PureComponent {
                     <Button
                       onClick={() => {
                         window.location.href = "/order";
+                        this.props.onCheckedListForPurchase(this.state.checked_book_id_list, this.state.checked_books_list);
                       }}
                       type="primary"
                       size="large"

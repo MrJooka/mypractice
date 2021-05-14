@@ -14,7 +14,7 @@ class MyCartBookList extends PureComponent {
   render() {
     return (
       <React.Fragment>
-        {this.props.books_in_cart.map((book) => (
+        {this.props.checked_books_list.map((book) => (
           <li key={book._id} style={{ display: "flex", padding: "15px 0 15px 0" }}>
             <div>
               <img
@@ -46,26 +46,27 @@ class OrderPage extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      books_in_cart: [],
+      checked_books_list: [],
     };
   }
 
   componentDidMount() {
-    // axios.get("/api/bookstore/get-sellbooklist").then((res) => {
-    //   this.setState({ books_in_cart: res.data.sellbooklist });
-    // });
+    this.setState({
+      checked_books_list: JSON.parse(localStorage.getItem("books_list")),
+    });
   }
 
   render() {
+    console.log(this.state.checked_books_list);
     let total = 0;
-    for (let index in this.state.books_in_cart) {
-      total += Number(this.state.books_in_cart[index].book_info.price);
-      console.log(this.state.books_in_cart[index].book_info.price);
+    for (let index in this.state.checked_books_list) {
+      total += Number(this.state.checked_books_list[index].book_info.price);
+      console.log(this.state.checked_books_list[index].book_info.price);
     }
     let total_gap = 0;
-    for (let index in this.state.books_in_cart) {
-      if (!isNaN(this.state.books_in_cart[index].book_info.promotion.gap)) {
-        total_gap += Number(this.state.books_in_cart[index].book_info.promotion.gap);
+    for (let index in this.state.checked_books_list) {
+      if (!isNaN(this.state.checked_books_list[index].book_info.promotion.gap)) {
+        total_gap += Number(this.state.checked_books_list[index].book_info.promotion.gap);
       }
     }
 
@@ -90,7 +91,7 @@ class OrderPage extends PureComponent {
                 <div style={{ border: "1px solid #d1d5d9", padding: "0 15px" }}>
                   <div style={{ fontSize: "20px", fontWeight: "bold" }}></div>
                   <ul>
-                    <MyCartBookList books_in_cart={this.state.books_in_cart} />
+                    <MyCartBookList checked_books_list={this.state.checked_books_list} />
                   </ul>
                 </div>
               </div>
@@ -100,7 +101,7 @@ class OrderPage extends PureComponent {
                   <div style={{ border: "1px solid #87b4e9" }}>
                     <p style={{ padding: "20px 20px 0 20px", color: "#5382b9", fontSize: "12px", fontWeight: "700", display: "flex", alignItems: "center" }}>
                       <CheckCircleTwoTone twoToneColor="#87b4e9" style={{ fontSize: "15px" }} />
-                      <span style={{ fontSize: "15px", marginLeft: "5px" }}>{this.state.books_in_cart.length}권을 선택하셨습니다.</span>
+                      <span style={{ fontSize: "15px", marginLeft: "5px" }}>{this.state.checked_books_list.length}권을 선택하셨습니다.</span>
                     </p>
                     <ul style={{ marginBottom: "20px" }}>
                       <li style={{ padding: "15px 20px 0 20px", display: "flex", justifyContent: "space-between" }}>
@@ -120,7 +121,23 @@ class OrderPage extends PureComponent {
                   <div>
                     <Button
                       onClick={() => {
-                        window.location.href = "/order";
+                        //카트에서 구매할 책들 삭제
+                        let new_book_id_in_cart = [...props_alter];
+                        let checkedlist = JSON.parse(localStorage.getItem("book_id_list"));
+                        for (let i in checkedlist) {
+                          new_book_id_in_cart = new_book_id_in_cart.filter((book_id) => book_id !== checkedlist[i]);
+                        }
+                        this.props.onUpdateBooKIdListInCartInServer(new_book_id_in_cart);
+
+                        //새로고침해도 구매하기 진행했을 때에는 리스트 안뜨게 로컬스토리지에서 데이터 초기화
+                        localStorage.setItem("book_id_list", JSON.stringify([]));
+                        localStorage.setItem("books_list", JSON.stringify([]));
+                        //구매버튼 누르면 보여지는 책들 리셋
+                        this.setState({
+                          checked_books_list: [],
+                        });
+
+                        //todo 구매 다음 단계 아직 없음
                       }}
                       type="primary"
                       size="large"
