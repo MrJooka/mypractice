@@ -61,14 +61,12 @@ class App extends Component {
     this.setState({
       book_id_in_cart: book_id_list,
     });
-    localStorage.setItem("cart", JSON.stringify(book_id_list));
   };
 
   onUpdateBooKIdListInCartInServer = (book_id_list) => {
     axios.post("/api/bookstore/update-book-cart", { cart: book_id_list }).then((res) => {
       this.onUpdateBookIdListInCartInState(book_id_list);
     });
-    localStorage.setItem("cart", JSON.stringify(book_id_list));
   };
 
   onDeleteBookInCart = (book_id) => {
@@ -100,7 +98,7 @@ class App extends Component {
             <Route exact path="/" render={() => <Home updatedLoginState={this.updatedLoginState} isLoggedIn={this.state.isLoggedIn} />} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/login">
-              <Login onUpdateBooKIdListInCartInServer={this.onUpdateBooKIdListInCartInServer} />
+              <Login onUpdateBookIdListInCartInState={this.onUpdateBookIdListInCartInState} />
             </Route>
             <Route exact path="/study" component={StudyMain} />
             <Route exact path="/myinfo" component={MyInfoMain} />

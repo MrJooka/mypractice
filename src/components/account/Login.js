@@ -18,8 +18,7 @@ const Login = (props) => {
         } else {
           console.log(res.data.cart);
           localStorage.setItem("cart", JSON.stringify(res.data.cart));
-          // const cartItems = JSON.parse(localStorage.getItem("cart"))
-          this.props.onUpdateBooKIdListInCartInServer(res.data.cart);
+          props.onUpdateBookIdListInCartInState(res.data.cart);
           window.location.href = "/";
         }
       })

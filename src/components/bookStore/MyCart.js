@@ -137,6 +137,7 @@ class MyCart extends PureComponent {
     }
 
     this.props.onUpdateBooKIdListInCartInServer(new_book_id_in_cart);
+    localStorage.setItem("cart", JSON.stringify(new_book_id_in_cart));
 
     this.setState({
       books_in_cart: new_books_in_cart,
@@ -147,10 +148,11 @@ class MyCart extends PureComponent {
 
   componentDidMount() {
     axios.post("/api/bookstore/get-book-cart").then((res) => {
-      let checked_book_id_list = [];
-      res.data.user.cart.map((book) => checked_book_id_list.push(book._id));
-      this.setState({ books_in_cart: res.data.user.cart, checked_book_id_list: checked_book_id_list, checked_books_list: res.data.user.cart });
-      this.props.onUpdateBookIdListInCartInState(checked_book_id_list);
+      let book_id_in_cart = [];
+      res.data.user.cart.map((book) => book_id_in_cart.push(book._id));
+      this.setState({ books_in_cart: res.data.user.cart, checked_book_id_list: book_id_in_cart, checked_books_list: res.data.user.cart });
+      this.props.onUpdateBookIdListInCartInState(book_id_in_cart);
+      localStorage.setItem("cart", JSON.stringify(book_id_in_cart));
     });
   }
 

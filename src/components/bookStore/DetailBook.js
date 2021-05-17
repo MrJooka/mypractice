@@ -70,9 +70,11 @@ class DetailBook extends PureComponent {
     });
     axios.post("/api/bookstore/get-book-cart").then((res) => {
       console.log("카트 서버 데이터", res);
-      let books_in_cart = [];
-      res.data.user.cart.map((book) => books_in_cart.push(book._id));
-      this.props.onUpdateBookIdListInCartInState(books_in_cart);
+      let book_id_in_cart = [];
+      let res_data_user_cart = res.data.user.cart || [];
+      res_data_user_cart.map((book) => book_id_in_cart.push(book._id));
+      this.props.onUpdateBookIdListInCartInState(book_id_in_cart);
+      localStorage.setItem("cart", JSON.stringify(book_id_in_cart));
     });
 
     let intro_author_height = 0;
@@ -129,10 +131,13 @@ class DetailBook extends PureComponent {
       }
       let 평균평점 = Math.round((총별갯수 / 리뷰갯수) * 100) / 100;
 
+      let cartItems = JSON.parse(localStorage.getItem("cart"));
+      let props_alter = this.props.book_id_in_cart || cartItems || [];
+
       return (
         <React.Fragment>
           <GlobalStyle />
-          <RidiGnbArea book_id_in_cart={this.props.book_id_in_cart} onChangeSelectedNavMenu={this.props.onChangeSelectedNavMenu} selected_nav_menu={this.props.selected_nav_menu} />
+          <RidiGnbArea book_id_in_cart={props_alter} onChangeSelectedNavMenu={this.props.onChangeSelectedNavMenu} selected_nav_menu={this.props.selected_nav_menu} />
           <FavoriteCategory />
           <div className="BookDetailPage" style={bookDetailPage}>
             <div className="BookDetailArea" style={bookDetailArea}>
@@ -379,7 +384,7 @@ class DetailBook extends PureComponent {
                               style={{ height: "48px", width: "48px", border: "1px solid #d1d5d9", boxShadow: "0 1px 1px 0 rgb(209 213 217 / 30%)", borderRadius: "4px", display: "inline-block" }}
                               onClick={this.onChangeCartStatus}
                             >
-                              {this.props.book_id_in_cart.find((book_id) => book_id == this.state.book_id) ? (
+                              {props_alter.find((book_id) => book_id == this.state.book_id) ? (
                                 <ShoppingFilled style={{ fontSize: "25px", color: "tomato" }} />
                               ) : (
                                 <ShoppingOutlined style={{ fontSize: "25px" }} />
