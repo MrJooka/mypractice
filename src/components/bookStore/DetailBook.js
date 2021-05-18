@@ -45,6 +45,8 @@ class DetailBook extends PureComponent {
       intro_author_height: 0,
       intro_book_height: 0,
       indexes_height: 0,
+
+      isBookInPurchaseItems: false,
     };
   }
 
@@ -75,6 +77,14 @@ class DetailBook extends PureComponent {
       res_data_user_cart.map((book) => book_id_in_cart.push(book._id));
       this.props.onUpdateBookIdListInCartInState(book_id_in_cart);
       localStorage.setItem("cart", JSON.stringify(book_id_in_cart));
+    });
+
+    axios.post("/api/bookstore/get-purchase-book").then((res) => {
+      console.log("서버에서 받은 구매 책 데이터", res);
+      let isBookInPurchaseItems = res.data.book_purchase.find((book) => book.sellbook_id == this.state.book_id);
+      this.setState({
+        isBookInPurchaseItems,
+      });
     });
 
     let intro_author_height = 0;
@@ -371,53 +381,112 @@ class DetailBook extends PureComponent {
                         </table>
                       </div>
                       <div>
-                        <ul style={{ float: "right", display: "inline-table", whiteSpace: "nowrap", listStyle: "none", margin: "0", padding: "0", overflow: "hidden" }}>
-                          <li style={buttonStyle1}>
-                            <button
-                              style={{ height: "48px", width: "48px", border: "1px solid #d1d5d9", boxShadow: "0 1px 1px 0 rgb(209 213 217 / 30%)", borderRadius: "4px", display: "inline-block" }}
-                            >
-                              <img src="image/favorite_black_24dp.svg" alt="" style={{ width: "25px" }} />
-                            </button>
-                          </li>
-                          <li style={buttonStyle1}>
-                            <button
-                              style={{ height: "48px", width: "48px", border: "1px solid #d1d5d9", boxShadow: "0 1px 1px 0 rgb(209 213 217 / 30%)", borderRadius: "4px", display: "inline-block" }}
-                              onClick={this.onChangeCartStatus}
-                            >
-                              {props_alter.find((book_id) => book_id == this.state.book_id) ? (
-                                <ShoppingFilled style={{ fontSize: "25px", color: "tomato" }} />
-                              ) : (
-                                <ShoppingOutlined style={{ fontSize: "25px" }} />
-                              )}
-                            </button>
-                          </li>
-                          <li style={buttonStyle1}>
-                            <button
-                              style={{ height: "48px", width: "48px", border: "1px solid #d1d5d9", boxShadow: "0 1px 1px 0 rgb(209 213 217 / 30%)", borderRadius: "4px", display: "inline-block" }}
-                            >
-                              <img src="image/card_giftcard_black_24dp.svg" alt="" style={{ width: "25px" }} />
-                            </button>
-                          </li>
-                          <li style={buttonStyle1_last}>
-                            <Link
-                              to="/order"
-                              style={{
-                                borderRadius: "4px",
-                                fontWeight: "700",
-                                textAlign: "center",
-                                color: "#fff",
-                                background: "#1f8ce6",
-                                float: "left",
-                                height: "48px",
-                                lineHeight: "46px",
-                                minWidth: "112px",
-                                fontSize: "15px",
-                              }}
-                            >
-                              구매하기
-                            </Link>
-                          </li>
-                        </ul>
+                        {this.state.isBookInPurchaseItems ? (
+                          <ul style={{ float: "right", display: "inline-table", whiteSpace: "nowrap", listStyle: "none", margin: "0", padding: "0", overflow: "hidden" }}>
+                            <li style={buttonStyle1}>
+                              <button
+                                style={{
+                                  height: "48px",
+                                  width: "48px",
+                                  border: "1px solid #d1d5d9",
+                                  boxShadow: "0 1px 1px 0 rgb(209 213 217 / 30%)",
+                                  borderRadius: "4px",
+                                  display: "inline-block",
+                                }}
+                              >
+                                <img src="image/card_giftcard_black_24dp.svg" alt="" style={{ width: "25px" }} />
+                              </button>
+                            </li>
+                            <li style={buttonStyle1_last}>
+                              <Link
+                                to="/download"
+                                style={{
+                                  borderRadius: "4px",
+                                  fontWeight: "700",
+                                  textAlign: "center",
+                                  color: "#fff",
+                                  background: "orange",
+                                  float: "left",
+                                  height: "48px",
+                                  lineHeight: "46px",
+                                  minWidth: "112px",
+                                  fontSize: "15px",
+                                }}
+                              >
+                                다운로드
+                              </Link>
+                            </li>
+                          </ul>
+                        ) : (
+                          <ul style={{ float: "right", display: "inline-table", whiteSpace: "nowrap", listStyle: "none", margin: "0", padding: "0", overflow: "hidden" }}>
+                            <li style={buttonStyle1}>
+                              <button
+                                style={{
+                                  height: "48px",
+                                  width: "48px",
+                                  border: "1px solid #d1d5d9",
+                                  boxShadow: "0 1px 1px 0 rgb(209 213 217 / 30%)",
+                                  borderRadius: "4px",
+                                  display: "inline-block",
+                                }}
+                              >
+                                <img src="image/favorite_black_24dp.svg" alt="" style={{ width: "25px" }} />
+                              </button>
+                            </li>
+                            <li style={buttonStyle1}>
+                              <button
+                                style={{
+                                  height: "48px",
+                                  width: "48px",
+                                  border: "1px solid #d1d5d9",
+                                  boxShadow: "0 1px 1px 0 rgb(209 213 217 / 30%)",
+                                  borderRadius: "4px",
+                                  display: "inline-block",
+                                }}
+                                onClick={this.onChangeCartStatus}
+                              >
+                                {props_alter.find((book_id) => book_id == this.state.book_id) ? (
+                                  <ShoppingFilled style={{ fontSize: "25px", color: "tomato" }} />
+                                ) : (
+                                  <ShoppingOutlined style={{ fontSize: "25px" }} />
+                                )}
+                              </button>
+                            </li>
+                            <li style={buttonStyle1}>
+                              <button
+                                style={{
+                                  height: "48px",
+                                  width: "48px",
+                                  border: "1px solid #d1d5d9",
+                                  boxShadow: "0 1px 1px 0 rgb(209 213 217 / 30%)",
+                                  borderRadius: "4px",
+                                  display: "inline-block",
+                                }}
+                              >
+                                <img src="image/card_giftcard_black_24dp.svg" alt="" style={{ width: "25px" }} />
+                              </button>
+                            </li>
+                            <li style={buttonStyle1_last}>
+                              <Link
+                                to="/download"
+                                style={{
+                                  borderRadius: "4px",
+                                  fontWeight: "700",
+                                  textAlign: "center",
+                                  color: "#fff",
+                                  background: "rgb(31, 140, 230",
+                                  float: "left",
+                                  height: "48px",
+                                  lineHeight: "46px",
+                                  minWidth: "112px",
+                                  fontSize: "15px",
+                                }}
+                              >
+                                구매하기
+                              </Link>
+                            </li>
+                          </ul>
+                        )}
                       </div>
                     </div>
                   </div>

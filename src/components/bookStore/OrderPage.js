@@ -56,6 +56,22 @@ class OrderPage extends PureComponent {
     });
   }
 
+  onPurchageItems = (
+    product,
+    total_price
+    // cart
+  ) => {
+    axios
+      .post("api/bookstore/create-payment", {
+        product,
+        total_price,
+        // cart
+      })
+      .then((res) => {
+        console.log(res);
+      });
+  };
+
   render() {
     console.log(this.state.checked_books_list);
     let total = 0;
@@ -72,6 +88,22 @@ class OrderPage extends PureComponent {
 
     let cartItems = JSON.parse(localStorage.getItem("cart"));
     let props_alter = this.props.book_id_in_cart || cartItems || [];
+
+    let product = [];
+    let books_list = this.state.checked_books_list || [];
+
+    books_list.map((book) => {
+      product.push({
+        type: "sellbook",
+        product_id: book._id,
+        title: book.book_info.title,
+        author: book.book_info.author,
+        price: book.book_info.price - (isNaN(book.book_info.promotion.gap) ? 0 : book.book_info.promotion.gap),
+        count: 1,
+      });
+    });
+
+    console.log(product, "프로덕트");
 
     return (
       <React.Fragment>
@@ -127,17 +159,24 @@ class OrderPage extends PureComponent {
                         for (let i in checkedlist) {
                           new_book_id_in_cart = new_book_id_in_cart.filter((book_id) => book_id !== checkedlist[i]);
                         }
+                        // onPurchageItems 서버 코드 수정되면 아래 코드는 삭제해야함
                         this.props.onUpdateBooKIdListInCartInServer(new_book_id_in_cart);
 
                         //새로고침해도 구매하기 진행했을 때에는 리스트 안뜨게 로컬스토리지에서 데이터 초기화
                         localStorage.setItem("book_id_list", JSON.stringify([]));
                         localStorage.setItem("books_list", JSON.stringify([]));
+                        localStorage.setItem("cart", JSON.stringify(new_book_id_in_cart));
                         //구매버튼 누르면 보여지는 책들 리셋
                         this.setState({
                           checked_books_list: [],
                         });
 
-                        //todo 구매 다음 단계 아직 없음
+                        //todo
+                        this.onPurchageItems(
+                          product,
+                          total
+                          // new_book_id_in_cart
+                        );
                       }}
                       type="primary"
                       size="large"

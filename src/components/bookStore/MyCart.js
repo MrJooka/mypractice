@@ -153,6 +153,7 @@ class MyCart extends PureComponent {
       this.setState({ books_in_cart: res.data.user.cart, checked_book_id_list: book_id_in_cart, checked_books_list: res.data.user.cart });
       this.props.onUpdateBookIdListInCartInState(book_id_in_cart);
       localStorage.setItem("cart", JSON.stringify(book_id_in_cart));
+      console.log(res);
     });
   }
 

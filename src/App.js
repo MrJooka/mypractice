@@ -86,7 +86,7 @@ class App extends Component {
   };
 
   render() {
-    console.log(this.state.checked_book_id_list);
+    console.log(this.state.book_id_in_cart);
 
     return (
       <div className="App">
@@ -119,7 +119,7 @@ class App extends Component {
                 onUpdateBooKIdListInCartInServer={this.onUpdateBooKIdListInCartInServer}
               />
             </Route>
-            <Route exact path="/mypage">
+            <Route path="/mypage">
               <MyPage book_id_in_cart={this.state.book_id_in_cart} onChangeSelectedNavMenu={this.onChangeSelectedNavMenu} selected_nav_menu={this.state.selected_nav_menu} />
             </Route>
             <Route exact path="/detail-book">

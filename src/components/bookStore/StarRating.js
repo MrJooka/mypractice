@@ -36,38 +36,9 @@ class StarRating extends PureComponent {
     const rating = this.state.rating;
     const content = this.state.content;
 
-    // const register_comment = {
-    //   user_id: "Jooka",
-    //   sellbook_id: sessionStorage.getItem("book_id"),
-    //   root_id: "",
-    //   parent_id: "",
-    //   level: 1,
-    //   isDeleted: "no",
-    //   time_created: nowTime,
-    //   rating: this.state.rating,
-    //   content: this.state.content,
-    // };
-
-    // 서버에 파일 보낼 때 { register_comment }으로 보내면 { register_comment { .... }}형식으로 전송됨, 두번째로 보내는게 맞음.
-    // POST /api/bookstore/get-book-info 200 73.048 ms - 12259
-    //     req.isAuthenticated true
-    //     북코멘트를 등록합니다.
-    //     {
-    //       register_comment: {
-    //         user_id: 'Jooka',
-    //         sellbook_id: '60739e56ad7ba776d9cd73d2',
-    //         root_id: '',
-    //         parent_id: '',
-    //         level: 1,
-    //         isDeleted: 'no',
-    //         time_created: '2021-04-20T23:47:58.979Z',
-    //         rating: 4,
-    //         content: 'dfadfdfe'
-    //       }
-    //     }
-    // axios.post("api/bookstore/create-book-comment", { register_comment }).then((res) => {
     axios.post("api/bookstore/create-book-comment", { user_id, sellbook_id, root_id, parent_id, level, isDeleted, time_created, rating, content }).then((res) => {
       this.props.updateStateBookComment(res.data.book_comment);
+      console.log("서버에  커맨트 업데이트 후 서버에서받은커맨트", res);
     });
   };
 
