@@ -2,7 +2,6 @@
 import React, { Component, PureComponent } from "react";
 import axios from "axios";
 import RidiGnbArea from "./components/RidiGnbArea";
-import { GlobalStyle } from "./components/GlobalStyle";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { AutoComplete, Rate } from "antd";
@@ -146,8 +145,7 @@ class DetailBook extends PureComponent {
 
       return (
         <React.Fragment>
-          <GlobalStyle />
-          <RidiGnbArea book_id_in_cart={props_alter} onChangeSelectedNavMenu={this.props.onChangeSelectedNavMenu} selected_nav_menu={this.props.selected_nav_menu} />
+          <RidiGnbArea />
           <FavoriteCategory />
           <div className="BookDetailPage" style={bookDetailPage}>
             <div className="BookDetailArea" style={bookDetailArea}>

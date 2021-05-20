@@ -12,6 +12,7 @@ class OrderHistory extends Component {
   };
 
   render() {
+    console.log("마이히스토리 랜더");
     return (
       <div style={{ paddingBottom: "20px" }}>
         <h2 style={{ fontSize: "21px", color: "#333", fontWeight: "700", width: "100%" }}>결제내역</h2>
@@ -97,5 +98,3 @@ data.map((index) => {
 
   array.push(object);
 });
-
-console.log(array);

@@ -1,11 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import React, { Component, PureComponent } from "react";
+import React, { PureComponent } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import RidiGnbArea from "./RidiGnbArea";
 import FavoriteCategory from "./FavoriteCategory";
-import { GlobalStyle } from "./GlobalStyle";
 
 class ReactRidi extends PureComponent {
   constructor(props) {
@@ -43,8 +42,7 @@ class ReactRidi extends PureComponent {
 
     return (
       <>
-        <GlobalStyle />
-        <RidiGnbArea book_id_in_cart={this.props.book_id_in_cart} onChangeSelectedNavMenu={this.props.onChangeSelectedNavMenu} selected_nav_menu={this.props.selected_nav_menu} />
+        <RidiGnbArea />
         <FavoriteCategory />
         <div
           css={css`

@@ -1,9 +1,7 @@
 import { Button, Checkbox } from "antd";
 import { CheckCircleTwoTone } from "@ant-design/icons";
 import axios from "axios";
-import React, { Component, PureComponent } from "react";
-import { GlobalStyle } from "./components/GlobalStyle";
-import RidiGnbArea from "./components/RidiGnbArea";
+import React, { PureComponent } from "react";
 
 class MyCartBookList extends PureComponent {
   constructor(props) {
@@ -107,8 +105,6 @@ class OrderPage extends PureComponent {
 
     return (
       <React.Fragment>
-        <GlobalStyle />
-        <RidiGnbArea book_id_in_cart={props_alter} onChangeSelectedNavMenu={this.props.onChangeSelectedNavMenu} selected_nav_menu={this.props.selected_nav_menu} />
         <div
           style={{
             position: "relative",

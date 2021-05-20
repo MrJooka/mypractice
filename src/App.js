@@ -21,6 +21,7 @@ import OrderPage from "./components/bookStore/OrderPage";
 import LinkCategory from "./components/bookStore/LinkCategory";
 import MyCart from "./components/bookStore/MyCart";
 import MyPage from "./components/bookStore/MyPage";
+import Admin from "./components/bookStore/components/admin/Admin";
 import axios from "axios";
 
 class App extends Component {
@@ -29,17 +30,10 @@ class App extends Component {
     this.state = {
       isLoggedIn: false,
       book_id_in_cart: null,
-      selected_nav_menu: "home",
       checked_book_id_list: [],
       checked_books_list: [],
     };
   }
-
-  onChangeSelectedNavMenu = (menu) => {
-    this.setState({
-      selected_nav_menu: menu,
-    });
-  };
 
   updatedLoginState = (value) => {
     this.setState({
@@ -91,7 +85,7 @@ class App extends Component {
     return (
       <div className="App">
         <Affix offsetTop={0}>
-          <NavbarContainer isLoggedIn={this.state.isLoggedIn} />
+          <NavbarContainer isLoggedIn={this.state.isLoggedIn} book_id_in_cart={this.state.book_id_in_cart} />
         </Affix>
         <div style={main_container}>
           <Switch>
@@ -104,23 +98,13 @@ class App extends Component {
             <Route exact path="/myinfo" component={MyInfoMain} />
             <Route exact path="/write" render={() => <WritingMain updatedLoginState={this.updatedLoginState} />} />
             <Route exact path="/store">
-              <BookStoreMain
-                book_id_in_cart={this.state.book_id_in_cart}
-                onUpdateBookIdListInCartInState={this.onUpdateBookIdListInCartInState}
-                onChangeSelectedNavMenu={this.onChangeSelectedNavMenu}
-                selected_nav_menu={this.state.selected_nav_menu}
-              />
+              <BookStoreMain book_id_in_cart={this.state.book_id_in_cart} onUpdateBookIdListInCartInState={this.onUpdateBookIdListInCartInState} />
             </Route>
             <Route exact path="/order">
-              <OrderPage
-                book_id_in_cart={this.state.book_id_in_cart}
-                onChangeSelectedNavMenu={this.onChangeSelectedNavMenu}
-                selected_nav_menu={this.state.selected_nav_menu}
-                onUpdateBooKIdListInCartInServer={this.onUpdateBooKIdListInCartInServer}
-              />
+              <OrderPage book_id_in_cart={this.state.book_id_in_cart} onUpdateBooKIdListInCartInServer={this.onUpdateBooKIdListInCartInServer} />
             </Route>
             <Route path="/mypage">
-              <MyPage book_id_in_cart={this.state.book_id_in_cart} onChangeSelectedNavMenu={this.onChangeSelectedNavMenu} selected_nav_menu={this.state.selected_nav_menu} />
+              <MyPage book_id_in_cart={this.state.book_id_in_cart} />
             </Route>
             <Route exact path="/detail-book">
               <DetailBook
@@ -128,8 +112,6 @@ class App extends Component {
                 onUpdateBookIdListInCartInState={this.onUpdateBookIdListInCartInState}
                 onDeleteBookInCart={this.onDeleteBookInCart}
                 book_id_in_cart={this.state.book_id_in_cart}
-                onChangeSelectedNavMenu={this.onChangeSelectedNavMenu}
-                selected_nav_menu={this.state.selected_nav_menu}
               />
             </Route>
             <Route exact path="/mycart">
@@ -138,8 +120,6 @@ class App extends Component {
                 onUpdateBookIdListInCartInState={this.onUpdateBookIdListInCartInState}
                 onUpdateBooKIdListInCartInServer={this.onUpdateBooKIdListInCartInServer}
                 onDeleteBookInCart={this.onDeleteBookInCart}
-                onChangeSelectedNavMenu={this.onChangeSelectedNavMenu}
-                selected_nav_menu={this.state.selected_nav_menu}
                 onCheckedListForPurchase={this.onCheckedListForPurchase}
               />
             </Route>
@@ -150,6 +130,9 @@ class App extends Component {
             <Route exact path="/session-setting" render={() => <ChooseIndex updatedLoginState={this.updatedLoginState} />} />
             <Route exact path="/editing" render={() => <BookEditing updatedLoginState={this.updatedLoginState} />} />
             <Route exact path="/naming" component={BookNaming} />
+            <Route path="/admin">
+              <Admin />
+            </Route>
           </Switch>
         </div>
         <Footer />
