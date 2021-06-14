@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Link, Route } from "react-router-dom";
 import { HomeFilled, BookFilled } from "@ant-design/icons";
 import OrderHistory from "./OrderHistory";
-import OrderHistory1 from "./OrderHistory1";
 import OrderHistory2 from "./OrderHistory2";
+import PurchaseOrderDetail from "./PurchaseOrderDetail";
 
 class MyPage extends Component {
   constructor(props) {
@@ -59,8 +59,8 @@ class MyPage extends Component {
                     <Link to="/mypage/orderhistory" exact style={{ padding: "14px 0 0 0", fontWeight: "700", display: "block", fontSize: "15px", transition: "color .2s", color: "#808991" }}>
                       결제 내역
                     </Link>
-                    <Link to="/mypage/orderhistory1" style={{ padding: "14px 0 0 0", fontWeight: "700", display: "block", fontSize: "15px", transition: "color .2s", color: "#808991" }}>
-                      하위메뉴2
+                    <Link to="/mypage/purchase_order_detail" style={{ padding: "14px 0 0 0", fontWeight: "700", display: "block", fontSize: "15px", transition: "color .2s", color: "#808991" }}>
+                      결제 상세 내역
                     </Link>
                     <Link to="/mypage/orderhistory2" style={{ padding: "14px 0 0 0", fontWeight: "700", display: "block", fontSize: "15px", transition: "color .2s", color: "#808991" }}>
                       하위메뉴3
@@ -103,8 +103,8 @@ class MyPage extends Component {
             <Route path="/mypage/orderhistory">
               <OrderHistory />
             </Route>
-            <Route path="/mypage/orderhistory1">
-              <OrderHistory1 />
+            <Route path="/mypage/purchase_order_detail">
+              <PurchaseOrderDetail />
             </Route>
             <Route path="/mypage/orderhistory2">
               <OrderHistory2 />
