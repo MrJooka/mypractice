@@ -1,6 +1,4 @@
-import { Button, Checkbox } from "antd";
-import { CheckCircleTwoTone } from "@ant-design/icons";
-import axios from "axios";
+import { Button } from "antd";
 import React, { PureComponent } from "react";
 
 class MyCartBookList extends PureComponent {
@@ -13,7 +11,7 @@ class MyCartBookList extends PureComponent {
     return (
       <React.Fragment>
         {PO_data.purchased_item.map((book) => (
-          <li key={book._id_purhchased_item} style={{ display: "flex", padding: "8px 0 8px 0" }}>
+          <li key={book._id_purhchased_item} style={{ display: "flex", padding: "8px 0 8px 25px" }}>
             <div style={{ display: "flex", alignItems: "center" }}></div>
             <div>
               <img
@@ -46,7 +44,7 @@ class PurchaseOrderDetail extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      visible_items: true,
+      visible_items: false,
     };
   }
 
@@ -65,19 +63,64 @@ class PurchaseOrderDetail extends PureComponent {
               <div style={{ width: "680px" }}>
                 <div style={{ paddingBottom: "20px" }}>결제 상세내역</div>
                 <div style={{ border: "1px solid #d1d5d9", padding: "15px" }}>
-                  <div style={{ fontSize: "20px", fontWeight: "bold", paddingBottom: "8px", borderBottom: "1px solid #d1d5d9" }}>
-                    주문번호: {PO_data._id}, 금액: {PO_data.total_price}, 할인가: {PO_data.total_gap}
-                    <button
-                      onClick={() => {
-                        this.setState({ visible_items: !this.state.visible_items });
-                      }}
-                    >
-                      상세아이템 보기
-                    </button>
+                  <div style={{ fontSize: "14px", fontWeight: "bold", display: "flex", justifyContent: "space-between", paddingBottom: "8px", borderBottom: "1px solid #d1d5d9" }}>
+                    <div>주문번호</div> <div> {PO_data._id} </div>
                   </div>
-                  <ul style={{ display: this.state.visible_items ? "block" : "none" }}>
-                    <MyCartBookList />
-                  </ul>
+                  <div style={{ fontSize: "14px", fontWeight: "bold", display: "flex", justifyContent: "space-between", padding: "8px 0 8px 0", borderBottom: "1px solid #d1d5d9" }}>
+                    <div>상품가</div> <div> {PO_data.total_price}원 </div>
+                  </div>
+                  <div style={{ fontSize: "14px", fontWeight: "bold", display: "flex", justifyContent: "space-between", padding: "8px 0 8px 0", borderBottom: "1px solid #d1d5d9" }}>
+                    <div>할인가</div> <div> {PO_data.total_gap}원 </div>
+                  </div>
+                  <div style={{ fontSize: "14px", fontWeight: "bold", padding: "8px 0 8px 0", borderBottom: "1px solid #d1d5d9" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                      <div>
+                        상품수량
+                        <Button
+                          style={{ marginLeft: "25px" }}
+                          size="small"
+                          onClick={() => {
+                            this.setState({ visible_items: !this.state.visible_items });
+                          }}
+                        >
+                          상세아이템 {this.state.visible_items ? "접기" : "보기"}
+                        </Button>
+                      </div>
+                      <div> {PO_data.purchased_item.length} </div>
+                    </div>
+                    <ul style={{ display: this.state.visible_items ? "block" : "none" }}>
+                      <MyCartBookList />
+                    </ul>
+                  </div>
+
+                  <div
+                    style={{
+                      fontSize: "20px",
+                      fontWeight: "bold",
+
+                      padding: "8px 0 8px 0",
+                      borderBottom: "1px solid #d1d5d9",
+                    }}
+                  >
+                    <div style={{ fontSize: "14px", fontWeight: "bold", display: "flex", justifyContent: "space-between" }}>
+                      <div>결제금액</div> <div> {PO_data.total_payment_price}원 </div>
+                    </div>
+                    <div style={{ fontSize: "12px", fontWeight: "bold", margin: "8px 0 0 25px", display: "flex", justifyContent: "space-between" }}>
+                      <div>콕북 캐시 사용액</div> <div> {PO_data.cogbook_cash}원 </div>
+                    </div>
+                    <div style={{ fontSize: "12px", fontWeight: "bold", margin: "8px 0 0 25px", display: "flex", justifyContent: "space-between" }}>
+                      <div>콕북 포인트 사용액</div> <div> {PO_data.cogbook_point}원 </div>
+                    </div>
+                    <div style={{ fontSize: "12px", fontWeight: "bold", margin: "8px 0 0 25px", display: "flex", justifyContent: "space-between" }}>
+                      <div>PG 결제 사용액</div> <div> {PO_data.pg_payment_price}원 </div>
+                    </div>
+                  </div>
+                  <div style={{ fontSize: "14px", fontWeight: "bold", display: "flex", justifyContent: "space-between", padding: "8px 0 8px 0", borderBottom: "1px solid #d1d5d9" }}>
+                    <div>적립 콕북 포인트</div> <div> {PO_data.received_cogbook_point}원 </div>
+                  </div>
+                  <div style={{ fontSize: "14px", fontWeight: "bold", display: "flex", justifyContent: "space-between", padding: "8px 0 8px 0" }}>
+                    <div>문화비 소득공제</div> <div> 가능 </div>
+                  </div>
                 </div>
               </div>
             </div>

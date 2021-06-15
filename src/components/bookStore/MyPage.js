@@ -27,15 +27,15 @@ class MyPage extends Component {
               <div style={{ padding: "17px 0 19px 0", borderBottom: "2px solid #f2f2f2" }}>
                 <h4>
                   <BookFilled style={{ paddingRight: "7px", fontSize: "16px", color: "#738096" }} />
-                  <span style={{ fontSize: "15px", color: "#40474d", fontWeight: "700" }}>책</span>
+                  <span style={{ fontSize: "15px", color: "#40474d", fontWeight: "700" }}>내가 가진 아이템</span>
                 </h4>
                 <ul style={{ borderTop: "none", padding: "1px 0 0 22px" }}>
                   <li>
                     <Link to="/" style={{ padding: "14px 0 0 0", fontWeight: "700", display: "block", fontSize: "15px", transition: "color .2s", color: "#808991" }}>
-                      책 메뉴1
+                      내 서재
                     </Link>
                     <Link to="/" style={{ padding: "14px 0 0 0", fontWeight: "700", display: "block", fontSize: "15px", transition: "color .2s", color: "#808991" }}>
-                      책 메뉴2
+                      선물 받은 아이템
                     </Link>
                     <Link to="/" style={{ padding: "14px 0 0 0", fontWeight: "700", display: "block", fontSize: "15px", transition: "color .2s", color: "#808991" }}>
                       책 메뉴3

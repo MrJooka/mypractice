@@ -43,6 +43,14 @@ const columns = [
     },
   },
   {
+    title: "상품 수량",
+    dataIndex: "qty",
+    sorter: {
+      compare: (a, b) => a.qty - b.qty,
+      multiple: 2,
+    },
+  },
+  {
     title: "결제 금액",
     dataIndex: "price",
     sorter: {
@@ -72,6 +80,7 @@ const data = [
     price: 1200,
     purchage_order_number: "2321547855",
     purchage_order_status: "완료",
+    qty: 2,
   },
   {
     key: "2",
@@ -80,6 +89,7 @@ const data = [
     price: 2500,
     purchage_order_number: "12325786",
     purchage_order_status: "취소",
+    qty: 2,
   },
   {
     key: "3",
@@ -88,6 +98,7 @@ const data = [
     price: 33000,
     purchage_order_number: "33564896",
     purchage_order_status: "완료",
+    qty: 2,
   },
   {
     key: "4",
@@ -96,6 +107,7 @@ const data = [
     price: 13000,
     purchage_order_number: "595635796",
     purchage_order_status: "완료",
+    qty: 2,
   },
   {
     key: "5",
@@ -104,6 +116,7 @@ const data = [
     price: 1200,
     purchage_order_number: "2321547855",
     purchage_order_status: "완료",
+    qty: 2,
   },
   {
     key: "6",
@@ -112,6 +125,7 @@ const data = [
     price: 2500,
     purchage_order_number: "12325786",
     purchage_order_status: "완료",
+    qty: 2,
   },
   {
     key: "7",
@@ -120,6 +134,7 @@ const data = [
     price: 33000,
     purchage_order_number: "33564896",
     purchage_order_status: "완료",
+    qty: 2,
   },
   {
     key: "8",
@@ -128,6 +143,7 @@ const data = [
     price: 13000,
     purchage_order_number: "595635796",
     purchage_order_status: "완료",
+    qty: 2,
   },
   {
     key: "9",
@@ -136,6 +152,7 @@ const data = [
     price: 1200,
     purchage_order_number: "2321547855",
     purchage_order_status: "완료",
+    qty: 2,
   },
   {
     key: "10",
@@ -144,6 +161,7 @@ const data = [
     price: 2500,
     purchage_order_number: "12325786",
     purchage_order_status: "완료",
+    qty: 2,
   },
   {
     key: "11",
@@ -152,6 +170,7 @@ const data = [
     price: 33000,
     purchage_order_number: "33564896",
     purchage_order_status: "완료",
+    qty: 2,
   },
   {
     key: "12",
@@ -160,6 +179,7 @@ const data = [
     price: 13000,
     purchage_order_number: "595635796",
     purchage_order_status: "취소",
+    qty: 2,
   },
   {
     key: "13",
@@ -168,6 +188,7 @@ const data = [
     price: 1200,
     purchage_order_number: "2321547855",
     purchage_order_status: "완료",
+    qty: 2,
   },
   {
     key: "14",
@@ -176,6 +197,7 @@ const data = [
     price: 2500,
     purchage_order_number: "12325786",
     purchage_order_status: "완료",
+    qty: 2,
   },
   {
     key: "15",
@@ -184,6 +206,7 @@ const data = [
     price: 33000,
     purchage_order_number: "33564896",
     purchage_order_status: "취소",
+    qty: 2,
   },
   {
     key: "16",
@@ -192,6 +215,7 @@ const data = [
     price: 13000,
     purchage_order_number: "595635796",
     purchage_order_status: "완료",
+    qty: 2,
   },
 ];
 
@@ -205,6 +229,7 @@ data.map((index) => {
   object.price = index.price;
   object.purchage_order_number = index.purchage_order_number;
   object.purchage_order_status = index.purchage_order_status;
+  object.qty = index.qty;
 
   array.push(object);
 });
